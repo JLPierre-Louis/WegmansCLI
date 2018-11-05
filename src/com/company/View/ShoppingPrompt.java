@@ -8,6 +8,11 @@ public class ShoppingPrompt extends Prompt {
     }
 
     @Override
+    public Object handleMain() {
+        return null;
+    }
+
+    @Override
     public void displayMain() {
 
     }

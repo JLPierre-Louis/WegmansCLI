@@ -6,17 +6,15 @@ import com.company.View.Prompt;
 
 public class UserService {
 
-    enum UserType {
+    public enum UserType {
         admin, customer
     }
 
     private Prompt currentPrompt;
-    private User currentUser;
     private Store currentStore;
 
-    public UserService(User user, Prompt prompt) {
+    public UserService(Prompt prompt) {
         currentPrompt = prompt;
-        currentUser = user;
         currentStore = null;
     }
 
@@ -24,8 +22,9 @@ public class UserService {
         return currentStore;
     }
 
-    public Prompt getCurrentPrompt() {
-        return currentPrompt;
+    public Object runCurrentPromptDialog() {
+        currentPrompt.displayMain();
+        return currentPrompt.handleMain();
     }
 
     public void updatePrompt(Prompt newPrompt) {
