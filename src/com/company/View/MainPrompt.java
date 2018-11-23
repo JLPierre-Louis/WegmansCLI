@@ -1,7 +1,6 @@
 package com.company.View;
 
-public class StorePrompt extends Prompt {
-
+public class MainPrompt extends Prompt {
     private static final String PROMPT = "> ";
     private static final String STORE_WELCOME = "Please pick a store! (for options type -h)";
 
@@ -10,8 +9,9 @@ public class StorePrompt extends Prompt {
     private static final String QUIT_CMD = "q";
 
     @Override
-    public void displayMain() {
-        System.out.println(STORE_WELCOME);
+    public void displayCommands() {
+        System.out.println(HELP_CMD + ": display the help commands");
+        System.out.println(QUIT_CMD+ ": quit the application");
     }
 
     @Override
@@ -26,15 +26,15 @@ public class StorePrompt extends Prompt {
                     break;
                 case QUIT_CMD:
                     break loop;
-
+                default:
+                    break;
             }
         }
         return null;
     }
 
     @Override
-    public void displayCommands() {
-        System.out.println(HELP_CMD + ": display the help commands");
-        System.out.println(QUIT_CMD+ ": quit the application");
+    public void displayMain() {
+        System.out.println();
     }
 }
