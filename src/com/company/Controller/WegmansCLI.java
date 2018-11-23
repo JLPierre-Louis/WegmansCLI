@@ -28,7 +28,7 @@ public class WegmansCLI {
         currentPrompt.displayMain();
         User user = (User)currentPrompt.handleMain();
         // only handle customer prompt for now
-        currentPrompt = new MainPrompt();
+        currentPrompt = new MainPrompt(user);
         currentPrompt.displayMain();
         currentPrompt.handleMain();
     }
