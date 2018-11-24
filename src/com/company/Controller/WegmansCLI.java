@@ -6,19 +6,28 @@ import com.company.Model.User;
 import com.company.View.LoginPrompt;
 import com.company.View.Prompt;
 import com.company.View.StorePrompt;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class WegmansCLI {
 
-
-    Prompt currentPrompt;
+    public SQLConnection dataBase;
+    private Prompt currentPrompt;
 
     public WegmansCLI() {
         currentPrompt = new LoginPrompt();
     }
 
     public void initDatabase() {
-
+        dataBase = new SQLConnection();
+        try{
+            dataBase.connectToDB("Wegmans2");
+        }catch (SQLException e){
+            System.out.println("SQL Error:");
+            e.printStackTrace();
+        }
     }
 
     public void setUserStore(User user, Store store) {
