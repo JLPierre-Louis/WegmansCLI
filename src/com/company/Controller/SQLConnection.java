@@ -5,19 +5,26 @@ import java.util.*;
 
 public class SQLConnection {
 
+    private static final String URL = "jdbc:postgresql://reddwarf.cs.rit.edu:5432/?currentSchema=wegmans2";
+    private static final String USERNAME = "jaf9897";
+    private static final String PASSWORD = "wegmans2";
+
+
     public Connection connectToDB(String schemaName) throws SQLException {
-        // Read the password file
-        // should be ~/.pgpass and look like
-        // localhost:8080:USERNAME:USERNAME:PASSWORD
-        String homeDir = System.getProperty("user.dir");
-        String content = null;
+
+
+        // This code creates the URL on boot using the password file, will be good for different roles.
+        /*
+        // Read the password file in the running directory, connects to jaf9897 database.
+        String passFile = null;
         try {
-            content = new Scanner(new File(homeDir, ".pgpass")).useDelimiter("\\Z").next();
+            passFile = new Scanner(new File("pass.pgpass")).useDelimiter("\\Z").next();
         } catch (FileNotFoundException e) {
             System.err.println("Password file not found.");
             System.exit(1);
         }
-        String parts[] = content.split(":");
+        // Create the url and login info from the password file
+        String parts[] = passFile.split(":");
         String host = parts[0];
         String port = parts[1];
         String username = parts[2];
@@ -28,9 +35,13 @@ public class SQLConnection {
             url += "/?currentSchema=" + schemaName;
         }
         return DriverManager.getConnection(url, username, password);
+
+        */
+        //This runs it directly
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    public static ResultSet query(Connection database, String sql) throws SQLException {
+    public static ResultSet wegmansQuery(Connection database, String sql){ // throws SQLException {
         Statement stmt = null;
         ResultSet rs = null;
         try {
@@ -43,4 +54,5 @@ public class SQLConnection {
         }
         return rs;
     }
+
 }
