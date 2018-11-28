@@ -49,11 +49,11 @@ public class SQLConnection {
      */
     public static ResultSet wegmansQuery(String sql) throws SQLException {
         Connection database = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = database.createStatement();
-            rs = stmt.executeQuery(sql);
+            stmt = database.prepareStatement(sql);
+            rs = stmt.executeQuery();
             stmt.closeOnCompletion();
         } catch (SQLException e) {
             System.err.println("SQL Error:");
