@@ -41,7 +41,14 @@ public class SQLConnection {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
 
-    public static ResultSet wegmansQuery(Connection database, String sql){ // throws SQLException {
+    /**
+     * Connect to the database and run the query
+     * @param sql the SQL query
+     * @return a ResultSet that should be parsed by the corresponding Model Tier object
+     * @throws SQLException
+     */
+    public static ResultSet wegmansQuery(String sql) throws SQLException {
+        Connection database = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         Statement stmt = null;
         ResultSet rs = null;
         try {
@@ -59,14 +66,10 @@ public class SQLConnection {
         SQLConnection con = new SQLConnection();
         Connection db = null;
         ResultSetMetaData rsmd = null;
+
         try {
             db = con.connectToDB("wegmans2");
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        ResultSet rs = wegmansQuery(db, "SELECT * FROM product");
-        try {
+            ResultSet rs = wegmansQuery("SELECT * FROM product");
             rsmd = rs.getMetaData();
 
             int columnsNumber = rsmd.getColumnCount();
@@ -78,7 +81,9 @@ public class SQLConnection {
                 }
                 System.out.println("");
             }
-        } catch (Exception e){
+        } catch (SQLException e){
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
