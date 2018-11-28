@@ -1,5 +1,6 @@
 package com.company.View;
 
+import com.company.Model.Customer;
 import org.apache.commons.cli.*;
 import com.company.Model.User;
 
@@ -10,16 +11,22 @@ public class MainPrompt extends Prompt {
     // command options
     private static final String[] HELP_CMD = new String[]{"h", "help", "Show options"};
     private static final String[] QUIT_CMD = new String[]{"q", "quit", "Quit the application"};
-    private static final String[] CART_CMD = new String[]{"c", "cart", "Show the current contents of the cart"};
+    private static final String[] SHOW_CART_CMD = new String[]{"c", "cart", "Show the current contents of the cart"};
+    private static final String[] ADD_CART_CMD = new String[]{"ac", "add-cart", "Add an item to your cart"};
     private static final String PARSER_ERROR = "Invalid command. See -h for help.";
 
+    private User user;
+    private Options options;
+
     public MainPrompt(User user) {
-        super(user);
+        this.user = user;
+        this.options = createOptions();
     }
 
     @Override
     public void displayCommands() {
         HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.printHelp("WegmansCLI", options);
     }
 
     @Override
@@ -29,10 +36,6 @@ public class MainPrompt extends Prompt {
 
     @Override
     public Object handleMain() {
-        Options options = new Options();
-        options.addOption(HELP_CMD[0], HELP_CMD[1],false, HELP_CMD[2]);
-        options.addOption(QUIT_CMD[0], QUIT_CMD[1],false, QUIT_CMD[2]);
-
         CommandLineParser parser = new DefaultParser();
 
         String input = null;
@@ -58,7 +61,6 @@ public class MainPrompt extends Prompt {
             } else {
                 parseCommand(line);
             }
-
         }
         return null;
     }
@@ -68,6 +70,20 @@ public class MainPrompt extends Prompt {
     }
 
     private void parseCommand(CommandLine line) {
+        if(hasCmd(line, SHOW_CART_CMD)) {
+            System.out.println("Cart invoked");
+        }
+    }
 
+    private Options createOptions() {
+        Options newOptions = new Options();
+
+        newOptions.addOption(HELP_CMD[0], HELP_CMD[1],false, HELP_CMD[2]);
+        newOptions.addOption(QUIT_CMD[0], QUIT_CMD[1],false, QUIT_CMD[2]);
+        if(user instanceof Customer) {
+            newOptions.addOption(SHOW_CART_CMD[0], SHOW_CART_CMD[1], false, SHOW_CART_CMD[2]);
+        } else {
+        }
+        return newOptions;
     }
 }

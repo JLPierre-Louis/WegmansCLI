@@ -6,11 +6,6 @@ import java.util.Scanner;
 public abstract class Prompt {
 
     // allows the prompt to call methods
-    private User user;
-
-    public Prompt(User user) {
-        this.user = user;
-    }
 
     Scanner scanner = new Scanner(System.in);
 
