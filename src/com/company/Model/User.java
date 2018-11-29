@@ -11,8 +11,10 @@ import java.util.ArrayList;
 
 public abstract class User {
 
-    private String username;
+    final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
+    final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
 
+    private String username;
     private Connection con;
 
     public void queryStoreByState(String state) {
@@ -36,7 +38,7 @@ public abstract class User {
         try {
             SQLConnection s = new SQLConnection();
             con = s.connectToDB("wegmans2");
-            stmt = con.prepareStatement("SELECT * FROM Store WHERE id = ?");
+            stmt = con.prepareStatement(STORE_BY_ID_QUERY);
             stmt.setString(1, id);
             rs = stmt.executeQuery();
         } catch (SQLException e){
@@ -47,11 +49,10 @@ public abstract class User {
 
     public void queryStoreByProduct(String productName) {
         ResultSet rs = null;
-        PreparedStatement stmt = null;
         try {
             SQLConnection s = new SQLConnection();
             con = s.connectToDB("wegmans2");
-            stmt = con.prepareStatement("SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))");
+            PreparedStatement stmt = con.prepareStatement(STORE_BY_PRODUCT_QUERY);
             stmt.setString(1, productName);
             rs = stmt.executeQuery();
         } catch (SQLException e){
