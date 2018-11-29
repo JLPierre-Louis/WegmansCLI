@@ -24,21 +24,6 @@ public class Store {
         this.inventory = new ArrayList<>();
     }
 
-    public static void printStores (ResultSet rs){
-        ArrayList<Store> stores = new ArrayList<>();
-        try {
-            while (rs.next()){
-                stores.add(new Store(rs.getString(ID), rs.getString(STATE), rs.getString(ADDRESS)));
-            }
-        } catch (SQLException e){
-            System.out.println("Error in store translation.");
-            e.printStackTrace();
-        }
-        for (Store s:stores) {
-            System.out.println(s);
-        }
-    }
-
     public ArrayList<Product> getInventory() {
         // select from store join soldby where store.id = this.id
         return inventory;
@@ -77,8 +62,29 @@ public class Store {
         return false;
     }
 
+    /**
+     * This method translates a result set of stores to
+     * Store objects
+     * @param rs the result set to translate
+     */
+    public static void printStores (ResultSet rs){
+        ArrayList<Store> stores = new ArrayList<>();
+        try {
+            while (rs.next()){
+                stores.add(new Store(rs.getString(ID), rs.getString(STATE), rs.getString(ADDRESS)));
+            }
+        } catch (SQLException e){
+            System.out.println("Error in store translation.");
+            e.printStackTrace();
+        }
+
+        for (Store s: stores) {
+            System.out.println(s);
+        }
+    }
+
     @Override
     public String toString() {
-        return id + ": " + getAddress() + ", " + getState();
+        return getId() + ": " + getAddress() + ", " + getState();
     }
 }
