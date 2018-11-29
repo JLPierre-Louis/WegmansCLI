@@ -1,8 +1,16 @@
 package com.company.Model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Store {
+
+    private static final int ID = 1;
+    private static final int ADDRESS= 2;
+    private static final int STATE = 3;
+    private static final int OPEN_TIME = 4;
+    private static final int CLOSE_TIME = 5;
 
     private String id;
     private String state;
@@ -16,7 +24,21 @@ public class Store {
         this.inventory = new ArrayList<>();
     }
 
+    public static ArrayList<Store> translateStores (ResultSet rs){
+        ArrayList<Store> stores = new ArrayList<>();
+        try {
+            while (rs.next()){
+                stores.add(new Store(rs.getString(ID), rs.getString(STATE), rs.getString(ADDRESS)));
+            }
+        } catch (SQLException e){
+            System.out.println("Error in store translation.");
+            e.printStackTrace();
+        }
+        return stores;
+    }
+
     public ArrayList<Product> getInventory() {
+        // select from store join soldby where store.id = this.id
         return inventory;
     }
 

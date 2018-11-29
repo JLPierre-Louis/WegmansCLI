@@ -1,8 +1,11 @@
 package com.company.View;
 
 import com.company.Model.Customer;
+import com.company.Model.Store;
 import org.apache.commons.cli.*;
 import com.company.Model.User;
+
+import java.util.ArrayList;
 
 public class MainPrompt extends Prompt {
     private static final String PROMPT = "> ";
@@ -72,6 +75,8 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
+            ArrayList<Store> test = user.queryStoreByState("MA");
+            System.out.println(test.get(0).getAddress());
         }
     }
 

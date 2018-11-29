@@ -59,6 +59,7 @@ public class SQLConnection {
             System.err.println("SQL Error:");
             e.printStackTrace();
         }
+        database.close();
         return rs;
     }
 
