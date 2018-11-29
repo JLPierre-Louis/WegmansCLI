@@ -6,6 +6,7 @@ public class Customer extends User {
     private String firstname;
     private String phone;
     private ShoppingCart shoppingCart;
+    private Store currentStore;
 
     public Customer(String lastname, String firstname, String phone) {
         this.lastname = lastname;

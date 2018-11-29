@@ -24,7 +24,7 @@ public class Store {
         this.inventory = new ArrayList<>();
     }
 
-    public static ArrayList<Store> translateStores (ResultSet rs){
+    public static void printStores (ResultSet rs){
         ArrayList<Store> stores = new ArrayList<>();
         try {
             while (rs.next()){
@@ -34,7 +34,9 @@ public class Store {
             System.out.println("Error in store translation.");
             e.printStackTrace();
         }
-        return stores;
+        for (Store s:stores) {
+            System.out.println(s);
+        }
     }
 
     public ArrayList<Product> getInventory() {
@@ -73,5 +75,10 @@ public class Store {
 
     public boolean isInStock(Product item) {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return id + ": " + getAddress() + ", " + getState();
     }
 }

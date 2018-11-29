@@ -15,7 +15,7 @@ public abstract class User {
 
     private Connection con;
 
-    public ArrayList<Store> queryStoreByState(String state) {
+    public void queryStoreByState(String state) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
@@ -27,31 +27,49 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return Store.translateStores(rs);
+        Store.printStores(rs);
     }
 
-    public Store queryStorebyID(String id) {
-        return null;
+    public void queryStorebyID(String id) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            SQLConnection s = new SQLConnection();
+            con = s.connectToDB("wegmans2");
+            stmt = con.prepareStatement("SELECT * FROM Store WHERE id = ?");
+            stmt.setString(1, id);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Store.printStores(rs);
     }
 
-    public Store queryStoreByProuduct(Product product) {
-        return null;
+    public void queryStoreByProduct(String productName) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            SQLConnection s = new SQLConnection();
+            con = s.connectToDB("wegmans2");
+            stmt = con.prepareStatement("SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))");
+            stmt.setString(1, productName);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Store.printStores(rs);
     }
 
-    public ArrayList<Product> queryProductByName(String name) {
-        return null;
+    public void queryProductByName(String name) {
     }
 
-    public ArrayList<Product> queryProductByPriceRange(double start, double end) {
-        return null;
+    public void queryProductByPriceRange(double start, double end) {
     }
 
-    public ArrayList<Product> queryProductByTypeAndRange(String type, double start, double end) {
-        return null;
+    public void queryProductByTypeAndRange(String type, double start, double end) {
     }
 
-    public ArrayList<Product> queryProductByBrand(String brand) {
-        return null;
+    public void queryProductByBrand(String brand) {
     }
 
 
