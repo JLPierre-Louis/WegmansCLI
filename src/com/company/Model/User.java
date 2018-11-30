@@ -13,6 +13,7 @@ public abstract class User {
 
     final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
     final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
+    final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
 
     private String username;
     private Connection con;
@@ -62,9 +63,21 @@ public abstract class User {
     }
 
     public void queryProductByName(String name) {
+        ResultSet rs = null;
+        try {
+            SQLConnection s = new SQLConnection();
+            con = s.connectToDB("wegmans2");
+            PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_NAME_QUERY);
+            stmt.setString(1, name);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.returnDatabaseResults(rs);
     }
 
     public void queryProductByPriceRange(double start, double end) {
+
     }
 
     public void queryProductByTypeAndRange(String type, double start, double end) {
@@ -72,6 +85,7 @@ public abstract class User {
 
     public void queryProductByBrand(String brand) {
     }
+
 
 
 }

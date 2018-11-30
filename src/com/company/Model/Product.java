@@ -6,10 +6,12 @@ import java.util.ArrayList;
 
 public class Product {
 
-    static final String UPC = "0";
-    static final String NAME = "1";
-    static final String BRAND = "2";
-    static final String PRICE = "3";
+    static final int UPC = 1;
+    static final int BRAND = 2;
+    static final int NAME = 3;
+    static final int TYPE = 4;
+    static final int SIZE = 5;
+    static final int PRICE = 6;
 
     private String name;
     private String brand;
@@ -41,10 +43,10 @@ public class Product {
 
     @Override
     public String toString() {
-        return "(" + upc + ") " + this.name + this.brand + ": $" + this.price;
+        return "(" + upc + ") " + this.name + " " + this.brand + ": $" + this.price;
     }
 
-    static final void printProducts(ResultSet rs) {
+    static final void returnDatabaseResults(ResultSet rs) {
         ArrayList<Product> products = new ArrayList<>();
         try {
             while (rs.next()){

@@ -73,7 +73,7 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
-            user.queryStoreByState("MA");
+            user.queryProductByName("Wild Boar");
         }
     }
 
