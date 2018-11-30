@@ -29,7 +29,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.printStores(rs);
+        Store.returnDabaseResults(rs);
     }
 
     public void queryStorebyID(String id) {
@@ -44,7 +44,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.printStores(rs);
+        Store.returnDabaseResults(rs);
     }
 
     public void queryStoreByProduct(String productName) {
@@ -58,7 +58,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.printStores(rs);
+        Store.returnDabaseResults(rs);
     }
 
     public void queryProductByName(String name) {

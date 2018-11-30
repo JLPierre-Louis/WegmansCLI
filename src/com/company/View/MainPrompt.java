@@ -1,7 +1,6 @@
 package com.company.View;
 
 import com.company.Model.Customer;
-import com.company.Model.Store;
 import org.apache.commons.cli.*;
 import com.company.Model.User;
 
@@ -14,8 +13,7 @@ public class MainPrompt extends Prompt {
     // command options
     private static final String[] HELP_CMD = new String[]{"h", "help", "Show options"};
     private static final String[] QUIT_CMD = new String[]{"q", "quit", "Quit the application"};
-    private static final String[] SHOW_CART_CMD = new String[]{"c", "cart", "Show the current contents of the cart"};
-    private static final String[] ADD_CART_CMD = new String[]{"ac", "add-cart", "Add an item to your cart"};
+    private static final String[] SHOW_CART_CMD = new String[]{"sc", "show-cart", "Show the current contents of the cart"};
     private static final String PARSER_ERROR = "Invalid command. See -h for help.";
 
     private User user;
@@ -75,7 +73,7 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
-            user.queryStoreByProduct("Fruit");
+            user.queryStoreByState("MA");
         }
     }
 

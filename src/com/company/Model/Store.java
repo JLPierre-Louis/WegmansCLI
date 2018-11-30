@@ -67,7 +67,7 @@ public class Store {
      * Store objects
      * @param rs the result set to translate
      */
-    public static void printStores (ResultSet rs){
+    public static void returnDabaseResults(ResultSet rs){
         ArrayList<Store> stores = new ArrayList<>();
         try {
             while (rs.next()){
