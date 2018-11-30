@@ -1,25 +1,51 @@
 package com.company.Model;
 
+import com.company.Controller.SQLConnection;
+
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 public class ShoppingCart {
 
-    private ArrayList<Product> currentItems;
+    private HashMap<String, Integer> currentItems;
+    private Store store;
 
-    public ShoppingCart() {
-        currentItems = new ArrayList<>();
+    public ShoppingCart(Store store) {
+        currentItems = new HashMap<>();
+        this.store = store;
     }
 
-    public void addItem(Product item, int number) {
-
+    public void addItem(String item, int number) {
+        currentItems.put(item, number);
     }
 
-    public void removeItem(Product item, int number) {
-
+    public void removeItem(String item, int number) {
+        int newAmt = currentItems.get(item) - number;
+        currentItems.replace(item, newAmt);
     }
 
-    public int getTotal() {
-        return 0;
+    public double getTotal() {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        Connection con = null;
+        double total = 0;
+        Set productSet = currentItems.keySet();
+        String[] productNames = (String[])productSet.toArray();
+
+        try {
+            SQLConnection s = new SQLConnection();
+            con = s.connectToDB("wegmans2");
+            Array products = con.createArrayOf("VARCHAR", productNames);
+            stmt = con.prepareStatement("SELECT SUM(price) FROM Product WHERE name in (?)");
+            stmt.setArray(1, products);
+            rs = stmt.executeQuery();
+            total = rs.getDouble(1);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return total;
     }
 
     public void checkout() {
