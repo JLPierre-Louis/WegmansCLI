@@ -36,6 +36,8 @@ public class Customer extends User {
     }
 
     public void getCartTotal(){
-        System.out.println(shoppingCart.getTotal());
+        double total = shoppingCart.getTotal();
+        String tot = String.format("$%.02f", total);
+        System.out.println(tot);
     }
 }

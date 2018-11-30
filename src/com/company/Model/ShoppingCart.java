@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class ShoppingCart {
 
+    private final String TOTAL_QUERY = "SELECT price FROM Product WHERE name = ?";
     private HashMap<String, Integer> currentItems;
     private Store store;
 
@@ -31,17 +32,20 @@ public class ShoppingCart {
         PreparedStatement stmt = null;
         Connection con = null;
         double total = 0;
-        Set productSet = currentItems.keySet();
-        String[] productNames = (String[])productSet.toArray();
-
+        Set<String> productSet = currentItems.keySet();
+        String[] productNames = productSet.toArray(new String[productSet.size()]);
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
-            Array products = con.createArrayOf("VARCHAR", productNames);
-            stmt = con.prepareStatement("SELECT SUM(price) FROM Product WHERE name in (?)");
-            stmt.setArray(1, products);
-            rs = stmt.executeQuery();
-            total = rs.getDouble(1);
+            SQLConnection sqlCon = new SQLConnection();
+            con = sqlCon.connectToDB("wegmans2");
+            for (int i = 0; i < productNames.length; i++) {
+                double currTotal = 0;
+                stmt = con.prepareStatement(TOTAL_QUERY);
+                stmt.setString(1, productNames[i]);
+                rs = stmt.executeQuery();
+                rs.next();
+                currTotal = rs.getDouble(1);
+                total = total + (currTotal * currentItems.get(productNames[i]));
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
