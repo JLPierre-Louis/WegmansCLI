@@ -1,5 +1,6 @@
 package com.company.View;
 
+import com.company.Model.Admin;
 import com.company.Model.Customer;
 import org.apache.commons.cli.*;
 import com.company.Model.User;
@@ -13,7 +14,8 @@ public class MainPrompt extends Prompt {
     // command options
     private static final String[] HELP_CMD = new String[]{"h", "help", "Show options"};
     private static final String[] QUIT_CMD = new String[]{"q", "quit", "Quit the application"};
-    private static final String[] SHOW_CART_CMD = new String[]{"sc", "show-cart", "Show the current contents of the cart"};
+    private static final String[] SHOW_CART_CMD = new String[]{"c", "show-cart", "Show the current contents of the cart"};
+    private static final String[] UPDATE_PRICE_CMD= new String[]{"u", "update-price", "Show the current contents of the cart"};
     private static final String PARSER_ERROR = "Invalid command. See -h for help.";
 
     private User user;
@@ -73,7 +75,9 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
-            user.queryProductByBrand("ACME");
+            user.queryProductByName("Wild Boar");
+        } else if (hasCmd(line, UPDATE_PRICE_CMD)) {
+            ((Admin) user).updatePriceByUPC("349330324726", 75.00);
         }
     }
 
@@ -85,6 +89,8 @@ public class MainPrompt extends Prompt {
         if(user instanceof Customer) {
             newOptions.addOption(SHOW_CART_CMD[0], SHOW_CART_CMD[1], false, SHOW_CART_CMD[2]);
         } else {
+            newOptions.addOption(SHOW_CART_CMD[0], SHOW_CART_CMD[1], false, SHOW_CART_CMD[2]);
+            newOptions.addOption(UPDATE_PRICE_CMD[0], UPDATE_PRICE_CMD[1], false, UPDATE_PRICE_CMD[2]);
         }
         return newOptions;
     }
