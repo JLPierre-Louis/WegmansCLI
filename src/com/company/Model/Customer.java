@@ -1,18 +1,21 @@
 package com.company.Model;
 
+import java.sql.Connection;
+
 public class Customer extends User {
 
     private String lastname;
     private String firstname;
     private String phone;
     private ShoppingCart shoppingCart;
-    private Store currentStore = new Store("1", "MA", "812 4th Parkway");
+
 
     public Customer(String lastname, String firstname, String phone) {
+        super();
         this.lastname = lastname;
         this.firstname = firstname;
         this.phone = phone;
-        shoppingCart = new ShoppingCart(currentStore);
+        shoppingCart = new ShoppingCart(this.getStore());
     }
 
     public ShoppingCart getShoppingCart() {
