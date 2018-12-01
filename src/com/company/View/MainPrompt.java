@@ -77,7 +77,7 @@ public class MainPrompt extends Prompt {
             System.out.println("Cart invoked");
             user.queryProductByName("Wild Boar");
         } else if (hasCmd(line, UPDATE_PRICE_CMD)) {
-            ((Admin) user).updatePriceByUPC("349330324726", 75.00);
+            ((Admin) user).updatePriceByUPC("349330324726", 65.00);
         }
     }
 

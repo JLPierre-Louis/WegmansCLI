@@ -19,14 +19,21 @@ public abstract class User {
     final String PRODUCT_BY_BRAND_QUERY = "SELECT * FROM Product WHERE brand = ?";
 
     private String username;
+    private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
+
+    User() {
+        try {
+            con = sqlConnection.connectToDB("wegmans2");
+        } catch (SQLException e) {
+            System.out.println("ERROR: Couldn't establish connection to database on User creation.");
+        }
+    }
 
     public void queryStoreByState(String state) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             stmt = con.prepareStatement("SELECT * FROM Store WHERE state = ?");
             stmt.setString(1, state);
             rs = stmt.executeQuery();
@@ -40,8 +47,6 @@ public abstract class User {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             stmt = con.prepareStatement(STORE_BY_ID_QUERY);
             stmt.setString(1, id);
             rs = stmt.executeQuery();
@@ -55,7 +60,6 @@ public abstract class User {
         ResultSet rs = null;
         try {
             SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             PreparedStatement stmt = con.prepareStatement(STORE_BY_PRODUCT_QUERY);
             stmt.setString(1, productName);
             rs = stmt.executeQuery();
@@ -68,8 +72,6 @@ public abstract class User {
     public void queryProductByName(String name) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_NAME_QUERY);
             stmt.setString(1, name);
             rs = stmt.executeQuery();
@@ -82,8 +84,6 @@ public abstract class User {
     public void queryProductByPriceRange(double start, double end) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_RANGE);
             stmt.setDouble(1, start);
             stmt.setDouble(2, end);
@@ -97,8 +97,6 @@ public abstract class User {
     public void queryProductByTypeAndRange(String type, double start, double end) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_AND_TYPE);
             stmt.setDouble(1, start);
             stmt.setDouble(2, end);
@@ -113,8 +111,6 @@ public abstract class User {
     public void queryProductByBrand(String brand) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
-            con = s.connectToDB("wegmans2");
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
             stmt.setString(1, brand);
             rs = stmt.executeQuery();
