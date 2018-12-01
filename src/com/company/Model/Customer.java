@@ -8,6 +8,12 @@ public class Customer extends User {
     private String firstname;
     private String phone;
     private ShoppingCart shoppingCart;
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    private final String PHONE_NUMBER_CHECK = "SELECT phonenumber FROM customer WHERE phonenumber = ?";
+    //When you get the resultSet from this query, and you want to check if the phone is in the database,
+    //you can just return rs.next();
+    //rs.next() returns false if it's an empty table, so that means that phonenumber didn't exist in the DB
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
     public Customer(String lastname, String firstname, String phone) {
@@ -15,7 +21,7 @@ public class Customer extends User {
         this.lastname = lastname;
         this.firstname = firstname;
         this.phone = phone;
-        shoppingCart = new ShoppingCart(this.getStore());
+        shoppingCart = new ShoppingCart(this.getStore(), this.getCon(), this.phone);
     }
 
     public ShoppingCart getShoppingCart() {

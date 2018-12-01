@@ -73,13 +73,17 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
-            Customer c = new Customer("2345", "234543", "234545");
+            Customer c = new Customer("Loney", "Kaylyn", "9305781770");
             Store s = new Store("1", "MA", "812 4th Parkway", 10, 12);
-            Product p = new Product("Grits", "Carboload", "409542246104", 19.14);
             c.setStore(s);
             c.getStore().setCon(c.getCon());
             c.getStore().getInventory();
-            System.out.println("Stock of potato: " + c.getStore().getStock(p));
+            c.addItemToCart("Broom", 1);
+            c.addItemToCart("Ginger", 3);
+            c.addItemToCart("Carrot", 5);
+            c.getShoppingCart().checkout();
+            System.out.println("Checkout successful");
+            System.exit(1);
 
         } else if (hasCmd(line, UPDATE_PRICE_CMD)) {
             ((Admin) user).updatePriceByUPC("349330324726", 65.00);
