@@ -63,9 +63,16 @@ public class LoginPrompt extends Prompt {
 
     private Customer handleCustomer() {
         System.out.print(CUSTOMER_PROMPT);
-        String customer = scanner.nextLine();
+        String customerPhone = scanner.nextLine();
         // TODO: run checks for customer here
-        System.out.println(WELCOME + customer);
-        return new Customer("firstname", "lastname", "phone here");
+        Customer c = new Customer(customerPhone);
+        while (!c.verifyPhoneNumber()){
+            System.out.println("No users under that phone number! Please enter a valid phone number.");
+            customerPhone = scanner.nextLine();
+            c.setPhone(customerPhone);
+        }
+        c.setNames();
+        System.out.println("Welcome, " + c.getFirstname() + " " + c.getLastname() + ".");
+        return c;
     }
 }
