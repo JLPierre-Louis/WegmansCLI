@@ -125,7 +125,7 @@ public class Store {
      * Store objects
      * @param rs the result set to translate
      */
-    public static void returnListOfStores(ResultSet rs){
+    public static ArrayList<Store> returnListOfStores(ResultSet rs){
         ArrayList<Store> stores = new ArrayList<>();
         try {
             while (rs.next()){
@@ -137,7 +137,11 @@ public class Store {
             System.out.println("Error in store translation.");
             e.printStackTrace();
         }
+        return stores;
+    }
 
+    public static void printDatabaseResults(ResultSet rs) {
+        ArrayList<Store> stores = returnListOfStores(rs);
         for (Store s: stores) {
             System.out.println(s);
         }

@@ -33,7 +33,7 @@ public abstract class User {
         this.store = new Store("1", "MA", "812 4th Parkway", 10, 12);
     }
 
-    ////////////////////////////////////
+    ///////////////// GETTERS and SETTERS ///////////////////
 
     public void setStore(Store s){
         this.store = s;
@@ -47,7 +47,7 @@ public abstract class User {
     }
 
 
-    /////////////////////////////////////
+    ////////////////// APPLICATION ///////////////////
 
     public void selectMainStore(Store store){
         store.setCon(this.con);
@@ -76,7 +76,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnListOfStores(rs);
+        Store.printDatabaseResults(rs);
     }
 
     public void queryStoreByProduct(String productName) {
@@ -89,7 +89,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnListOfStores(rs);
+        Store.printDatabaseResults(rs);
     }
 
     public void queryProductByName(String name) {

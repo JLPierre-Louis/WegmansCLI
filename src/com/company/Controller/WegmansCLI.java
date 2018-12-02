@@ -33,10 +33,6 @@ public class WegmansCLI {
         }
     }
 
-    public void setUserStore(User user, Store store) {
-
-    }
-
     public void run() {
         User user = chooseUser();
         String input = null;
