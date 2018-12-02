@@ -22,9 +22,14 @@ public class UserService {
         return currentStore;
     }
 
-    public Object runCurrentPromptDialog() {
+    public Object runCurrentPromptDialog() throws Exception{
         currentPrompt.displayMain();
-        return currentPrompt.handleMain();
+        try {
+            return currentPrompt.handleMain();
+        } catch (Exception e) {
+            System.out.println("inside UserService");
+        }
+        return null;
     }
 
     public void updatePrompt(Prompt newPrompt) {

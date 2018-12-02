@@ -13,6 +13,6 @@ public abstract class Prompt {
 
     public abstract void displayCommands();
 
-    public abstract Object handleMain();
+    public abstract Object handleMain() throws Exception;
 
 }

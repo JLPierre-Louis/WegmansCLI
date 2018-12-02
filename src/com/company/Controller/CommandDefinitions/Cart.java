@@ -1,11 +1,19 @@
 package com.company.Controller.CommandDefinitions;
 
+import com.company.Controller.Wegmans2TheSQL;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.ParentCommand;
 
-@Command(name = "cart", description = "Do cart related commands")
-public class Cart {
+@Command(name = "cart", description = "allows the user to do cart based actions")
+public class Cart implements Runnable {
+
+    @ParentCommand
+    private Wegmans2TheSQL parent;
+
+    @Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help and exit")
+    boolean help;
 
     @Command(name = "show", description = "Show the contents of your cart")
     void show(
@@ -31,5 +39,8 @@ public class Cart {
         // TODO: implement logic for remove
     }
 
-
+    @Override
+    public void run() {
+        System.out.println("here");
+    }
 }

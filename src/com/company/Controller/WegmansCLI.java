@@ -35,11 +35,15 @@ public class WegmansCLI {
     public void run() {
         // handle the user login prompt
         currentPrompt.displayMain();
-        User user = (User)currentPrompt.handleMain();
-        // only handle customer prompt for now
-        currentPrompt = new MainPrompt(user);
-        currentPrompt.displayMain();
-        currentPrompt.handleMain();
+        try {
+            User user = (User)currentPrompt.handleMain();
+            // only handle customer prompt for now
+            currentPrompt = new MainPrompt(user);
+            currentPrompt.displayMain();
+            currentPrompt.handleMain();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
