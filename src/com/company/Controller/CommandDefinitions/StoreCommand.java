@@ -1,19 +1,31 @@
 package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
+import com.company.Model.User;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
 
 @Command(name = "store", description = "allows the user to do store related actions")
-public class Store implements Runnable{
+public class StoreCommand implements Runnable{
 
     @ParentCommand
     private CommandService parent;
 
+    User user;
+
+    public StoreCommand(User user) {
+        this.user = user;
+    }
+
     @Option(names = {"-h", "--help"}, usageHelp = true)
     boolean help;
+
+    @Command(name = "test", description = "used for testing methods before release`")
+    void test(@Option(names = {"-test"}) boolean test) {
+        System.out.println(user);
+    }
 
     @Command(name = "set", description = "set your current store")
     void set(

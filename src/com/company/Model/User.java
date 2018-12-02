@@ -9,6 +9,9 @@ import java.sql.SQLException;
 
 public abstract class User {
 
+    public enum UserType {
+        admin, customer
+    }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
     private final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
     private final String PRODUCT_BY_PRICE_RANGE = "SELECT * FROM Product WHERE price > ? and price < ?";

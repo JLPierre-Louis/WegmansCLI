@@ -1,12 +1,11 @@
 package com.company.Controller;
 
-import com.company.Controller.UserService.UserType;
+import com.company.Controller.CommandDefinitions.*;
 import com.company.Model.Admin;
 import com.company.Model.Customer;
 import com.company.Model.Store;
 import com.company.Model.User;
-import com.company.View.LoginPrompt;
-import com.company.View.Prompt;
+import com.company.Model.User.UserType;
 import java.sql.SQLException;
 import java.util.Scanner;
 import picocli.CommandLine;
@@ -22,11 +21,6 @@ public class WegmansCLI {
     private static final String STORE_WELCOME = "Please pick a store! (for options type -h)";
 
     public SQLConnection dataBase;
-    private Prompt currentPrompt;
-
-    public WegmansCLI() {
-        currentPrompt = new LoginPrompt();
-    }
 
     public void initDatabase() {
         dataBase = new SQLConnection();
@@ -46,24 +40,28 @@ public class WegmansCLI {
         User user = chooseUser();
         String input = null;
         String[] args = null;
+        CommandLine cmdLine = new CommandLine(new CommandService(user))
+            .addSubcommand("cart", new CartCommand(user))
+            .addSubcommand("store", new StoreCommand(user));
 
-        CommandLine cmdLine = new CommandLine(new CommandService());
-
+        // main running loo
         loop : while(true) {
             // Get the next command the user enters
             System.out.print(PROMPT);
             input = scanner.nextLine();
             args = input.split(" ");
 
+            // parse the commands
             try {
                 cmdLine.parse(args);
                 if (cmdLine.isUsageHelpRequested()) {
                     cmdLine.usage(System.out);
-                } else if (cmdLine.getParseResult().hasMatchedOption("q") || cmdLine.getParseResult().hasMatchedOption("quit")) {
+                } else if (cmdLine.getParseResult().hasMatchedOption("q") ||
+                    cmdLine.getParseResult().hasMatchedOption("quit")) {
                     break;
                 }
                 else {
-                    CommandLine.run(new CommandService(), args);
+                    CommandLine.run(new CommandService(user), args);
                 }
 
             } catch (UnmatchedArgumentException e) {
@@ -79,7 +77,7 @@ public class WegmansCLI {
             System.out.print(ACCOUNT_SELECTION_STRING);
             user = scanner.nextLine().toLowerCase();
             try {
-                result = UserService.UserType.valueOf(user);
+                result = UserType.valueOf(user);
                 break;
             } catch (IllegalArgumentException e) {
                 continue;
