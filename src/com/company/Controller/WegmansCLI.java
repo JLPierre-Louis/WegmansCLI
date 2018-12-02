@@ -9,6 +9,7 @@ import com.company.Model.User.UserType;
 import java.sql.SQLException;
 import java.util.Scanner;
 import picocli.CommandLine;
+import picocli.CommandLine.RunAll;
 import picocli.CommandLine.UnmatchedArgumentException;
 
 public class WegmansCLI {
@@ -61,7 +62,7 @@ public class WegmansCLI {
                     break;
                 }
                 else {
-                    CommandLine.run(new CommandService(user), args);
+                    cmdLine.parseWithHandler(new RunAll(), args);
                 }
 
             } catch (UnmatchedArgumentException e) {
