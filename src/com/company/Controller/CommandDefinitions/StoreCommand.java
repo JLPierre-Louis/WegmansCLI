@@ -36,11 +36,18 @@ public class StoreCommand implements Runnable{
     @Command(name = "search", description = "search for active stores")
     void search(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-s", "--state"}, paramLabel = "<state_abbr>") String state,
-        @Option(names = {"-i", "--item-name"}, paramLabel = "<item_name>") String itemName,
-        @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") String[] times)
+        @Option(names = {"-s", "--state"}, defaultValue = "" ,paramLabel = "<state_abbr>") String state,
+        @Option(names = {"-i", "--item-name"}, defaultValue = "", paramLabel = "<item_name>") String itemName,
+        @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") int[] times)
     {
         // TODO: implement search store logic
+        if(!state.isEmpty()) {
+            user.queryStoreByState(state);
+        } else if (!itemName.isEmpty()) {
+            user.queryStoreByProduct(itemName);
+        } else if (times.length > 0) {
+            user.queryStoreByTime(times[0], times[1]);
+        }
     }
 
     /**

@@ -63,6 +63,7 @@ public class WegmansCLI {
 
             } catch (UnmatchedArgumentException e) {
                 System.out.println("Unrecognized Command");
+                e.printStackTrace();
             }
         }
     }

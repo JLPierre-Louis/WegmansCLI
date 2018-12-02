@@ -14,6 +14,7 @@ public abstract class User {
         admin, customer
     }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
+    private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE opentime >= ? AND closetime <= ?";
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
         "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
@@ -149,6 +150,22 @@ public abstract class User {
         }
         Store.printDatabaseResults(rs);
     }
+
+    public void queryStoreByTime(int start, int end) {
+        ResultSet rs = null;
+        try {
+            SQLConnection s = new SQLConnection();
+            PreparedStatement stmt = con.prepareStatement(STORE_BY_TIME_QUERY);
+            stmt.setInt(1, start);
+            stmt.setInt(2, end);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Store.printDatabaseResults(rs);
+    }
+
+    ////////////////////////// Product Related Queries //////////////////
 
     /**
      * Will query the database and print out the product
