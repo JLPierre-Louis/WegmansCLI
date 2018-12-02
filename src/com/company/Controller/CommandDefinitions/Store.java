@@ -2,6 +2,7 @@ package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.Wegmans2TheSQL;
 import java.util.concurrent.Callable;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -13,8 +14,12 @@ public class Store implements Runnable{
     @ParentCommand
     private Wegmans2TheSQL parent;
 
+    @Option(names = {"-h", "--help"}, usageHelp = true)
+    boolean help;
+
     @Command(name = "set", description = "set your current store")
     void set(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Parameters(paramLabel = "<id>") String id
     ) {
         System.out.println(id);
@@ -22,6 +27,7 @@ public class Store implements Runnable{
 
     @Command(name = "search", description = "search for active stores")
     void search(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"-s", "--state"}, paramLabel = "<state_abbr>") String state,
         @Option(names = {"-i", "--item-name"}, paramLabel = "<item_name>") String itemName,
         @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") String[] times
@@ -31,6 +37,5 @@ public class Store implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("here");
     }
 }

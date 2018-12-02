@@ -17,6 +17,7 @@ public class Cart implements Runnable {
 
     @Command(name = "show", description = "Show the contents of your cart")
     void show(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"-p", "--price"}, description = "Show the total price of the items in your cart") Boolean price,
         @Option(names = {"-i", "--items"}, description = "Show the items in your cart") Boolean items
     ) {
@@ -25,6 +26,7 @@ public class Cart implements Runnable {
 
     @Command(name = "add", description = "Add an item to your cart")
     void add(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"--upc"}, paramLabel = "<upc>", description = "Add product by upc code") String upc,
         @Option(names = {"--name"}, paramLabel = "<name>", description = "Add product by name") String name
     ) {
@@ -33,6 +35,7 @@ public class Cart implements Runnable {
 
     @Command(name = "remove", description = "remove an item from your cart")
     void remove(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"--upc"}, paramLabel = "<upc>", description = "Add product by upc code") String upc,
         @Option(names = {"--name"}, paramLabel = "<name>", description = "Add product by name") String name
     ) {

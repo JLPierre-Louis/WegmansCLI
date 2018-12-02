@@ -12,12 +12,6 @@ import picocli.CommandLine.Option;
     subcommands = {HelpCommand.class, Cart.class, Store.class})
 public class Wegmans2TheSQL implements Runnable{
 
-    @Command(name = "explain", helpCommand = true, description = "display this help and exit")
-    void displaySubcommandHelp() {
-        CommandLine.usage(new Cart(), System.out);
-        CommandLine.usage(new Store(), System.out);
-    }
-
     @Override
     public void run() {
     }
