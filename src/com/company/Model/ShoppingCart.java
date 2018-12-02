@@ -117,12 +117,14 @@ public class ShoppingCart {
                 stmt.executeUpdate();
 
             }
-
-
-
-
         } catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public void printCart() {
+        for(String product : currentItems.keySet() ) {
+            System.out.println(product + " : " + currentItems.get(product));
         }
     }
 

@@ -38,9 +38,9 @@ public class StoreCommand implements Runnable{
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"-s", "--state"}, defaultValue = "" ,paramLabel = "<state_abbr>") String state,
         @Option(names = {"-i", "--item-name"}, defaultValue = "", paramLabel = "<item_name>") String itemName,
-        @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") int[] times)
+        @Option(names = {"-t", "--time"}, split = ",", defaultValue = "0000,2400", paramLabel = "<time>", description = "4-digit number representing 24-hr time") int[] times)
     {
-        // TODO: implement search store logic
+        // TODO: add options being exclusive
         if(!state.isEmpty()) {
             user.queryStoreByState(state);
         } else if (!itemName.isEmpty()) {

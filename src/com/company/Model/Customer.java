@@ -86,4 +86,8 @@ public class Customer extends User {
         String tot = String.format("$%.02f", total);
         System.out.println(tot);
     }
+
+    public void printCartItems() {
+        this.getShoppingCart().printCart();
+    }
 }

@@ -1,6 +1,7 @@
 package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
+import com.company.Model.Customer;
 import com.company.Model.User;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -18,21 +19,23 @@ public class CartCommand implements Runnable {
         this.user = user;
     }
 
-    @Command(name = "test", description = "used for testing methods before release`")
-    void test(@Option(names = {"-test"}) boolean test) {
-        System.out.println(user);
-    }
-
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help and exit")
     boolean help;
 
     @Command(name = "show", description = "Show the contents of your cart")
     void show(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-p", "--price"}, description = "Show the total price of the items in your cart") Boolean price,
-        @Option(names = {"-i", "--items"}, description = "Show the items in your cart") Boolean items)
+        @Option(names = {"-p", "--price"}, defaultValue = "false", description = "Show the total price of the items in your cart") Boolean price,
+        @Option(names = {"-i", "--items"}, defaultValue = "false", description = "Show the items in your cart") Boolean items)
     {
-        // TODO: implement logic for show command
+        // TODO: use polymorphism better
+        if(price) {
+            if(user instanceof Customer)
+                ((Customer)user).getCartTotal();
+        } else if (items) {
+            if(user instanceof Customer)
+                ((Customer)user).printCartItems();
+        }
     }
 
     @Command(name = "add", description = "Add an item to your cart")
