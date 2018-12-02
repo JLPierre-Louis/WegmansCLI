@@ -41,7 +41,10 @@ public class MainPrompt extends Prompt {
                 cmdLine.parse(args);
                 if (cmdLine.isUsageHelpRequested()) {
                     cmdLine.usage(System.out);
-                } else {
+                } else if (cmdLine.getParseResult().hasMatchedOption("q") || cmdLine.getParseResult().hasMatchedOption("quit")) {
+                    break;
+                }
+                else {
                     CommandLine.run(new Wegmans2TheSQL(), args);
                 }
 
@@ -50,5 +53,6 @@ public class MainPrompt extends Prompt {
             }
 
         }
+        return null;
     }
 }

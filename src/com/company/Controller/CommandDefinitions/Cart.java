@@ -44,6 +44,5 @@ public class Cart implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("here");
     }
 }
