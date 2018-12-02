@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public abstract class User {
 
@@ -13,12 +14,13 @@ public abstract class User {
         admin, customer
     }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
+    private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
+    private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
+        "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
     private final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
     private final String PRODUCT_BY_PRICE_RANGE = "SELECT * FROM Product WHERE price > ? and price < ?";
     private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT * FROM Product WHERE price > ? and price < ? and type = ?";
     private final String PRODUCT_BY_BRAND_QUERY = "SELECT * FROM Product WHERE brand = ?";
-    private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
-            "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
 
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
@@ -49,23 +51,65 @@ public abstract class User {
 
     ////////////////// APPLICATION ///////////////////
 
-    public void selectMainStore(Store store){
+    /**
+     * This function will set the user's main store to the store given by the
+     * id.
+     *
+     * NOTE: if the user wants to change their store, the must use the changeStore() method
+     * @param storeId  the id of the store
+     */
+    public void selectMainStore(String storeId){
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = con.prepareStatement(STORE_BY_ID_QUERY);
+            stmt.setString(1, storeId);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            System.out.println("SQL ERROR: Couldn't set main store.");
+        }
+
+        // get the store the user wants to set as their main store
+        ArrayList<Store> result = Store.returnListOfStores(rs);
+        assert result.size() == 0;
+        // set the store to the only store in the result list
+        setStore(result.get(0));
+        // set the connection to the store
         store.setCon(this.con);
     }
 
+    /**
+     * This will change the user's current store and wipe the contents of the
+     * shopping cart
+     * @param storeId the id of the store, given as a string
+     */
+    public void changeMainStore(String storeId) {
+        // TODO: implement me
+    }
+
+    /**
+     * This function will query the database to find all the stores
+     * in a given state and print the list to the user
+     * @param state the state abbreviation (i.e MA, WA, OR, NY, CA)
+     */
     public void queryStoreByState(String state) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("SELECT * FROM Store WHERE state = ?");
+            stmt = con.prepareStatement(STORE_BY_STATE_QUERY);
             stmt.setString(1, state);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnListOfStores(rs);
+        Store.printDatabaseResults(rs);
     }
 
+    /**
+     * this will query the database to find a single store
+     * by a given id and print it
+     * @param id the id number of the store as a string
+     */
     public void queryStorebyID(String id) {
         ResultSet rs = null;
         PreparedStatement stmt = null;
@@ -79,6 +123,11 @@ public abstract class User {
         Store.printDatabaseResults(rs);
     }
 
+    /**
+     * Will query the database and print out the
+     * list of stores that carry the specified product
+     * @param productName the name of the proudct
+     */
     public void queryStoreByProduct(String productName) {
         ResultSet rs = null;
         try {
@@ -92,6 +141,11 @@ public abstract class User {
         Store.printDatabaseResults(rs);
     }
 
+    /**
+     * Will query the database and print out the product
+     * with the given name
+     * @param name the name of the product
+     */
     public void queryProductByName(String name) {
         ResultSet rs = null;
         try {
@@ -104,6 +158,12 @@ public abstract class User {
         Product.printDatabaseResults(rs);
     }
 
+    /**
+     * Will query the database and print a list of products
+     * for a given price range
+     * @param start the lower bound of the item as a double
+     * @param end the upper bound of the item as a double
+     */
     public void queryProductByPriceRange(double start, double end) {
         ResultSet rs = null;
         try {
@@ -117,6 +177,13 @@ public abstract class User {
         Product.printDatabaseResults(rs);
     }
 
+    /**
+     * Queries the database and prints all items of a given price range
+     * that are of a certain type (i.e snacks)
+     * @param type
+     * @param start
+     * @param end
+     */
     public void queryProductByTypeAndRange(String type, double start, double end) {
         ResultSet rs = null;
         try {
@@ -131,6 +198,10 @@ public abstract class User {
         Product.printDatabaseResults(rs);
     }
 
+    /**
+     * Queries the database and prints a lists of items for a given brand
+     * @param brand the brand name
+     */
     public void queryProductByBrand(String brand) {
         ResultSet rs = null;
         try {
