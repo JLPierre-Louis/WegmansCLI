@@ -2,32 +2,52 @@ package com.company.Model;
 
 import com.company.Controller.SQLConnection;
 
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public abstract class User {
 
-    final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
-    final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
-    final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
-    final String PRODUCT_BY_PRICE_RANGE = "SELECT * FROM Product WHERE price > ? and price < ?";
-    final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT * FROM Product WHERE price > ? and price < ? and type = ?";
-    final String PRODUCT_BY_BRAND_QUERY = "SELECT * FROM Product WHERE brand = ?";
+    private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
+    private final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
+    private final String PRODUCT_BY_PRICE_RANGE = "SELECT * FROM Product WHERE price > ? and price < ?";
+    private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT * FROM Product WHERE price > ? and price < ? and type = ?";
+    private final String PRODUCT_BY_BRAND_QUERY = "SELECT * FROM Product WHERE brand = ?";
+    private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
+            "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
 
-    private String username;
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
+    Store store;
 
-    User() {
+    public User(){
         try {
-            con = sqlConnection.connectToDB("wegmans2");
-        } catch (SQLException e) {
-            System.out.println("ERROR: Couldn't establish connection to database on User creation.");
+            this.con = sqlConnection.connectToDB("wegmans2");
+        } catch (SQLException e){
+            System.out.println("User could not connect to Wegmans 2: The SQL");
         }
+        this.store = new Store("1", "MA", "812 4th Parkway", 10, 12);
+    }
+
+    ////////////////////////////////////
+
+    public void setStore(Store s){
+        this.store = s;
+        s.setCon(con);
+    }
+    public Connection getCon() {
+        return con;
+    }
+    public Store getStore() {
+        return store;
+    }
+
+
+    /////////////////////////////////////
+
+    public void selectMainStore(Store store){
+        store.setCon(this.con);
     }
 
     public void queryStoreByState(String state) {
@@ -40,7 +60,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnDabaseResults(rs);
+        Store.returnListOfStores(rs);
     }
 
     public void queryStorebyID(String id) {
@@ -53,7 +73,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnDabaseResults(rs);
+        Store.returnListOfStores(rs);
     }
 
     public void queryStoreByProduct(String productName) {
@@ -66,7 +86,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Store.returnDabaseResults(rs);
+        Store.returnListOfStores(rs);
     }
 
     public void queryProductByName(String name) {
@@ -78,7 +98,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Product.returnDatabaseResults(rs);
+        Product.printDatabaseResults(rs);
     }
 
     public void queryProductByPriceRange(double start, double end) {
@@ -91,7 +111,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Product.returnDatabaseResults(rs);
+        Product.printDatabaseResults(rs);
     }
 
     public void queryProductByTypeAndRange(String type, double start, double end) {
@@ -105,7 +125,7 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Product.returnDatabaseResults(rs);
+        Product.printDatabaseResults(rs);
     }
 
     public void queryProductByBrand(String brand) {
@@ -117,6 +137,6 @@ public abstract class User {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        Product.returnDatabaseResults(rs);
+        Product.printDatabaseResults(rs);
     }
 }

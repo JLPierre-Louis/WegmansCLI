@@ -46,20 +46,24 @@ public class Product {
         return "(" + upc + ") " + this.name + " " + this.brand + ": $" + this.price;
     }
 
-    static final void returnDatabaseResults(ResultSet rs) {
+    static final ArrayList<Product> returnDatabaseResults(ResultSet rs){
         ArrayList<Product> products = new ArrayList<>();
         try {
             while (rs.next()){
-                products.add(new Product(rs.getString(NAME), rs.getString(BRAND), rs.getString(UPC), rs.getDouble(PRICE)));
+                products.add(new Product(rs.getString(NAME), rs.getString(BRAND),
+                            rs.getString(UPC), rs.getDouble(PRICE)));
             }
         } catch (SQLException e){
             System.out.println("Error in product translation.");
             e.printStackTrace();
         }
+        return products;
+    }
 
+    static final void printDatabaseResults(ResultSet rs) {
+        ArrayList<Product> products = returnDatabaseResults(rs);
         for(Product product: products) {
             System.out.println(product.toString());
         }
     }
-
 }

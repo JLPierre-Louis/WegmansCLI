@@ -1,9 +1,7 @@
 package com.company.View;
 
-import com.company.Model.Admin;
-import com.company.Model.Customer;
+import com.company.Model.*;
 import org.apache.commons.cli.*;
-import com.company.Model.User;
 
 import java.util.ArrayList;
 
@@ -75,7 +73,16 @@ public class MainPrompt extends Prompt {
     private void parseCommand(CommandLine line) {
         if(hasCmd(line, SHOW_CART_CMD)) {
             System.out.println("Cart invoked");
-            user.queryProductByName("Wild Boar");
+            Customer c = new Customer("9305781770");
+            Store s = new Store("1", "MA", "812 4th Parkway", 10, 12);
+            c.setStore(s);
+            c.getStore().setCon(c.getCon());
+            c.getStore().getInventory();
+            c.addItemToCart("Broom", 1);
+            c.addItemToCart("Ginger", 3);
+            c.addItemToCart("Carrot", 5);
+            c.getShoppingCart().checkout();
+            System.out.println("Checkout successful");
         } else if (hasCmd(line, UPDATE_PRICE_CMD)) {
             ((Admin) user).updatePriceByUPC("349330324726", 65.00);
         }
