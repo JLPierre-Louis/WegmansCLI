@@ -19,11 +19,6 @@ public class CommandService implements Runnable{
     @Option(names = {"-q", "--quit"}, description = "quit the application")
     Boolean quit;
 
-    @Command(name = "test", description = "used for testing methods before release`")
-    void test(@Option(names = {"-test"}) boolean test) {
-        System.out.println(user);
-    }
-
     @Override
     public void run() {
     }

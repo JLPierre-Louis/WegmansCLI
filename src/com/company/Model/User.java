@@ -32,7 +32,8 @@ public abstract class User {
         } catch (SQLException e){
             System.out.println("User could not connect to Wegmans 2: The SQL");
         }
-        this.store = new Store("1", "MA", "812 4th Parkway", 10, 12);
+        // this.store = new Store("1", "MA", "812 4th Parkway", 10, 12);
+        this.store = null;
     }
 
     ///////////////// GETTERS and SETTERS ///////////////////
@@ -50,6 +51,14 @@ public abstract class User {
 
 
     ////////////////// APPLICATION ///////////////////
+
+    public void printCurrentStore(){
+        if (this.store == null) {
+            System.out.println("You currently do not have a store chosen! Use \"store set\" to set your store");
+        } else {
+            System.out.println(this.store.toString());
+        }
+    }
 
     /**
      * This function will set the user's main store to the store given by the

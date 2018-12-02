@@ -22,17 +22,15 @@ public class StoreCommand implements Runnable{
     @Option(names = {"-h", "--help"}, usageHelp = true)
     boolean help;
 
-    @Command(name = "test", description = "used for testing methods before release`")
-    void test(@Option(names = {"-test"}) boolean test) {
-        System.out.println(user);
+    @Command(name = "set", description = "set your current store")
+    void set(@Parameters(paramLabel = "<id>") String id)
+    {
+        user.selectMainStore(id);
     }
 
-    @Command(name = "set", description = "set your current store")
-    void set(
-        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Parameters(paramLabel = "<id>") String id
-    ) {
-        System.out.println(id);
+    @Command(name = "show",  description = "show your current store")
+    void show(@Option(names = {"-h","--help"}, usageHelp = true) boolean help) {
+        user.printCurrentStore();
     }
 
     @Command(name = "search", description = "search for active stores")
@@ -40,11 +38,14 @@ public class StoreCommand implements Runnable{
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"-s", "--state"}, paramLabel = "<state_abbr>") String state,
         @Option(names = {"-i", "--item-name"}, paramLabel = "<item_name>") String itemName,
-        @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") String[] times
-    ) {
+        @Option(names = {"-t", "--time"}, arity = "2" ,paramLabel = "<time>", description = "4-digit number representing 24-hr time") String[] times)
+    {
         // TODO: implement search store logic
     }
 
+    /**
+     * If no command is given, then it will execute this code
+     */
     @Override
     public void run() {
     }
