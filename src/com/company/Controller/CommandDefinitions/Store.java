@@ -1,8 +1,6 @@
 package com.company.Controller.CommandDefinitions;
 
-import com.company.Controller.Wegmans2TheSQL;
-import java.util.concurrent.Callable;
-import picocli.CommandLine;
+import com.company.Controller.CommandService;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -12,7 +10,7 @@ import picocli.CommandLine.ParentCommand;
 public class Store implements Runnable{
 
     @ParentCommand
-    private Wegmans2TheSQL parent;
+    private CommandService parent;
 
     @Option(names = {"-h", "--help"}, usageHelp = true)
     boolean help;

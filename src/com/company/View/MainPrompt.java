@@ -1,6 +1,6 @@
 package com.company.View;
 
-import com.company.Controller.Wegmans2TheSQL;
+import com.company.Controller.CommandService;
 import com.company.Model.User;
 import picocli.CommandLine;
 import picocli.CommandLine.UnmatchedArgumentException;
@@ -29,7 +29,7 @@ public class MainPrompt extends Prompt {
         String input = null;
         String[] args = null;
 
-        CommandLine cmdLine = new CommandLine(new Wegmans2TheSQL());
+        CommandLine cmdLine = new CommandLine(new CommandService());
 
         loop : while(true) {
             // Get the next command the user enters
@@ -45,7 +45,7 @@ public class MainPrompt extends Prompt {
                     break;
                 }
                 else {
-                    CommandLine.run(new Wegmans2TheSQL(), args);
+                    CommandLine.run(new CommandService(), args);
                 }
 
             } catch (UnmatchedArgumentException e) {

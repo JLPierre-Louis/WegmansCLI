@@ -1,8 +1,7 @@
 package com.company.Controller.CommandDefinitions;
 
-import com.company.Controller.Wegmans2TheSQL;
+import com.company.Controller.CommandService;
 import picocli.CommandLine.Option;
-import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.ParentCommand;
 
@@ -10,7 +9,7 @@ import picocli.CommandLine.ParentCommand;
 public class Cart implements Runnable {
 
     @ParentCommand
-    private Wegmans2TheSQL parent;
+    private CommandService parent;
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help and exit")
     boolean help;
