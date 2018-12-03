@@ -94,4 +94,13 @@ public class Customer extends User {
     public void printCartItems() {
         this.getShoppingCart().printCart();
     }
+
+    public void checkout() {
+        if (this.getStore() == null) {
+            System.out.println("No store selected, please select a store before continuing.");
+        } else {
+            this.shoppingCart.checkout();
+            System.out.println("Thank you for your purchase!");
+        }
+    }
 }

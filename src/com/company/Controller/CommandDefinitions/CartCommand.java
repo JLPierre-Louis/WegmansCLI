@@ -72,6 +72,15 @@ public class CartCommand implements Runnable {
         }
     }
 
+    @Command(name = "checkout", description = "finalize your purchase")
+    void checkout(@Option(names = {"-h","--help"}, usageHelp = true) boolean help)
+    {
+        if(user instanceof Customer) {
+            Customer customer = ((Customer) user);
+            customer.checkout();
+        }
+    }
+
     @Override
     public void run() {
     }

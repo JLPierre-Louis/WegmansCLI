@@ -40,7 +40,8 @@ public class WegmansCLI {
         String[] args = null;
         CommandLine cmdLine = new CommandLine(new CommandService(user))
             .addSubcommand("cart", new CartCommand(user))
-            .addSubcommand("store", new StoreCommand(user));
+            .addSubcommand("store", new StoreCommand(user))
+            .addSubcommand("browse", new BrowseCommand(user));
 
         // main running loo
         loop : while(true) {

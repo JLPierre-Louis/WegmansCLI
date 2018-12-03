@@ -16,8 +16,9 @@ public class CommandService implements Runnable{
         this.user = user;
     }
 
+    // TODO fix quitting
     @Command(name = "quit", description = "quit the application")
-    void quit() {
+    void quit(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help) {
         System.out.println("Thank you for using Wegmans2 CLI");
         System.exit(0);
     }
