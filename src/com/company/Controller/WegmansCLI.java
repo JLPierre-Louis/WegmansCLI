@@ -62,8 +62,7 @@ public class WegmansCLI {
                 }
 
             } catch (UnmatchedArgumentException e) {
-                System.out.println("Unrecognized Command");
-                e.printStackTrace();
+                System.out.println("Unrecognized Command. Use `help` for help.");
             }
         }
     }

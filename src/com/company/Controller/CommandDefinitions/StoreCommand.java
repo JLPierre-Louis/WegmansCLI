@@ -55,5 +55,6 @@ public class StoreCommand implements Runnable{
      */
     @Override
     public void run() {
+        System.out.println("Use `store [<subcommand>] -h` for help");
     }
 }

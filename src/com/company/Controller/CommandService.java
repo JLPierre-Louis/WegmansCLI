@@ -16,10 +16,13 @@ public class CommandService implements Runnable{
         this.user = user;
     }
 
-    @Option(names = {"-q", "--quit"}, description = "quit the application")
-    Boolean quit;
+    @Command(name = "quit", description = "quit the application")
+    void quit() {
+        System.exit(0);
+    }
 
     @Override
     public void run() {
+        System.out.println("Use `help` for commands, `<subcommand> -h` for subcommands");
     }
 }
