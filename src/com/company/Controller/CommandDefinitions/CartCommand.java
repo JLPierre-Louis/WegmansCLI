@@ -5,6 +5,7 @@ import com.company.Model.Customer;
 import com.company.Model.User;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
 
 @Command(name = "cart", description = "allows the user to do cart based actions")
@@ -44,16 +45,12 @@ public class CartCommand implements Runnable {
     @Command(name = "add", description = "Add an item to your cart")
     void add(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Option(names = {"--upc"}, paramLabel = "<upc>", defaultValue = "", description = "Add product by upc code") String upc,
-        @Option(names = {"--name"}, paramLabel = "<name>", defaultValue = "", description = "Add product by name") String name,
-        @Option(names = {"--count"}, required = true, paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
+        @Parameters(paramLabel = "ITEM_NAME", description = "Add product by name") String name,
+        @Parameters(paramLabel = "COUNT", defaultValue = "1", description = "Number of items to add") int count)
     {
         if(user instanceof Customer) {
             Customer customer = ((Customer) user);
-            if(!upc.isEmpty()) {
-                //TODO: implement after demo
-                System.out.println("Not implemented yet");
-            } else if(!name.isEmpty()) {
+            if(!name.isEmpty()) {
                 customer.addItemToCart(name, count);
             }
             System.out.println(count + " " + name + "(s) added to your cart.");
@@ -63,10 +60,16 @@ public class CartCommand implements Runnable {
     @Command(name = "remove", description = "remove an item from your cart")
     void remove(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Option(names = {"--upc"}, paramLabel = "<upc>", description = "Add product by upc code") String upc,
-        @Option(names = {"--name"}, paramLabel = "<name>", description = "Add product by name") String name)
+        @Parameters(paramLabel = "ITEM_NAME", description = "Add product by name") String name,
+        @Parameters(paramLabel = "COUNT", defaultValue = "1", description = "Number of items to add") int count)
     {
-        // TODO: implement logic for remove
+        if(user instanceof Customer) {
+            Customer customer = ((Customer) user);
+            if(!name.isEmpty()) {
+                customer.removeItemFromCart(name, count);
+            }
+            System.out.println(count + " " + name + "(s) removed from your cart.");
+        }
     }
 
     @Override

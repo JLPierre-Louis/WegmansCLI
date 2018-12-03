@@ -77,8 +77,12 @@ public class Customer extends User {
         return phone;
     }
 
-    public void addItemToCart(String item, int number) {
-        shoppingCart.addItem(item, number);
+    public void addItemToCart(String itemName, int number) {
+        shoppingCart.addItem(itemName, number);
+    }
+
+    public void removeItemFromCart(String itemName, int number) {
+        shoppingCart.removeItem(itemName, number);
     }
 
     public void getCartTotal(){
