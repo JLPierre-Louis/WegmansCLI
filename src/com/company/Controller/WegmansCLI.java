@@ -19,7 +19,7 @@ public class WegmansCLI {
     private static final String CUSTOMER_PROMPT = "Enter customer phone number: ";
     private static final String WELCOME = "Welcome! ";
     private static final String PROMPT = "> ";
-    private static final String STORE_WELCOME = "Please pick a store! (for options type -h)";
+    private static final String START_BANNER = "=================\nWegmans2 CLI APP\n=================";
 
     public SQLConnection dataBase;
 
@@ -34,6 +34,7 @@ public class WegmansCLI {
     }
 
     public void run() {
+        System.out.println(START_BANNER);
         User user = chooseUser();
         String input = null;
         String[] args = null;
@@ -53,14 +54,9 @@ public class WegmansCLI {
                 cmdLine.parse(args);
                 if (cmdLine.isUsageHelpRequested()) {
                     cmdLine.usage(System.out);
-                } else if (cmdLine.getParseResult().hasMatchedOption("q") ||
-                    cmdLine.getParseResult().hasMatchedOption("quit")) {
-                    break;
-                }
-                else {
+                } else {
                     cmdLine.parseWithHandler(new RunAll(), args);
                 }
-
             } catch (UnmatchedArgumentException e) {
                 System.out.println("Unrecognized Command. Use `help` for help.");
             }
@@ -91,7 +87,6 @@ public class WegmansCLI {
                 break;
         }
         return userObject;
-
     }
 
     private Admin handleAdmin() {

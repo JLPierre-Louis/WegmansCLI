@@ -18,11 +18,11 @@ public class CommandService implements Runnable{
 
     @Command(name = "quit", description = "quit the application")
     void quit() {
+        System.out.println("Thank you for using Wegmans2 CLI");
         System.exit(0);
     }
 
     @Override
     public void run() {
-        System.out.println("Use `help` for commands, `<subcommand> -h` for subcommands");
     }
 }
