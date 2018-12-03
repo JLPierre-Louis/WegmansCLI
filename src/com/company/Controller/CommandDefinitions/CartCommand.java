@@ -74,6 +74,5 @@ public class CartCommand implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Use `cart [<subcommand>] -h` for hep");
     }
 }

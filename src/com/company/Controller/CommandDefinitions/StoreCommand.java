@@ -23,7 +23,9 @@ public class StoreCommand implements Runnable{
     boolean help;
 
     @Command(name = "set", description = "set your current store")
-    void set(@Parameters(paramLabel = "<id>") String id)
+    void set(
+        @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
+        @Parameters(paramLabel = "<id>") String id)
     {
         user.selectMainStore(id);
     }
@@ -55,6 +57,5 @@ public class StoreCommand implements Runnable{
      */
     @Override
     public void run() {
-        System.out.println("Use `store [<subcommand>] -h` for help");
     }
 }
