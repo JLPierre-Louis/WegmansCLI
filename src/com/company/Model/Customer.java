@@ -65,6 +65,16 @@ public class Customer extends User {
         return shoppingCart;
     }
 
+    public void setShoppingCartStore(Store s){
+        shoppingCart.setStore(s);
+    }
+
+    public void verifyCart(){
+        if(this.shoppingCart.getStore() == null){
+            shoppingCart.setStore(this.getStore());
+        }
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -77,8 +87,10 @@ public class Customer extends User {
         return phone;
     }
 
-    public void addItemToCart(String itemName, int number) {
-        shoppingCart.addItem(itemName, number);
+    public boolean addItemToCart(String itemName, int number) {
+        verifyCart();
+        Product p = createProductFromName(itemName);
+        return shoppingCart.addItem(p, number);
     }
 
     public void removeItemFromCart(String itemName, int number) {

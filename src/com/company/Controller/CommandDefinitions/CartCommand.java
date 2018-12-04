@@ -51,9 +51,12 @@ public class CartCommand implements Runnable {
         if(user instanceof Customer) {
             Customer customer = ((Customer) user);
             if(!name.isEmpty()) {
-                customer.addItemToCart(name, count);
+                if(customer.addItemToCart(name, count)){
+                    System.out.println(count + " " + name + "(s) added to your cart.");
+                }else{
+                    System.out.println("Item not added to cart.");
+                }
             }
-            System.out.println(count + " " + name + "(s) added to your cart.");
         }
     }
 

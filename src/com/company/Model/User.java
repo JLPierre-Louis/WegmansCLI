@@ -14,6 +14,7 @@ public abstract class User {
         admin, customer
     }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
+    private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
     private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE openTime >= ? AND closeTime <= ?";
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
@@ -172,6 +173,23 @@ public abstract class User {
     }
 
     ////////////////////////// Product Related Queries //////////////////
+
+    public Product createProductFromName(String name){
+        try{
+            PreparedStatement stmt = getCon().prepareStatement(GET_PRODUCT_FROM_NAME);
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return new Product(name, rs.getString(2), rs.getString(1), rs.getDouble(6));
+            }else{
+                System.out.println("That product does not exist!");
+                return null;
+            }
+        } catch (SQLException e){
+            System.out.println("Error in createProductFromName");
+            return null;
+        }
+    }
 
     /**
      * Will query the database and print out the product

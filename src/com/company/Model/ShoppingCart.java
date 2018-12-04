@@ -32,12 +32,37 @@ public class ShoppingCart {
         this.con = con;
     }
 
-    public void addItem(String item, int number) {
-        if (currentItems.containsKey(item)){
-            int newAmt = currentItems.get(item) + number;
-            currentItems.replace(item, newAmt);
-        }else{
-            currentItems.put(item, number);
+    public Store getStore(){
+        return this.store;
+    }
+
+    public void setStore(Store s){
+        this.store = s;
+    }
+
+    public boolean addItem(Product p, int number) {
+        if (store.isInStock(p)) {
+            if (currentItems.containsKey(p.getName())) {
+                int newAmt = currentItems.get(p.getName()) + number;
+                if (newAmt > store.getStock(p)) {
+                    System.out.println("Not enough stock to add " + number + "to cart!");
+                    return false;
+                } else {
+                    currentItems.replace(p.getName(), newAmt);
+                    return true;
+                }
+            } else {
+                if (number > store.getStock(p)) {
+                    System.out.println("Not enough stock to add " + number + "to cart!");
+                    return false;
+                } else {
+                    currentItems.put(p.getName(), number);
+                    return true;
+                }
+            }
+        } else {
+            System.out.println("Product not in stock at this store!");
+            return false;
         }
     }
 
