@@ -33,7 +33,12 @@ public class ShoppingCart {
     }
 
     public void addItem(String item, int number) {
-        currentItems.put(item, number);
+        if (currentItems.containsKey(item)){
+            int newAmt = currentItems.get(item) + number;
+            currentItems.replace(item, newAmt);
+        }else{
+            currentItems.put(item, number);
+        }
     }
 
     public void removeItem(String item, int number) {
