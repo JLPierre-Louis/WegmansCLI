@@ -43,7 +43,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "(" + upc + ") " + this.name + " " + this.brand + ": $" + this.price;
+        return "(" + upc + ") " + this.name + " by " + this.brand + ": $" + this.price;
     }
 
     static final ArrayList<Product> returnDatabaseResults(ResultSet rs){

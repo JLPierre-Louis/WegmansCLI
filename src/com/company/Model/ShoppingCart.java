@@ -17,7 +17,7 @@ public class ShoppingCart {
     private final String GET_CURR_STOCK = "SELECT soldby.numberinstock " +
             "FROM soldby JOIN product ON product.upc = soldby.productid " +
             "WHERE product.name = ? AND soldby.storeid = ?";
-    private final String UPDATE_STOCK = "UPDATE soldBy SET numberinstock = ? WHERE productid = ?";
+    private final String UPDATE_STOCK = "UPDATE soldBy SET numberinstock = ? WHERE productid = ? AND storeid = ?";
 
 
     private HashMap<String, Integer> currentItems;
@@ -114,6 +114,7 @@ public class ShoppingCart {
                 stmt = con.prepareStatement(UPDATE_STOCK);
                 stmt.setInt(1, numInStock);
                 stmt.setString(2, currUPC);
+                stmt.setString(3, store.getId());
                 stmt.executeUpdate();
 
             }
