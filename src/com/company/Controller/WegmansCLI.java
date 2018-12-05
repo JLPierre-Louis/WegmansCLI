@@ -106,7 +106,6 @@ public class WegmansCLI {
         System.out.print(CUSTOMER_PROMPT);
         String customerPhone = scanner.nextLine();
         Customer c = new Customer(customerPhone);
-        /*
         while (!c.verifyPhoneNumber()){
             System.out.println("No users under that phone number! Please enter a valid phone number.");
             customerPhone = scanner.nextLine();
@@ -114,7 +113,6 @@ public class WegmansCLI {
         }
         c.setNames();
         System.out.println("Welcome, " + c.getFirstname() + " " + c.getLastname() + ".");
-        */
         return c;
     }
 }
