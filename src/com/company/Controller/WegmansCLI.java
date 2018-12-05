@@ -3,14 +3,13 @@ package com.company.Controller;
 import com.company.Controller.CommandDefinitions.*;
 import com.company.Model.Admin;
 import com.company.Model.Customer;
-import com.company.Model.Store;
 import com.company.Model.User;
 import com.company.Model.User.UserType;
 import java.sql.SQLException;
 import java.util.Scanner;
-import picocli.CommandLine;
 import picocli.CommandLine.RunAll;
 import picocli.CommandLine.UnmatchedArgumentException;
+import org.apache.tools.ant.types.Commandline;
 
 public class WegmansCLI {
     private static Scanner scanner = new Scanner(System.in);
@@ -38,7 +37,7 @@ public class WegmansCLI {
         User user = chooseUser();
         String input = null;
         String[] args = null;
-        CommandLine cmdLine = new CommandLine(new CommandService(user))
+        picocli.CommandLine cmdLine = new picocli.CommandLine(new CommandService(user))
             .addSubcommand("cart", new CartCommand(user))
             .addSubcommand("store", new StoreCommand(user))
             .addSubcommand("browse", new BrowseCommand(user));
@@ -48,7 +47,10 @@ public class WegmansCLI {
             // Get the next command the user enters
             System.out.print(PROMPT);
             input = scanner.nextLine();
-            args = input.split(" ");
+            args = Commandline.translateCommandline(input);
+            for(String arg : args) {
+                System.out.println(arg);
+            }
 
             // parse the commands
             try {
@@ -100,8 +102,8 @@ public class WegmansCLI {
     private Customer handleCustomer() {
         System.out.print(CUSTOMER_PROMPT);
         String customerPhone = scanner.nextLine();
-        // TODO: run checks for customer here
         Customer c = new Customer(customerPhone);
+        /*
         while (!c.verifyPhoneNumber()){
             System.out.println("No users under that phone number! Please enter a valid phone number.");
             customerPhone = scanner.nextLine();
@@ -109,7 +111,7 @@ public class WegmansCLI {
         }
         c.setNames();
         System.out.println("Welcome, " + c.getFirstname() + " " + c.getLastname() + ".");
+        */
         return c;
     }
-
 }
