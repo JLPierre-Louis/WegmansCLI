@@ -7,6 +7,8 @@ import com.company.Model.User;
 import com.company.Model.User.UserType;
 import java.sql.SQLException;
 import java.util.Scanner;
+import picocli.CommandLine.MissingParameterException;
+import picocli.CommandLine.Model.ArgSpec;
 import picocli.CommandLine.RunAll;
 import picocli.CommandLine.UnmatchedArgumentException;
 import org.apache.tools.ant.types.Commandline;
@@ -48,9 +50,6 @@ public class WegmansCLI {
             System.out.print(PROMPT);
             input = scanner.nextLine();
             args = Commandline.translateCommandline(input);
-            for(String arg : args) {
-                System.out.println(arg);
-            }
 
             // parse the commands
             try {
@@ -62,6 +61,10 @@ public class WegmansCLI {
                 }
             } catch (UnmatchedArgumentException e) {
                 System.out.println("Unrecognized Command. Use `help` for help.");
+            } catch (MissingParameterException e) {
+                for(ArgSpec s : e.getMissing()) {
+                    System.out.println("Missing following parameters: " + s.paramLabel());
+                }
             }
         }
     }

@@ -45,8 +45,8 @@ public class CartCommand implements Runnable {
     @Command(name = "add", description = "Add an item to your cart")
     void add(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Parameters(paramLabel = "ITEM_NAME", description = "Add product by name") String name,
-        @Parameters(paramLabel = "COUNT", defaultValue = "1", description = "Number of items to add") int count)
+        @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
+        @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
         if(user instanceof Customer) {
             Customer customer = ((Customer) user);
@@ -60,8 +60,8 @@ public class CartCommand implements Runnable {
     @Command(name = "remove", description = "remove an item from your cart")
     void remove(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Parameters(paramLabel = "ITEM_NAME", description = "Add product by name") String name,
-        @Parameters(paramLabel = "COUNT", defaultValue = "1", description = "Number of items to add") int count)
+        @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
+        @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
         if(user instanceof Customer) {
             Customer customer = ((Customer) user);
