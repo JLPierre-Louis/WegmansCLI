@@ -23,12 +23,15 @@ public class Admin extends User {
     private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliverydate = ?, fulfilledBy = (SELECT " +
             "distributedBy.vendor FROM distributedBy JOIN Product ON distributedBy.brand = product.brand " +
             "WHERE product.upc = ?) WHERE ordernumber = ?";
+    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeid = ? AND productid = ?";
     private String username;
 
     public Admin(String username){
         super();
         this.username = username;
     }
+
+
 
     public void requestReorder(Store store, Product item, int quantity) {
         try {
@@ -106,6 +109,8 @@ public class Admin extends User {
         }
     }
 
+
+
     public void updatePriceByName(String name, double price) {
         try {
             PreparedStatement stmt = getCon().prepareStatement(UPDATE_PRICE_BY_NAME_QUERY);
@@ -117,6 +122,10 @@ public class Admin extends User {
         }
     }
 
+    public void removeProductFromStore(String name){
+        Product p = createProductFromName(name);
+
+    }
     public ArrayList<String> viewAllVendorNames() {
         return null;
     }
