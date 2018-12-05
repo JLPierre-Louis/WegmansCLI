@@ -91,6 +91,7 @@ public abstract class User {
         assert result.size() == 0;
         // set the store to the only store in the result list
         setStore(result.get(0));
+
         // set the connection to the store
         store.setCon(this.con);
     }

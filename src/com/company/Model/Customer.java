@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Customer extends User {
 
@@ -14,6 +15,7 @@ public class Customer extends User {
     private final int PHONE = 1;
     private final int FIRST = 1;
     private final int LAST = 2;
+    private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
     private final String PHONE_NUMBER_CHECK = "SELECT phonenumber FROM customer WHERE phonenumber = ?";
     private final String GET_NAME_BY_PHONE = "SELECT firstname, lastname FROM customer WHERE phonenumber = ?";
 
@@ -26,7 +28,30 @@ public class Customer extends User {
         shoppingCart = new ShoppingCart(this.getStore(), this.getCon(), this.phone);
     }
 
-    public boolean verifyPhoneNumber(){
+    @Override
+    public void selectMainStore(String storeId) {
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
+        try {
+            stmt = this.getCon().prepareStatement(STORE_BY_ID_QUERY);
+            stmt.setString(1, storeId);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            System.out.println("SQL ERROR: Couldn't set main store.");
+        }
+
+        // get the store the user wants to set as their main store
+        ArrayList<Store> result = Store.returnListOfStores(rs);
+        assert result.size() == 0;
+        // set the store to the only store in the result list
+        setStore(result.get(0));
+
+        // set the connection to the store
+        store.setCon(this.getCon());
+        this.shoppingCart = new ShoppingCart(this.getStore(), this.getCon(), this.phone);
+    }
+
+        public boolean verifyPhoneNumber(){
         PreparedStatement stmt;
         ResultSet rs;
         try {
