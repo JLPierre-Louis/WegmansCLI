@@ -14,14 +14,21 @@ public abstract class User {
         admin, customer
     }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
-    private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE opentime >= ? AND closetime <= ?";
+    private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
+    private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE openTime >= ? AND closeTime <= ?";
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
-        "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
-    private final String PRODUCT_BY_NAME_QUERY = "SELECT * FROM Product WHERE name = ?";
-    private final String PRODUCT_BY_PRICE_RANGE = "SELECT * FROM Product WHERE price > ? and price < ?";
-    private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT * FROM Product WHERE price > ? and price < ? and type = ?";
-    private final String PRODUCT_BY_BRAND_QUERY = "SELECT * FROM Product WHERE brand = ?";
+            "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
+    private final String PRODUCT_BY_NAME_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND name = ? ORDER BY product.name ASC";
+    private final String PRODUCT_BY_PRICE_RANGE = "SELECT product.* FROM Product JOIN soldBy ON " +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY" +
+            "product.name ASC";
+    private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
+            " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND " +
+            "type = ? ORDER BY product.name ASC";
+    private final String PRODUCT_BY_BRAND_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?";
 
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
@@ -167,6 +174,23 @@ public abstract class User {
 
     ////////////////////////// Product Related Queries //////////////////
 
+    public Product createProductFromName(String name){
+        try{
+            PreparedStatement stmt = getCon().prepareStatement(GET_PRODUCT_FROM_NAME);
+            stmt.setString(1, name);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return new Product(name, rs.getString(2), rs.getString(1), rs.getDouble(6));
+            }else{
+                System.out.println("That product does not exist!");
+                return null;
+            }
+        } catch (SQLException e){
+            System.out.println("Error in createProductFromName");
+            return null;
+        }
+    }
+
     /**
      * Will query the database and print out the product
      * with the given name
@@ -176,7 +200,8 @@ public abstract class User {
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_NAME_QUERY);
-            stmt.setString(1, name);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, name);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -194,8 +219,9 @@ public abstract class User {
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_RANGE);
-            stmt.setDouble(1, start);
-            stmt.setDouble(2, end);
+            stmt.setString(1, store.getId());
+            stmt.setDouble(2, start);
+            stmt.setDouble(3, end);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -214,9 +240,10 @@ public abstract class User {
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_AND_TYPE);
-            stmt.setDouble(1, start);
-            stmt.setDouble(2, end);
-            stmt.setString(3, type);
+            stmt.setString(1, store.getId());
+            stmt.setDouble(2, start);
+            stmt.setDouble(3, end);
+            stmt.setString(4, type);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
@@ -232,7 +259,8 @@ public abstract class User {
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
-            stmt.setString(1, brand);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, brand);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();

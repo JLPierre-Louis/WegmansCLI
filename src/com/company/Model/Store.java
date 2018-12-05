@@ -107,6 +107,9 @@ public class Store {
         ResultSet rs;
         PreparedStatement stmt;
         boolean inStock = false;
+        if(item == null){
+            return inStock;
+        }
         try {
             stmt = con.prepareStatement(GET_STOCK);
             stmt.setString(1, this.id);

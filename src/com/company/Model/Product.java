@@ -43,16 +43,19 @@ public class Product {
 
     @Override
     public String toString() {
-        return "(" + upc + ") " + this.name + " " + this.brand + ": $" + this.price;
+        return "(" + upc + ") " + this.name + " by " + this.brand + ": $" + this.price;
     }
 
     static final ArrayList<Product> returnDatabaseResults(ResultSet rs){
         ArrayList<Product> products = new ArrayList<>();
         try {
-            while (rs.next()){
-                products.add(new Product(rs.getString(NAME), rs.getString(BRAND),
+            if (!rs.next()) {
+                return null;
+            } else {
+                do {
+                    products.add(new Product(rs.getString(NAME), rs.getString(BRAND),
                             rs.getString(UPC), rs.getDouble(PRICE)));
-            }
+            }while (rs.next()); }
         } catch (SQLException e){
             System.out.println("Error in product translation.");
             e.printStackTrace();
@@ -62,8 +65,13 @@ public class Product {
 
     static final void printDatabaseResults(ResultSet rs) {
         ArrayList<Product> products = returnDatabaseResults(rs);
-        for(Product product: products) {
-            System.out.println(product.toString());
+        if (products != null){
+            for(Product product: products) {
+                System.out.println(product.toString());
+            }
+        }else{
+            System.out.println("No products found under specified parameters!");
         }
+
     }
 }

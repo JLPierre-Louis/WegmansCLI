@@ -17,7 +17,7 @@ public class ShoppingCart {
     private final String GET_CURR_STOCK = "SELECT soldby.numberinstock " +
             "FROM soldby JOIN product ON product.upc = soldby.productid " +
             "WHERE product.name = ? AND soldby.storeid = ?";
-    private final String UPDATE_STOCK = "UPDATE soldBy SET numberinstock = ? WHERE productid = ?";
+    private final String UPDATE_STOCK = "UPDATE soldBy SET numberinstock = ? WHERE productid = ? AND storeid = ?";
 
 
     private HashMap<String, Integer> currentItems;
@@ -32,8 +32,38 @@ public class ShoppingCart {
         this.con = con;
     }
 
-    public void addItem(String item, int number) {
-        currentItems.put(item, number);
+    public Store getStore(){
+        return this.store;
+    }
+
+    public void setStore(Store s){
+        this.store = s;
+    }
+
+    public boolean addItem(Product p, int number) {
+        if (store.isInStock(p)) {
+            if (currentItems.containsKey(p.getName())) {
+                int newAmt = currentItems.get(p.getName()) + number;
+                if (newAmt > store.getStock(p)) {
+                    System.out.println("Not enough stock to add " + number + "to cart!");
+                    return false;
+                } else {
+                    currentItems.replace(p.getName(), newAmt);
+                    return true;
+                }
+            } else {
+                if (number > store.getStock(p)) {
+                    System.out.println("Not enough stock to add " + number + "to cart!");
+                    return false;
+                } else {
+                    currentItems.put(p.getName(), number);
+                    return true;
+                }
+            }
+        } else {
+            System.out.println("Product not in stock at this store!");
+            return false;
+        }
     }
 
     public void removeItem(String item, int number) {
@@ -114,6 +144,7 @@ public class ShoppingCart {
                 stmt = con.prepareStatement(UPDATE_STOCK);
                 stmt.setInt(1, numInStock);
                 stmt.setString(2, currUPC);
+                stmt.setString(3, store.getId());
                 stmt.executeUpdate();
 
             }
