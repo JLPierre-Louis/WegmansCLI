@@ -30,6 +30,9 @@ public abstract class User {
             "type = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_BRAND_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?";
+    private final String PRODUCT_BY_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
+        " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC";
+
 
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
@@ -262,6 +265,23 @@ public abstract class User {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
             stmt.setString(1, store.getId());
             stmt.setString(2, brand);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    /**
+     * Queries the database and prints a lists of items for a given type
+     * @param type the type name
+     */
+    public void queryProductByType(String type) {
+        ResultSet rs = null;
+        try {
+            PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_TYPE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, type);
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();

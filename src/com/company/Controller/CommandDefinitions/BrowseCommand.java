@@ -33,8 +33,19 @@ public class BrowseCommand implements Runnable{
     public void run() {
         if (!name.isEmpty()) {
             user.queryProductByName(name);
-        } else if (prices.length > 0) {
+            return;
+        }
 
+        if (prices.length > 0) {
+            if(!type.isEmpty())
+                user.queryProductByTypeAndRange(type, prices[0], prices[1]);
+            else
+                user.queryProductByPriceRange(prices[0], prices[1]);
+            return;
+        }
+
+        if (!type.isEmpty()){
+            user.queryProductByType(type);
         }
     }
 }
