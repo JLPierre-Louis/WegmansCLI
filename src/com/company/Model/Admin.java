@@ -35,7 +35,11 @@ public class Admin extends User {
     private final String GET_STORE_INVENTORY = "SELECT product.name, product.upc, soldBy.numberInStock FROM " +
             "product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
-            "                                      VALUES (?, ?, ?, ?)";
+            "VALUES (?, ?, ?, ?)";
+    private final String GET_CUSTOMER_MVP = "SELECT orders.customer, customer.firstname, customer.lastname, " +
+            "SUM(orders.numbersold * product.price) FROM orders JOIN product ON product.upc = orders.product" +
+            " JOIN customer ON orders.customer = customer.phonenumber GROUP BY orders.customer, " +
+            "customer.firstname, customer.lastname ORDER BY sum DESC";
 
 
     private String username;
@@ -281,6 +285,23 @@ public class Admin extends User {
             }
         } catch (SQLException e){
             System.out.println("Error retrieving brand names");
+            e.printStackTrace();
+        }
+    }
+
+    public void getCustomerMVP(){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_CUSTOMER_MVP);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String phone = rs.getString(1);
+            String first = rs.getString(2);
+            String last = rs.getString(3);
+            Double sold = rs.getDouble(4);
+            System.out.println("Customer " + phone + ", " + first + " " + last + " is the most valuable " +
+                    "customer, with a total purchase amount of $" + sold + ". Good job!" );
+        } catch (SQLException e){
+            System.out.println("Error retrieving customer MVP");
             e.printStackTrace();
         }
     }

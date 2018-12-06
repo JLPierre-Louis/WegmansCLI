@@ -31,7 +31,9 @@ public abstract class User {
             "type = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_BRAND_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?";
-
+    private final String GET_STORE_TOTAL_SALES_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
+            "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
+            "store.id = orders.store GROUP BY orders.store, store.address ORDER BY sum";
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
     Store store;
@@ -176,6 +178,31 @@ public abstract class User {
         }
         Store.printDatabaseResults(rs);
     }
+
+
+    public void getBestAndWorstStoreSales(boolean DESC){
+        try{
+            PreparedStatement stmt;
+            if(DESC){
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_ASC + " DESC");
+            }else{
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_ASC);
+            }
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String storeID = rs.getString(1);
+            String address = rs.getString(2);
+            if(DESC){
+                System.out.println("The top selling store is store number " + storeID + ", at " + address + ".");
+            }else{
+                System.out.println("The worst selling store is store number " + storeID + ", at " + address + ".");
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting store sales.");
+            e.printStackTrace();
+        }
+    }
+
 
     ////////////////////////// Product Related Queries //////////////////
 

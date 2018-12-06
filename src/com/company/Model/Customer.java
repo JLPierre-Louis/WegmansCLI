@@ -18,10 +18,20 @@ public class Customer extends User {
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
     private final String PHONE_NUMBER_CHECK = "SELECT phonenumber FROM customer WHERE phonenumber = ?";
     private final String GET_NAME_BY_PHONE = "SELECT firstname, lastname FROM customer WHERE phonenumber = ?";
-    private final String MOST_SOLD_PRODUCT = " SELECT product, SUM(numbersold) FROM orders GROUP BY " +
+    private final String GET_PRODUCT_RANKING_ASC = " SELECT product, SUM(numbersold) FROM orders GROUP BY " +
+            "product ORDER BY sum";
+    private final String GET_PRODUCT_RANKING_BY_STORE_ASC = "SELECT product, SUM(numbersold) FROM orders " +
+            "WHERE store = ? GROUP BY product ORDER BY sum";
+
+
+    //probably redundant
+    private final String GET_PRODUCT_SALES_RANKING_BY_STORE_ASC = "SELECT product, SUM(orders.numbersold * " +
+            "product.price) FROM orders JOIN product ON product.upc = orders.product WHERE store = ? " +
+            "GROUP BY product ORDER BY sum DESC";
+    private final String GET_PRODUCT_SALES_RANKING_ASC = "SELECT product, SUM(orders.numbersold * " +
+            "product.price) FROM orders JOIN product ON product.upc = orders.product GROUP BY " +
             "product ORDER BY sum DESC";
-    private final String MOST_SOLD_PRODUCT_BY_STORE = "SELECT product, SUM(numbersold) FROM orders " +
-            "WHERE store = ? GROUP BY product ORDER BY sum DESC";
+    //
 
 
     public Customer(String phone) {
@@ -122,13 +132,23 @@ public class Customer extends User {
         return shoppingCart.addItem(p, number);
     }
 
-    public void mostPopularItems(){
+
+    public void getItemsRanked(boolean DESC){
         try{
-            PreparedStatement stmt = this.getCon().prepareStatement(MOST_SOLD_PRODUCT);
+            PreparedStatement stmt;
+            if (DESC){
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_ASC + " DESC");
+            }else{
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_ASC);
+            }
             ResultSet rs = stmt.executeQuery();
             rs.next();
             String productUPC;
-            System.out.println("The 3 most popular items are:");
+            if (DESC){
+                System.out.println("The 3 most popular items are:");
+            } else {
+                System.out.println("The 3 least popular items are:");
+            }
             for(int i = 0; i < 3; i++){
                 productUPC = rs.getString(1);
                 Product p = createProductFromName(productUPC);
@@ -140,6 +160,73 @@ public class Customer extends User {
             e.printStackTrace();
         }
     }
+
+    public void getItemsByStoreRanked(boolean DESC){
+        try{
+            PreparedStatement stmt;
+            if(DESC){
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC + " DESC");
+            }else{
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC);
+            }
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String productUPC;
+            if(DESC){
+                System.out.println("The 3 most popular items at this store:");
+            }else{
+                System.out.println("The 3 least popular items at this store:");
+            }
+            for(int i = 0; i < 3; i++){
+                productUPC = rs.getString(1);
+                Product p = createProductFromName(productUPC);
+                System.out.println(p.getName());
+                rs.next();
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting popular items.");
+            e.printStackTrace();
+        }
+    }
+
+    /*
+
+    // I wrote this and then realized I think it's kind of redundant because of the ranking by total amount sold.
+    // I'll probably delete these later.
+
+    public void getTotalItemSales(boolean DESC){
+        try{
+            PreparedStatement stmt;
+            if(DESC){
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC + " DESC");
+            }else{
+                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC);
+            }
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String productUPC;
+            if(DESC){
+                System.out.println("The 3 best-selling items are:");
+            }else{
+                System.out.println("The 3 worst-selling items are:");
+            }
+            for(int i = 0; i < 3; i++){
+                productUPC = rs.getString(1);
+                Product p = createProductFromName(productUPC);
+                System.out.println(p.getName());
+                rs.next();
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting popular items.");
+            e.printStackTrace();
+        }
+    }
+
+    */
+
+
 
     public void removeItemFromCart(String itemName, int number) {
         shoppingCart.removeItem(itemName, number);
