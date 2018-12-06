@@ -69,6 +69,11 @@ public abstract class User {
 
     ////////////////// APPLICATION ///////////////////
 
+    private boolean hasStore() {
+        if (store != null) return true;
+        System.out.println("Please use \"store set <id>\" before browsing.");
+        return false;
+    }
 
 
     public void printCurrentStore(){
@@ -312,6 +317,34 @@ public abstract class User {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
             stmt.setString(1, store.getId());
             stmt.setString(2, brand);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    public void queryProductByType(String type) {
+        if (!hasStore()) return;
+        ResultSet rs = null;
+        try {
+            PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_TYPE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, type);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    public void queryAllProducts() {
+        if (!hasStore()) return;
+        ResultSet rs = null;
+        System.out.println("in query function");
+        try {
+            PreparedStatement stmt = con.prepareStatement(ALL_PRODUCTS_IN_STORE);
+            stmt.setString(1, store.getId());
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();
