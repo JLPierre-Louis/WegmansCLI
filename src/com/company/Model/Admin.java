@@ -11,24 +11,45 @@ import java.util.Random;
 public class Admin extends User {
 
     private final String UPDATE_PRICE_BY_UPC_QUERY = "UPDATE Product SET price = ? WHERE upc = ?";
-    private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = ?";
-    private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
-            "                                      VALUES (?, ?, ?, ?)";
-    private final String ORDER_NUMBERS = "SELECT ordernumber FROM Reorder";
-    private final String GET_UNFULFILLED_ORDERS = "SELECT ordernumber, product, store, stockRequested FROM Reorder" +
+    private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = i?";
+    private final String ORDER_NUMBERS = "SELECT orderNumber FROM Reorder";
+    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
+    private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
+    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phone = ?";
+    private final String REMOVE_STORE = "DELETE FROM store WHERE storeID = ?";
+    private final String CREATE_CUSTOMER = "INSERT INTO customer VALUES (?, ?, ?)";
+    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phone = ?";
+    private final String GET_UNFULFILLED_ORDERS = "SELECT orderNumber, product, store, stockRequested FROM Reorder" +
             " WHERE deliveryDate IS NULL";
-    private final String UPDATE_STOCK = "UPDATE soldby SET numberinstock = ((SELECT stockrequested FROM " +
+    private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = ((SELECT stockRequested FROM " +
             "reorder WHERE store = ? AND product = ?) + (SELECT numberInStock FROM soldBy WHERE storeId = ? AND " +
             "productId = ?)) WHERE storeId = ? AND productId = ?";
-    private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliverydate = ?, fulfilledBy = (SELECT " +
+    private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliveryDate = ?, fulfilledBy = (SELECT " +
             "distributedBy.vendor FROM distributedBy JOIN Product ON distributedBy.brand = product.brand " +
-            "WHERE product.upc = ?) WHERE ordernumber = ?";
+            "WHERE product.upc = ?) WHERE orderNumber = ?";
+    private final String GET_BRANDS_FROM_STORE = "SELECT DISTINCT Product.brand FROM product JOIN soldBy ON " +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY Product.brand ASC";
+    private final String GET_VENDOR_FROM_STORE = "SELECT DISTINCT distributedBy.vendor FROM product JOIN soldBy " +
+            "ON soldBy.productId = product.upc JOIN distributedBy ON product.brand = distributedBy.brand WHERE " +
+            "soldBy.storeId = ? ORDER BY distributedBy.vendor";
+    private final String GET_STORE_INVENTORY = "SELECT product.name, product.upc, soldBy.numberInStock FROM " +
+            "product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC";
+    private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
+            "VALUES (?, ?, ?, ?)";
+    private final String GET_CUSTOMER_MVP = "SELECT orders.customer, customer.firstname, customer.lastname, " +
+            "SUM(orders.numbersold * product.price) FROM orders JOIN product ON product.upc = orders.product" +
+            " JOIN customer ON orders.customer = customer.phonenumber GROUP BY orders.customer, " +
+            "customer.firstname, customer.lastname ORDER BY sum DESC";
+
+
     private String username;
 
     public Admin(String username){
         super();
         this.username = username;
     }
+
+
 
     public void requestReorder(Store store, Product item, int quantity) {
         try {
@@ -101,10 +122,13 @@ public class Admin extends User {
             stmt.setDouble(1, price);
             stmt.setString(2, upc);
             int rs = stmt.executeUpdate();
+            System.out.println(String.format("%s now costs $%f.", upc, price));
         } catch (SQLException e){
             System.out.println("Error: updatingPrice for upc: " + upc);
         }
     }
+
+
 
     public void updatePriceByName(String name, double price) {
         try {
@@ -112,17 +136,174 @@ public class Admin extends User {
             stmt.setDouble(1, price);
             stmt.setString(2, name);
             int rs = stmt.executeUpdate();
+            System.out.println(String.format("%s now costs $%f.", name, price));
         } catch (SQLException e){
+            System.out.println("Error: updatingPrice for " + name);
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String> viewAllVendorNames() {
-        return null;
+    public void removeProductFromStorebyName(String name){
+        Product p = createProductFromName(name);
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, p.getUpc());
+            stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " no longer carries " + name);
+        } catch (SQLException e){
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
     }
 
-    public ArrayList<String> viewAllBrandNames() {
-        return null;
+    public void removeProductFromStoreByUPC(String upc){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, upc);
+            stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " no longer carries " + upc);
+        } catch (SQLException e){
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addProductToStoreByName(String name){
+        Product p = createProductFromName(name);
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, p.getUpc());
+            stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " now carries " + name);
+        } catch (SQLException e){
+            System.out.println("Error while adding product to store.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addProductFromStoreByUPC(String upc) {
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, upc);
+            stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " now carries " + upc);
+        } catch (SQLException e) {
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
+    }
+
+    public void removeCustomer(String phone){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_CUSTOMER);
+            stmt.setString(1, phone);
+            stmt.executeUpdate();
+            System.out.println("Customer " + phone + " removed from database.");
+        } catch (SQLException e){
+            System.out.println("Error removing customer from database");
+            e.printStackTrace();
+        }
+    }
+
+    public void dropStore(String storeID){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_STORE);
+            stmt.setString(1, storeID);
+            stmt.executeUpdate();
+            System.out.println("Store " + storeID + " removed from database.");
+        } catch (SQLException e){
+            System.out.println("Error removing customer from database");
+            e.printStackTrace();
+        }
+    }
+
+    public void addCustomer(String phone, String firstName, String lastName){
+        try {
+            PreparedStatement stmt =this.getCon().prepareStatement(CHECK_CUSTOMER);
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                System.out.println("Phone number already exists!");
+            } else {
+                stmt = this.getCon().prepareStatement(CREATE_CUSTOMER);
+                stmt.setString(1, phone);
+                stmt.setString(2, firstName);
+                stmt.setString(3, lastName);
+                stmt.executeUpdate();
+                System.out.println("Customer " + firstName + " " + lastName + " successfully added to database.");
+            }
+        } catch (SQLException e){
+            e.getErrorCode();
+        }
+    }
+
+    public void getStoreInventory(){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_STORE_INVENTORY);
+            stmt.setString(1, getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("-------------------------------------------------");
+            System.out.println(String.format("| %-20s | %-12s | %-7s |", "Product Name", "UPC", "Stock"));
+            System.out.println("-------------------------------------------------");
+            while(rs.next()){
+                System.out.println(String.format("| %-20s | %-12s | %-7d |",
+                        rs.getString(1), rs.getString(2), rs.getInt(3)));
+            }
+            System.out.println("-------------------------------------------------");
+        } catch (SQLException e){
+            System.out.println("Error getting store inventory.");
+        }
+    }
+
+    public void viewAllVendorNames() {
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_VENDOR_FROM_STORE);
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("List of all vendors that supply to this store:");
+            while (rs.next()){
+                System.out.println(rs.getString(1));
+            }
+        } catch (SQLException e){
+            System.out.println("Error retrieving vendor names");
+            e.printStackTrace();
+        }
+    }
+
+    public void viewAllBrandNames() {
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_BRANDS_FROM_STORE);
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("List of all brands carried by this store:");
+            while (rs.next()){
+                System.out.println(rs.getString(1));
+            }
+        } catch (SQLException e){
+            System.out.println("Error retrieving brand names");
+            e.printStackTrace();
+        }
+    }
+
+    public void getCustomerMVP(){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_CUSTOMER_MVP);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String phone = rs.getString(1);
+            String first = rs.getString(2);
+            String last = rs.getString(3);
+            Double sold = rs.getDouble(4);
+            System.out.println("Customer " + phone + ", " + first + " " + last + " is the most valuable " +
+                    "customer, with a total purchase amount of $" + sold + ". Good job!" );
+        } catch (SQLException e){
+            System.out.println("Error retrieving customer MVP");
+            e.printStackTrace();
+        }
     }
 
 

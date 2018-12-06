@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.Controller.WegmansCLI;
+import com.company.Model.Admin;
 
 public class Main {
 

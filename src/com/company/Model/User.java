@@ -14,14 +14,16 @@ public abstract class User {
         admin, customer
     }
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
-    private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
     private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE openTime >= ? AND closeTime <= ?";
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
+    private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
+    private final String GET_PRODUCTS_FROM_STORE = "SELECT product.* FROM product JOIN soldBy ON " +
+            "soldBy.productid = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
             "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
 
     private final String PRODUCT_BY_NAME_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
-            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND name = ? ORDER BY product.name ASC";
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.name = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_PRICE_RANGE = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY " +
             "product.name ASC";
@@ -32,10 +34,11 @@ public abstract class User {
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?";
     private final String PRODUCT_BY_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
         " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC";
-
     private final String ALL_PRODUCTS_IN_STORE = "SELECT product.* FROM Product JOIN soldBy ON" +
         " soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
-
+    private final String GET_STORE_TOTAL_SALES_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
+            "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
+            "store.id = orders.store GROUP BY orders.store, store.address ORDER BY sum";
 
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
@@ -72,6 +75,8 @@ public abstract class User {
         return false;
     }
 
+
+
     public void printCurrentStore(){
         if (this.store == null) {
             System.out.println("You currently do not have a store chosen! Use \"store set\" to set your store");
@@ -103,6 +108,7 @@ public abstract class User {
         assert result.size() == 0;
         // set the store to the only store in the result list
         setStore(result.get(0));
+
         // set the connection to the store
         store.setCon(this.con);
     }
@@ -184,7 +190,33 @@ public abstract class User {
         Store.printDatabaseResults(rs);
     }
 
+
+    public void getBestAndWorstStoreSales(boolean DESC){
+        try{
+            PreparedStatement stmt;
+            if(DESC){
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_ASC + " DESC");
+            }else{
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_ASC);
+            }
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String storeID = rs.getString(1);
+            String address = rs.getString(2);
+            if(DESC){
+                System.out.println("The top selling store is store number " + storeID + ", at " + address + ".");
+            }else{
+                System.out.println("The worst selling store is store number " + storeID + ", at " + address + ".");
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting store sales.");
+            e.printStackTrace();
+        }
+    }
+
+
     ////////////////////////// Product Related Queries //////////////////
+
 
     public Product createProductFromName(String name){
         try{
@@ -202,6 +234,19 @@ public abstract class User {
             return null;
         }
     }
+
+    public void printProductsInStore(Store s){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_PRODUCTS_FROM_STORE);
+            stmt.setString(1, s.getId());
+            ResultSet rs = stmt.executeQuery();
+            Product.printDatabaseResults(rs);
+        } catch (SQLException e){
+            System.out.println("Error getting products from store");
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Will query the database and print out the product

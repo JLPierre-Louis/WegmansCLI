@@ -43,7 +43,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "(" + upc + ") " + this.name + " by " + this.brand + ": $" + this.price;
+        return (String.format("| %-21s | %-12s | %-21s | %-7.2f |", getName(), getUpc(), getBrand(), getPrice()));
     }
 
     static final ArrayList<Product> returnDatabaseResults(ResultSet rs){
@@ -66,9 +66,13 @@ public class Product {
     static final void printDatabaseResults(ResultSet rs) {
         ArrayList<Product> products = returnDatabaseResults(rs);
         if (products != null){
+            System.out.println("--------------------------------------------------------------------------");
+            System.out.println(String.format("| %-21s | %-12s | %-21s | %-7s |", "Name", "UPC", "Brand", "Price"));
             for(Product product: products) {
+                System.out.println("|------------------------------------------------------------------------|");
                 System.out.println(product.toString());
             }
+            System.out.println("--------------------------------------------------------------------------");
         }else{
             System.out.println("No products found under specified parameters!");
         }

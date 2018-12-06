@@ -11,13 +11,14 @@ import java.util.Set;
 public class ShoppingCart {
 
     private final String TOTAL_QUERY = "SELECT price FROM Product WHERE name = ?";
-    private final String ORDER_NUMBERS = "SELECT ordernumber FROM orders";
+    private final String ORDER_NUMBERS = "SELECT orderNumber FROM orders";
     private final String ADD_ORDER = "INSERT INTO orders VALUES (?, ?, ?, ?, ?)";
     private final String GET_UPC_FROM_NAME = "SELECT upc FROM product WHERE name = ?";
-    private final String GET_CURR_STOCK = "SELECT soldby.numberinstock " +
-            "FROM soldby JOIN product ON product.upc = soldby.productid " +
-            "WHERE product.name = ? AND soldby.storeid = ?";
-    private final String UPDATE_STOCK = "UPDATE soldBy SET numberinstock = ? WHERE productid = ? AND storeid = ?";
+    private final String GET_CURR_STOCK = "SELECT soldBy.numberInStock " +
+            "FROM soldBy JOIN product ON product.upc = soldBy.productId " +
+            "WHERE product.name = ? AND soldBy.storeId = ?";
+    private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = (SELECT (numberInStock - ?) FROM soldBy " +
+            "WHERE storeId = ? AND productId = ?) WHERE storeId = ? AND productId = ?";
 
 
     private HashMap<String, Integer> currentItems;
@@ -133,18 +134,12 @@ public class ShoppingCart {
                 stmt.setInt(5, currentItems.get(productNames[i]));
                 stmt.executeUpdate();
 
-                stmt = con.prepareStatement(GET_CURR_STOCK);
-                stmt.setString(1, productNames[i]);
-                stmt.setString(2, store.getId());
-                rs = stmt.executeQuery();
-                rs.next();
-                numInStock = rs.getInt(1);
-                numInStock = numInStock - currentItems.get(productNames[i]);
-
                 stmt = con.prepareStatement(UPDATE_STOCK);
-                stmt.setInt(1, numInStock);
-                stmt.setString(2, currUPC);
-                stmt.setString(3, store.getId());
+                stmt.setInt(1, currentItems.get(productNames[i]));
+                stmt.setString(2, store.getId());
+                stmt.setString(3, currUPC);
+                stmt.setString(4, store.getId());
+                stmt.setString(5, currUPC);
                 stmt.executeUpdate();
 
             }
