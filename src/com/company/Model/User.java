@@ -31,6 +31,11 @@ public abstract class User {
             "type = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_BRAND_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?";
+    private final String PRODUCT_BY_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
+            " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC";
+
+    private final String ALL_PRODUCTS_IN_STORE = "SELECT product.* FROM Product JOIN soldBy ON" +
+            " soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String GET_STORE_TOTAL_SALES_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
             "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
             "store.id = orders.store GROUP BY orders.store, store.address ORDER BY sum";
