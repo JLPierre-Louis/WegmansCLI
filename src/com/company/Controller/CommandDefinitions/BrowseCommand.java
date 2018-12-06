@@ -2,6 +2,7 @@ package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
 import com.company.Model.User;
+import java.util.Map;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParentCommand;
@@ -20,11 +21,14 @@ public class BrowseCommand implements Runnable{
     @Option(names = {"-n", "--name"}, defaultValue = "", description = "search a product by name")
     String name;
 
-    @Option(names = {"-r", "--price-range"}, split = ",", defaultValue = "0,1000", paramLabel = "<start,end>", description = "4-digit number representing 24-hr time")
-    double[] prices;
+    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "4-digit number representing 24-hr time")
+    Map<Double, Double> priceRanges;
 
     @Option(names = {"-t", "--type"}, defaultValue = "", description = "the type of product you want to search for")
     String type;
+
+    @Option(names = {"-b", "--brand"}, defaultValue = "",  description = "query by brand name")
+    String brand;
 
     /**
      * Note these can be run by all users
@@ -36,16 +40,26 @@ public class BrowseCommand implements Runnable{
             return;
         }
 
-        if (prices.length > 0) {
-            if(!type.isEmpty())
-                user.queryProductByTypeAndRange(type, prices[0], prices[1]);
-            else
-                user.queryProductByPriceRange(prices[0], prices[1]);
+        if (priceRanges.size() > 0) {
+            for(Double start : priceRanges.keySet()) {
+                double end = priceRanges.get(start);
+                System.out.println(String.format("====== Price Range [%.2f - %.2f] ======",start, end));
+                if(!type.isEmpty())
+                    user.queryProductByTypeAndRange(type, start, end);
+                else
+                    user.queryProductByPriceRange(start, end);
+                System.out.println("=======================================\n");
+            }
             return;
         }
 
         if (!type.isEmpty()){
             user.queryProductByType(type);
+            return;
+        }
+
+        if (!brand.isEmpty()) {
+            user.queryProductByBrand(brand);
         }
     }
 }

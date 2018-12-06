@@ -63,6 +63,11 @@ public abstract class User {
 
 
     ////////////////// APPLICATION ///////////////////
+    private boolean hasStore() {
+        if (store != null) return true;
+        System.out.println("Please use \"store set <id>\" before browsing.");
+        return false;
+    }
 
     public void printCurrentStore(){
         if (this.store == null) {
@@ -201,6 +206,7 @@ public abstract class User {
      * @param name the name of the product
      */
     public void queryProductByName(String name) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_NAME_QUERY);
@@ -220,6 +226,7 @@ public abstract class User {
      * @param end the upper bound of the item as a double
      */
     public void queryProductByPriceRange(double start, double end) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_RANGE);
@@ -241,6 +248,7 @@ public abstract class User {
      * @param end
      */
     public void queryProductByTypeAndRange(String type, double start, double end) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_AND_TYPE);
@@ -260,6 +268,7 @@ public abstract class User {
      * @param brand the brand name
      */
     public void queryProductByBrand(String brand) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
@@ -277,6 +286,7 @@ public abstract class User {
      * @param type the type name
      */
     public void queryProductByType(String type) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_TYPE);
