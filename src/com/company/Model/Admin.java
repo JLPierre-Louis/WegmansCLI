@@ -14,16 +14,18 @@ public class Admin extends User {
     private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = ?";
     private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
             "                                      VALUES (?, ?, ?, ?)";
-    private final String ORDER_NUMBERS = "SELECT ordernumber FROM Reorder";
-    private final String GET_UNFULFILLED_ORDERS = "SELECT ordernumber, product, store, stockRequested FROM Reorder" +
+    private final String ORDER_NUMBERS = "SELECT orderNumber FROM Reorder";
+    private final String GET_UNFULFILLED_ORDERS = "SELECT orderNumber, product, store, stockRequested FROM Reorder" +
             " WHERE deliveryDate IS NULL";
-    private final String UPDATE_STOCK = "UPDATE soldby SET numberinstock = ((SELECT stockrequested FROM " +
+    private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = ((SELECT stockRequested FROM " +
             "reorder WHERE store = ? AND product = ?) + (SELECT numberInStock FROM soldBy WHERE storeId = ? AND " +
             "productId = ?)) WHERE storeId = ? AND productId = ?";
-    private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliverydate = ?, fulfilledBy = (SELECT " +
+    private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliveryDate = ?, fulfilledBy = (SELECT " +
             "distributedBy.vendor FROM distributedBy JOIN Product ON distributedBy.brand = product.brand " +
-            "WHERE product.upc = ?) WHERE ordernumber = ?";
-    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeid = ? AND productid = ?";
+            "WHERE product.upc = ?) WHERE orderNumber = ?";
+    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
+    private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
+
     private String username;
 
     public Admin(String username){
@@ -122,10 +124,58 @@ public class Admin extends User {
         }
     }
 
-    public void removeProductFromStore(String name){
+    public void removeProductFromStorebyName(String name){
         Product p = createProductFromName(name);
-
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, p.getUpc());
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
     }
+
+    public void removeProductFromStoreByUPC(String upc){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, upc);
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addProductToStoreByName(String name){
+        Product p = createProductFromName(name);
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, p.getUpc());
+            stmt.executeUpdate();
+        } catch (SQLException e){
+            System.out.println("Error while adding product to store.");
+            e.printStackTrace();
+        }
+    }
+
+    public void addProductFromStoreByUPC(String upc) {
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, upc);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while removing product from store.");
+            e.printStackTrace();
+        }
+    }
+
+    //just added these methods
+
     public ArrayList<String> viewAllVendorNames() {
         return null;
     }
