@@ -21,7 +21,7 @@ public class BrowseCommand implements Runnable{
     @Option(names = {"-n", "--name"}, defaultValue = "", description = "search a product by name")
     String name;
 
-    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "4-digit number representing 24-hr time")
+    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "A double representing 24-hr time")
     Map<Double, Double> priceRanges;
 
     @Option(names = {"-t", "--type"}, defaultValue = "", description = "the type of product you want to search for")
