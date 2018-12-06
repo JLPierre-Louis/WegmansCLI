@@ -20,7 +20,11 @@ public class BrowseCommand implements Runnable{
     @Option(names = {"-n", "--name"}, defaultValue = "", description = "search a product by name")
     String name;
 
-    //TODO: implement the rest of the commands
+    @Option(names = {"-r", "--price-range"}, split = ",", defaultValue = "0,1000", paramLabel = "<start,end>", description = "4-digit number representing 24-hr time")
+    double[] prices;
+
+    @Option(names = {"-t", "--type"}, defaultValue = "", description = "the type of product you want to search for")
+    String type;
 
     /**
      * Note these can be run by all users
@@ -29,6 +33,8 @@ public class BrowseCommand implements Runnable{
     public void run() {
         if (!name.isEmpty()) {
             user.queryProductByName(name);
+        } else if (prices.length > 0) {
+
         }
     }
 }

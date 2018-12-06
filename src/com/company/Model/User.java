@@ -19,10 +19,11 @@ public abstract class User {
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
             "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
+
     private final String PRODUCT_BY_NAME_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND name = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_PRICE_RANGE = "SELECT product.* FROM Product JOIN soldBy ON " +
-            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY" +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY " +
             "product.name ASC";
     private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
             " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND " +
