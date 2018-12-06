@@ -16,6 +16,7 @@ public class Store {
     private final String SELECT_INVENTORY = "SELECT productId FROM soldBy WHERE storeid = ?";
     private final String GET_STOCK = "SELECT numberInStock FROM soldBy where storeid = ? AND productid = ?";
 
+
     private String id;
     private String state;
     private String address;
@@ -54,6 +55,7 @@ public class Store {
         // select from store join soldby where store.id = this.id
         return inventory;
     }
+
     public void setCon(Connection con){
         this.con = con;
     }
@@ -149,6 +151,8 @@ public class Store {
             System.out.println(s);
         }
     }
+
+
 
     @Override
     public String toString() {

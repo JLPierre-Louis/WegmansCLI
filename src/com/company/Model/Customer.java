@@ -18,6 +18,10 @@ public class Customer extends User {
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
     private final String PHONE_NUMBER_CHECK = "SELECT phonenumber FROM customer WHERE phonenumber = ?";
     private final String GET_NAME_BY_PHONE = "SELECT firstname, lastname FROM customer WHERE phonenumber = ?";
+    private final String MOST_SOLD_PRODUCT = " SELECT product, SUM(numbersold) FROM orders GROUP BY " +
+            "product ORDER BY sum DESC";
+    private final String MOST_SOLD_PRODUCT_BY_STORE = "SELECT product, SUM(numbersold) FROM orders " +
+            "WHERE store = ? GROUP BY product ORDER BY sum DESC";
 
 
     public Customer(String phone) {
@@ -116,6 +120,25 @@ public class Customer extends User {
         verifyCart();
         Product p = createProductFromName(itemName);
         return shoppingCart.addItem(p, number);
+    }
+
+    public void mostPopularItems(){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(MOST_SOLD_PRODUCT);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String productUPC;
+            System.out.println("The 3 most popular items are:");
+            for(int i = 0; i < 3; i++){
+                productUPC = rs.getString(1);
+                Product p = createProductFromName(productUPC);
+                System.out.println(p.getName());
+                rs.next();
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting popular items.");
+            e.printStackTrace();
+        }
     }
 
     public void removeItemFromCart(String itemName, int number) {

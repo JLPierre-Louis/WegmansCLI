@@ -17,7 +17,6 @@ public class ShoppingCart {
     private final String GET_CURR_STOCK = "SELECT soldBy.numberInStock " +
             "FROM soldBy JOIN product ON product.upc = soldBy.productId " +
             "WHERE product.name = ? AND soldBy.storeId = ?";
-    private final String UPDATE_STOCK_OLD = "UPDATE soldBy SET numberInStock = ? WHERE productId = ? AND storeId = ?";
     private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = (SELECT (numberInStock - ?) FROM soldBy " +
             "WHERE storeId = ? AND productId = ?) WHERE storeId = ? AND productId = ?";
 
@@ -134,14 +133,6 @@ public class ShoppingCart {
                 stmt.setString(4, store.getId());
                 stmt.setInt(5, currentItems.get(productNames[i]));
                 stmt.executeUpdate();
-
-//                stmt = con.prepareStatement(GET_CURR_STOCK);
-//                stmt.setString(1, productNames[i]);
-//                stmt.setString(2, store.getId());
-//                rs = stmt.executeQuery();
-//                rs.next();
-//                numInStock = rs.getInt(1);
-//                numInStock = numInStock - currentItems.get(productNames[i]);
 
                 stmt = con.prepareStatement(UPDATE_STOCK);
                 stmt.setInt(1, currentItems.get(productNames[i]));
