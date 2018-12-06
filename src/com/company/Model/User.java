@@ -33,6 +33,9 @@ public abstract class User {
     private final String PRODUCT_BY_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
         " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC";
 
+    private final String ALL_PRODUCTS_IN_STORE = "SELECT product.* FROM Product JOIN soldBy ON" +
+        " soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
+
 
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
@@ -292,6 +295,20 @@ public abstract class User {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_TYPE);
             stmt.setString(1, store.getId());
             stmt.setString(2, type);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    public void queryAllProducts() {
+        if (!hasStore()) return;
+        ResultSet rs = null;
+        System.out.println("in query function");
+        try {
+            PreparedStatement stmt = con.prepareStatement(ALL_PRODUCTS_IN_STORE);
+            stmt.setString(1, store.getId());
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();

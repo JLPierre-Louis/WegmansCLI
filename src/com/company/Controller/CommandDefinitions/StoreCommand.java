@@ -3,6 +3,7 @@ package com.company.Controller.CommandDefinitions;
 import com.company.Controller.CommandService;
 import com.company.Model.User;
 import java.util.Map;
+import java.util.regex.Pattern;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -28,7 +29,11 @@ public class StoreCommand implements Runnable{
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Parameters(paramLabel = "<id>") String id)
     {
-        user.selectMainStore(id);
+        if (id.matches("\\d+"))
+            user.selectMainStore(id);
+        else {
+            System.out.println("<id> must be integer.");
+        }
     }
 
     @Command(name = "show",  description = "show your current store")
