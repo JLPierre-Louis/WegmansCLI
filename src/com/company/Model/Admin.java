@@ -11,7 +11,9 @@ import java.util.Random;
 public class Admin extends User {
 
     private final String UPDATE_PRICE_BY_UPC_QUERY = "UPDATE Product SET price = ? WHERE upc = ?";
-    private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = ?";
+    private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = i?";
+    private final String GET_STORE_INVENTORY = "SELECT product.name, product.upc, soldBy.numberInStock FROM " +
+            "product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
             "                                      VALUES (?, ?, ?, ?)";
     private final String ORDER_NUMBERS = "SELECT orderNumber FROM Reorder";
@@ -226,6 +228,24 @@ public class Admin extends User {
             }
         } catch (SQLException e){
             e.getErrorCode();
+        }
+    }
+
+    public void getStoreInventory(){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_STORE_INVENTORY);
+            stmt.setString(1, getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("-------------------------------------------------");
+            System.out.println(String.format("| %-20s | %-12s | %-7s |", "Product Name", "UPC", "Stock"));
+            System.out.println("-------------------------------------------------");
+            while(rs.next()){
+                System.out.println(String.format("| %-20s | %-12s | %-7d |",
+                        rs.getString(1), rs.getString(2), rs.getInt(3)));
+            }
+            System.out.println("-------------------------------------------------");
+        } catch (SQLException e){
+            System.out.println("Error getting store inventory.");
         }
     }
 
