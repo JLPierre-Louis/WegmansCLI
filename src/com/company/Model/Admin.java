@@ -25,6 +25,10 @@ public class Admin extends User {
             "WHERE product.upc = ?) WHERE orderNumber = ?";
     private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
     private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
+    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phone = ?";
+    private final String REMOVE_STORE = "DELETE FROM store WHERE storeID = ?";
+    private final String CREATE_CUSTOMER = "INSERT INTO customer VALUES (?, ?, ?)";
+    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phone = ?";
 
     private String username;
 
@@ -106,6 +110,7 @@ public class Admin extends User {
             stmt.setDouble(1, price);
             stmt.setString(2, upc);
             int rs = stmt.executeUpdate();
+            System.out.println(String.format("%s now costs $%f.", upc, price));
         } catch (SQLException e){
             System.out.println("Error: updatingPrice for upc: " + upc);
         }
@@ -119,7 +124,9 @@ public class Admin extends User {
             stmt.setDouble(1, price);
             stmt.setString(2, name);
             int rs = stmt.executeUpdate();
+            System.out.println(String.format("%s now costs $%f.", name, price));
         } catch (SQLException e){
+            System.out.println("Error: updatingPrice for " + name);
             e.printStackTrace();
         }
     }
@@ -131,6 +138,7 @@ public class Admin extends User {
             stmt.setString(1, store.getId());
             stmt.setString(2, p.getUpc());
             stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " no longer carries " + name);
         } catch (SQLException e){
             System.out.println("Error while removing product from store.");
             e.printStackTrace();
@@ -143,6 +151,7 @@ public class Admin extends User {
             stmt.setString(1, store.getId());
             stmt.setString(2, upc);
             stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " no longer carries " + upc);
         } catch (SQLException e){
             System.out.println("Error while removing product from store.");
             e.printStackTrace();
@@ -156,6 +165,7 @@ public class Admin extends User {
             stmt.setString(1, store.getId());
             stmt.setString(2, p.getUpc());
             stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " now carries " + name);
         } catch (SQLException e){
             System.out.println("Error while adding product to store.");
             e.printStackTrace();
@@ -168,13 +178,56 @@ public class Admin extends User {
             stmt.setString(1, store.getId());
             stmt.setString(2, upc);
             stmt.executeUpdate();
+            System.out.println("Store " + store.getId() + " now carries " + upc);
         } catch (SQLException e) {
             System.out.println("Error while removing product from store.");
             e.printStackTrace();
         }
     }
 
-    //just added these methods
+    public void removeCustomer(String phone){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_CUSTOMER);
+            stmt.setString(1, phone);
+            stmt.executeUpdate();
+            System.out.println("Customer " + phone + " removed from database.");
+        } catch (SQLException e){
+            System.out.println("Error removing customer from database");
+            e.printStackTrace();
+        }
+    }
+
+    public void dropStore(String storeID){
+        try {
+            PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_STORE);
+            stmt.setString(1, storeID);
+            stmt.executeUpdate();
+            System.out.println("Store " + storeID + " removed from database.");
+        } catch (SQLException e){
+            System.out.println("Error removing customer from database");
+            e.printStackTrace();
+        }
+    }
+
+    public void addCustomer(String phone, String firstName, String lastName){
+        try {
+            PreparedStatement stmt =this.getCon().prepareStatement(CHECK_CUSTOMER);
+            stmt.setString(1, phone);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                System.out.println("Phone number already exists!");
+            } else {
+                stmt = this.getCon().prepareStatement(CREATE_CUSTOMER);
+                stmt.setString(1, phone);
+                stmt.setString(2, firstName);
+                stmt.setString(3, lastName);
+                stmt.executeUpdate();
+                System.out.println("Customer " + firstName + " " + lastName + " successfully added to database.");
+            }
+        } catch (SQLException e){
+            e.getErrorCode();
+        }
+    }
 
     public ArrayList<String> viewAllVendorNames() {
         return null;
