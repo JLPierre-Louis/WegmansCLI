@@ -25,18 +25,19 @@ public class StatisticsCommand implements Runnable{
 
     }
 
-    @Command(name = "top3", description = "get first 3 best items sold")
-    void top3(
+    @Command(name = "store-sales", description = "gets the customer who has spent the most money")
+    void storeSales(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-s", "--store"}, defaultValue = "", description = "the store id of the store you want to see the best/worst items") String storeId)
+        @Option(names = {"--rank"}, required = true, description = "either \"TOP\" or \"BOT\"") String rank)
     {
 
     }
 
-     @Command(name = "bot3", description = "get first 3 worst items sold")
-    void bot3(
+    @Command(name = "item-sales", description = "get first 3 best or worst items sold")
+    void itemSales(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-s", "--store"}, defaultValue = "", description = "the store id of the store you want to see the best/worst items") String storeId)
+        @Option(names = {"-s", "--store"}, defaultValue = "", description = "the store id of the store you want to see the best/worst items") String storeId,
+        @Option(names = {"--rank"}, required = true, description = "either \"TOP\" or \"BOT\"") String rank)
     {
 
     }
