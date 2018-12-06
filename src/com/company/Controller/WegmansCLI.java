@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import picocli.CommandLine.MissingParameterException;
 import picocli.CommandLine.Model.ArgSpec;
+import picocli.CommandLine.ParameterException;
 import picocli.CommandLine.RunAll;
 import picocli.CommandLine.UnmatchedArgumentException;
 import org.apache.tools.ant.types.Commandline;
@@ -63,8 +64,11 @@ public class WegmansCLI {
                 System.out.println("Unrecognized Command. Use `help` for help.");
             } catch (MissingParameterException e) {
                 for(ArgSpec s : e.getMissing()) {
+                    System.out.println(e.getCommandLine().getUsageMessage());
                     System.out.println("Missing following parameters: " + s.paramLabel());
                 }
+            } catch (ParameterException e) {
+                System.out.println("Incorrect Parameters. \n" + e.getCommandLine().getUsageMessage());
             }
         }
     }

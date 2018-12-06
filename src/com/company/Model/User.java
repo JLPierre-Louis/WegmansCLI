@@ -21,10 +21,11 @@ public abstract class User {
             "soldBy.productid = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
             "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
+
     private final String PRODUCT_BY_NAME_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
             "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.name = ? ORDER BY product.name ASC";
     private final String PRODUCT_BY_PRICE_RANGE = "SELECT product.* FROM Product JOIN soldBy ON " +
-            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY" +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY " +
             "product.name ASC";
     private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
             " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND " +
@@ -38,6 +39,7 @@ public abstract class User {
     private final String GET_STORE_TOTAL_SALES_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
             "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
             "store.id = orders.store GROUP BY orders.store, store.address ORDER BY sum";
+
     private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
     Store store;
@@ -67,6 +69,11 @@ public abstract class User {
 
 
     ////////////////// APPLICATION ///////////////////
+    private boolean hasStore() {
+        if (store != null) return true;
+        System.out.println("Please use \"store set <id>\" before browsing.");
+        return false;
+    }
 
 
 
@@ -247,6 +254,7 @@ public abstract class User {
      * @param name the name of the product
      */
     public void queryProductByName(String name) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_NAME_QUERY);
@@ -266,6 +274,7 @@ public abstract class User {
      * @param end the upper bound of the item as a double
      */
     public void queryProductByPriceRange(double start, double end) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_RANGE);
@@ -287,6 +296,7 @@ public abstract class User {
      * @param end
      */
     public void queryProductByTypeAndRange(String type, double start, double end) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_PRICE_AND_TYPE);
@@ -306,11 +316,44 @@ public abstract class User {
      * @param brand the brand name
      */
     public void queryProductByBrand(String brand) {
+        if (!hasStore()) return;
         ResultSet rs = null;
         try {
             PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_BRAND_QUERY);
             stmt.setString(1, store.getId());
             stmt.setString(2, brand);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    /**
+     * Queries the database and prints a lists of items for a given type
+     * @param type the type name
+     */
+    public void queryProductByType(String type) {
+        if (!hasStore()) return;
+        ResultSet rs = null;
+        try {
+            PreparedStatement stmt = con.prepareStatement(PRODUCT_BY_TYPE);
+            stmt.setString(1, store.getId());
+            stmt.setString(2, type);
+            rs = stmt.executeQuery();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        Product.printDatabaseResults(rs);
+    }
+
+    public void queryAllProducts() {
+        if (!hasStore()) return;
+        ResultSet rs = null;
+        System.out.println("in query function");
+        try {
+            PreparedStatement stmt = con.prepareStatement(ALL_PRODUCTS_IN_STORE);
+            stmt.setString(1, store.getId());
             rs = stmt.executeQuery();
         } catch (SQLException e){
             e.printStackTrace();

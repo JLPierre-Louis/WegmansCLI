@@ -2,6 +2,8 @@ package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
 import com.company.Model.User;
+import java.util.HashMap;
+import java.util.Map;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ParentCommand;
@@ -20,15 +22,51 @@ public class BrowseCommand implements Runnable{
     @Option(names = {"-n", "--name"}, defaultValue = "", description = "search a product by name")
     String name;
 
-    //TODO: implement the rest of the commands
+    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "A double representing 24-hr time")
+    Map<Double, Double> priceRanges = new HashMap<>();
+
+    @Option(names = {"-t", "--type"}, defaultValue = "", description = "the type of product you want to search for")
+    String type;
+
+    @Option(names = {"-b", "--brand"}, defaultValue = "",  description = "query by brand name")
+    String brand;
 
     /**
      * Note these can be run by all users
      */
     @Override
     public void run() {
+        System.out.println(1);
         if (!name.isEmpty()) {
             user.queryProductByName(name);
+            return;
         }
+
+        System.out.println(2);
+        if (priceRanges.size() > 0) {
+            for(Double start : priceRanges.keySet()) {
+                double end = priceRanges.get(start);
+                System.out.println(String.format("====== Price Range [%.2f - %.2f] ======",start, end));
+                if(!type.isEmpty())
+                    user.queryProductByTypeAndRange(type, start, end);
+                else
+                    user.queryProductByPriceRange(start, end);
+                System.out.println("=======================================\n");
+            }
+            return;
+        }
+
+        System.out.println(3);
+        if (!type.isEmpty()){
+            user.queryProductByType(type);
+            return;
+        }
+
+        System.out.println(4);
+        if (!brand.isEmpty()) {
+            user.queryProductByBrand(brand);
+            return;
+        }
+        user.queryAllProducts();
     }
 }
