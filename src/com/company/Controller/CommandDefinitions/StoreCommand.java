@@ -2,6 +2,8 @@ package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
 import com.company.Model.User;
+import java.util.Map;
+import java.util.regex.Pattern;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -27,7 +29,11 @@ public class StoreCommand implements Runnable{
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Parameters(paramLabel = "<id>") String id)
     {
-        user.selectMainStore(id);
+        if (id.matches("\\d+"))
+            user.selectMainStore(id);
+        else {
+            System.out.println("<id> must be integer.");
+        }
     }
 
     @Command(name = "show",  description = "show your current store")
@@ -40,15 +46,21 @@ public class StoreCommand implements Runnable{
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
         @Option(names = {"-s", "--state"}, defaultValue = "" ,paramLabel = "<state_abbr>") String state,
         @Option(names = {"-i", "--item-name"}, defaultValue = "", paramLabel = "<item_name>") String itemName,
-        @Option(names = {"-t", "--time"}, split = ",", defaultValue = "0000,2400", paramLabel = "<time>", description = "4-digit number representing 24-hr time") int[] times)
+        @Option(names = {"-t", "--times"}, split = "\\|", paramLabel = "<start>=<end>", description = "4-digit number representing 24-hr time")
+        Map<Integer, Integer> times)
     {
         // TODO: add options being exclusive
         if(!state.isEmpty()) {
             user.queryStoreByState(state);
         } else if (!itemName.isEmpty()) {
             user.queryStoreByProduct(itemName);
-        } else if (times.length > 0) {
-            user.queryStoreByTime(times[0], times[1]);
+        } else if (times.size() > 0) {
+            for(int start : times.keySet()) {
+                int end = times.get(start);
+                System.out.println(String.format("====== Time Range [%d - %d] ======",start, end));
+                user.queryStoreByTime(start, end);
+                System.out.println("=======================================\n");
+            }
         }
     }
 
