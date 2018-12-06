@@ -1,11 +1,17 @@
 package com.company.Model;
 
+import com.company.Controller.CommandDefinitions.BrowseCommand;
+import com.company.Controller.CommandDefinitions.CartCommand;
+import com.company.Controller.CommandDefinitions.StatisticsCommand;
+import com.company.Controller.CommandDefinitions.StoreCommand;
+import com.company.Controller.CommandService;
 import com.company.Controller.SQLConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+import picocli.CommandLine;
 
 
 public class Admin extends User {
@@ -65,7 +71,14 @@ public class Admin extends User {
         this.username = username;
     }
 
-
+    @Override
+    public CommandLine initCLI() {
+        return new picocli.CommandLine(new CommandService(this))
+            .addSubcommand("cart", new CartCommand(this))
+            .addSubcommand("store", new StoreCommand(this))
+            .addSubcommand("browse", new BrowseCommand(this))
+            .addSubcommand("statistics", new StatisticsCommand(this));
+    }
 
     public void requestReorder(Store store, Product item, int quantity) {
         try {

@@ -110,13 +110,16 @@ public abstract class User {
     }
 
     /**
-     * This will change the user's current store and wipe the contents of the
-     * shopping cart
-     * @param storeId the id of the store, given as a string
+     * This method should be overridden by each subclass so that
+     * each user returns their propper command lines with their
+     * restricted permissions
+     * @return
      */
-    public void changeMainStore(String storeId) {
-        // TODO: implement me
-    }
+    public abstract picocli.CommandLine initCLI();
+
+    //
+    // QUERY METHODS
+    //
 
     /**
      * This function will query the database to find all the stores

@@ -1,10 +1,15 @@
 package com.company.Model;
 
+import com.company.Controller.CommandDefinitions.BrowseCommand;
+import com.company.Controller.CommandDefinitions.CartCommand;
+import com.company.Controller.CommandDefinitions.StoreCommand;
+import com.company.Controller.CommandService;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import picocli.CommandLine;
 
 public class Customer extends User {
 
@@ -120,8 +125,13 @@ public class Customer extends User {
         return shoppingCart.addItem(p, number);
     }
 
-
-
+    @Override
+    public CommandLine initCLI() {
+        return new picocli.CommandLine(new CommandService(this))
+            .addSubcommand("cart", new CartCommand(this))
+            .addSubcommand("store", new StoreCommand(this))
+            .addSubcommand("browse", new BrowseCommand(this));
+    }
 
     /*
 

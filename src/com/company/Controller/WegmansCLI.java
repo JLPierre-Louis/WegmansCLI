@@ -40,10 +40,7 @@ public class WegmansCLI {
         User user = chooseUser();
         String input = null;
         String[] args = null;
-        picocli.CommandLine cmdLine = new picocli.CommandLine(new CommandService(user))
-            .addSubcommand("cart", new CartCommand(user))
-            .addSubcommand("store", new StoreCommand(user))
-            .addSubcommand("browse", new BrowseCommand(user));
+        picocli.CommandLine cmdLine = user.initCLI();
 
         // main running loo
         loop : while(true) {
