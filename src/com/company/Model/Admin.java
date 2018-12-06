@@ -12,11 +12,13 @@ public class Admin extends User {
 
     private final String UPDATE_PRICE_BY_UPC_QUERY = "UPDATE Product SET price = ? WHERE upc = ?";
     private final String UPDATE_PRICE_BY_NAME_QUERY = "UPDATE Product SET price = ? WHERE name = i?";
-    private final String GET_STORE_INVENTORY = "SELECT product.name, product.upc, soldBy.numberInStock FROM " +
-            "product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC";
-    private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
-            "                                      VALUES (?, ?, ?, ?)";
     private final String ORDER_NUMBERS = "SELECT orderNumber FROM Reorder";
+    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
+    private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
+    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phone = ?";
+    private final String REMOVE_STORE = "DELETE FROM store WHERE storeID = ?";
+    private final String CREATE_CUSTOMER = "INSERT INTO customer VALUES (?, ?, ?)";
+    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phone = ?";
     private final String GET_UNFULFILLED_ORDERS = "SELECT orderNumber, product, store, stockRequested FROM Reorder" +
             " WHERE deliveryDate IS NULL";
     private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = ((SELECT stockRequested FROM " +
@@ -25,12 +27,16 @@ public class Admin extends User {
     private final String UPDATE_REORDER_TABLE = "UPDATE reorder SET deliveryDate = ?, fulfilledBy = (SELECT " +
             "distributedBy.vendor FROM distributedBy JOIN Product ON distributedBy.brand = product.brand " +
             "WHERE product.upc = ?) WHERE orderNumber = ?";
-    private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
-    private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
-    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phone = ?";
-    private final String REMOVE_STORE = "DELETE FROM store WHERE storeID = ?";
-    private final String CREATE_CUSTOMER = "INSERT INTO customer VALUES (?, ?, ?)";
-    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phone = ?";
+    private final String GET_BRANDS_FROM_STORE = "SELECT DISTINCT Product.brand FROM product JOIN soldBy ON " +
+            "soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY Product.brand ASC";
+    private final String GET_VENDOR_FROM_STORE = "SELECT DISTINCT distributedBy.vendor FROM product JOIN soldBy " +
+            "ON soldBy.productId = product.upc JOIN distributedBy ON product.brand = distributedBy.brand WHERE " +
+            "soldBy.storeId = ? ORDER BY distributedBy.vendor";
+    private final String GET_STORE_INVENTORY = "SELECT product.name, product.upc, soldBy.numberInStock FROM " +
+            "product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC";
+    private final String CREATE_REORDER_REQUEST = "INSERT INTO Reorder (orderNumber, product, store, stockRequested)" +
+            "                                      VALUES (?, ?, ?, ?)";
+
 
     private String username;
 
@@ -249,12 +255,34 @@ public class Admin extends User {
         }
     }
 
-    public ArrayList<String> viewAllVendorNames() {
-        return null;
+    public void viewAllVendorNames() {
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_VENDOR_FROM_STORE);
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("List of all vendors that supply to this store:");
+            while (rs.next()){
+                System.out.println(rs.getString(1));
+            }
+        } catch (SQLException e){
+            System.out.println("Error retrieving vendor names");
+            e.printStackTrace();
+        }
     }
 
-    public ArrayList<String> viewAllBrandNames() {
-        return null;
+    public void viewAllBrandNames() {
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(GET_BRANDS_FROM_STORE);
+            stmt.setString(1, this.getStore().getId());
+            ResultSet rs = stmt.executeQuery();
+            System.out.println("List of all brands carried by this store:");
+            while (rs.next()){
+                System.out.println(rs.getString(1));
+            }
+        } catch (SQLException e){
+            System.out.println("Error retrieving brand names");
+            e.printStackTrace();
+        }
     }
 
 
