@@ -17,7 +17,8 @@ import org.apache.tools.ant.types.Commandline;
 public class WegmansCLI {
     private static Scanner scanner = new Scanner(System.in);
     private static final String ACCOUNT_SELECTION_STRING = "Customer or Admin?: ";
-    private static final String ADMIN_PROMPT = "Enter Admin username: ";
+    private static final String ADMIN_PROMPT_USER = "Enter Admin username: ";
+    private static final String ADMIN_PROMPT_PASSWORD = "Enter Admin password: ";
     private static final String CUSTOMER_PROMPT = "Enter customer phone number: ";
     private static final String WELCOME = "Welcome! ";
     private static final String PROMPT = "> ";
@@ -66,6 +67,7 @@ public class WegmansCLI {
                 }
             } catch (ParameterException e) {
                 System.out.println("Incorrect Parameters. \n" + e.getCommandLine().getUsageMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -97,10 +99,21 @@ public class WegmansCLI {
     }
 
     private Admin handleAdmin() {
-        System.out.print(ADMIN_PROMPT);
-        String admin = scanner.nextLine();
-        System.out.println(WELCOME + admin);
-        return new Admin(admin);
+        String username = null;
+        String password = null;
+        Admin tempAdmin = null;
+        while(true) {
+            System.out.print(ADMIN_PROMPT_USER);
+            username = scanner.nextLine();
+            System.out.print(ADMIN_PROMPT_PASSWORD);
+            password = scanner.nextLine();
+            tempAdmin = new Admin(username, password);
+            if(tempAdmin.verifyAccount())
+                break;
+            System.out.println("Incorrect credentials. Try again. (passwords are case sensitive)");
+        }
+        System.out.println(WELCOME + tempAdmin.getUsername());
+        return tempAdmin;
     }
 
     private Customer handleCustomer() {

@@ -31,31 +31,41 @@ public class StatisticsCommand implements Runnable{
     @Command(name = "store-sales", description = "gets the customer who has spent the most money")
     void storeSales(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
+        @Option(names = {"-s", "--state"}, defaultValue = "", paramLabel = "<state_abbr>", description = "narrow sales search to a specific state") String state,
         @Option(names = {"--rank"}, required = true, paramLabel = "TOP|BOT", defaultValue = "TOP", description = "display top or bottom store in sales")
             String rank)
     {
         if(!(user instanceof Admin)) return;
         Admin admin =  (Admin)user;
 
-            if(rank.equals("TOP"))
+        if(!state.isEmpty()) {
+            if (rank.equals("BOT"))
+                admin.getBestAndWorstStoreSalesbyState(false, state);
+            else if (rank.equals("TOP"))
+                admin.getBestAndWorstStoreSalesbyState(true, state);
+            else
+                System.out.println("Please enter \"TOP\" or \"BOT\" for --rank");
+        } else {
+            if (rank.equals("BOT"))
                 admin.getBestAndWorstStoreSales(false);
-            else if (rank.equals("BOT"))
+            else if (rank.equals("TOP"))
                 admin.getBestAndWorstStoreSales(true);
             else
                 System.out.println("Please enter \"TOP\" or \"BOT\" for --rank");
+        }
     }
 
     @Command(name = "item-sales", description = "get first 3 best or worst items sold")
     void itemSales(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-a", "--all"}, defaultValue = "", description = "searh all store's best/worst items") boolean all,
-        @Option(names = {"--rank"}, required = true, defaultValue = "TOP", description = "either \"TOP\" or \"BOT\"") String rank)
+        @Option(names = {"-a", "--all"}, defaultValue = "false", description = "search all store's best/worst items") boolean all,
+        @Option(names = {"--rank"}, required = true, paramLabel = "TOP|BOT", defaultValue = "TOP", description = "either display the top or bottom three items") String rank)
     {
         if(!(user instanceof Admin)) return;
         Admin admin = (Admin)user;
-        boolean desc = false;
+        boolean desc = true;
         if(rank.equals("BOT"))
-            desc = true;
+            desc = false;
 
         if(all) {
             admin.getItemsRanked(desc);

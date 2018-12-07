@@ -70,10 +70,16 @@ public class Admin extends User {
 
 
     private String username;
+    private String password;
 
-    public Admin(String username){
+    public Admin(String username, String password){
         super();
         this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return this.username;
     }
 
     @Override
@@ -451,7 +457,7 @@ public class Admin extends User {
 
 
 
-    public boolean verifyAccount(String username, String password){
+    public boolean verifyAccount(){
         try{
             PreparedStatement stmt = this.getCon().prepareStatement(VERIFY_ACCOUNT);
             stmt.setString(1, username);
