@@ -69,7 +69,6 @@ public class Product {
             System.out.println("--------------------------------------------------------------------------");
             System.out.println(String.format("| %-21s | %-12s | %-21s | %-7s |", "Name", "UPC", "Brand", "Price"));
             for(Product product: products) {
-                System.out.println("|------------------------------------------------------------------------|");
                 System.out.println(product.toString());
             }
             System.out.println("--------------------------------------------------------------------------");

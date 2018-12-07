@@ -289,7 +289,6 @@ public class Admin extends User {
             ResultSet rs = stmt.executeQuery();
             System.out.println("-------------------------------------------------");
             System.out.println(String.format("| %-20s | %-12s | %-7s |", "Product Name", "UPC", "Stock"));
-            System.out.println("-------------------------------------------------");
             while(rs.next()){
                 System.out.println(String.format("| %-20s | %-12s | %-7d |",
                         rs.getString(1), rs.getString(2), rs.getInt(3)));
