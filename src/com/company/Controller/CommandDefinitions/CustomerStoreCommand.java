@@ -1,6 +1,7 @@
 package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
+import com.company.Model.Customer;
 import com.company.Model.User;
 import java.util.Map;
 import picocli.CommandLine.Command;
@@ -14,9 +15,9 @@ public class CustomerStoreCommand implements Runnable{
     @ParentCommand
     private CommandService parent;
 
-    User user;
+    Customer user;
 
-    public CustomerStoreCommand(User user) {
+    public CustomerStoreCommand(Customer user) {
         this.user = user;
     }
 
