@@ -2,9 +2,8 @@ package com.company.Model;
 
 import com.company.Controller.CommandDefinitions.BrowseCommand;
 import com.company.Controller.CommandDefinitions.CartCommand;
-import com.company.Controller.CommandDefinitions.StoreCommand;
+import com.company.Controller.CommandDefinitions.CustomerStoreCommand;
 import com.company.Controller.CommandService;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -129,7 +128,7 @@ public class Customer extends User {
     public CommandLine initCLI() {
         return new picocli.CommandLine(new CommandService(this))
             .addSubcommand("cart", new CartCommand(this))
-            .addSubcommand("store", new StoreCommand(this))
+            .addSubcommand("store", new CustomerStoreCommand(this))
             .addSubcommand("browse", new BrowseCommand(this));
     }
 

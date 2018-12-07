@@ -3,21 +3,20 @@ package com.company.Controller.CommandDefinitions;
 import com.company.Controller.CommandService;
 import com.company.Model.User;
 import java.util.Map;
-import java.util.regex.Pattern;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
 
 @Command(name = "store", description = "allows the user to do store related actions")
-public class StoreCommand implements Runnable{
+public class CustomerStoreCommand implements Runnable{
 
     @ParentCommand
     private CommandService parent;
 
     User user;
 
-    public StoreCommand(User user) {
+    public CustomerStoreCommand(User user) {
         this.user = user;
     }
 

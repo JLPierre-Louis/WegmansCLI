@@ -1,11 +1,10 @@
 package com.company.Model;
 
+import com.company.Controller.CommandDefinitions.AdminStoreCommand;
 import com.company.Controller.CommandDefinitions.BrowseCommand;
 import com.company.Controller.CommandDefinitions.CartCommand;
 import com.company.Controller.CommandDefinitions.StatisticsCommand;
-import com.company.Controller.CommandDefinitions.StoreCommand;
 import com.company.Controller.CommandService;
-import com.company.Controller.SQLConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class Admin extends User {
     public CommandLine initCLI() {
         return new picocli.CommandLine(new CommandService(this))
             .addSubcommand("cart", new CartCommand(this))
-            .addSubcommand("store", new StoreCommand(this))
+            .addSubcommand("store", new AdminStoreCommand(this))
             .addSubcommand("browse", new BrowseCommand(this))
             .addSubcommand("statistics", new StatisticsCommand(this));
     }
