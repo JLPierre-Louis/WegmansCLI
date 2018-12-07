@@ -14,10 +14,10 @@ public class CartCommand implements Runnable {
     @ParentCommand
     private CommandService parent;
 
-    private User user;
+    private Customer customer;
 
-    public CartCommand(User user) {
-        this.user = user;
+    public CartCommand(Customer customer) {
+        this.customer= customer;
     }
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display this help and exit")
@@ -29,16 +29,12 @@ public class CartCommand implements Runnable {
         @Option(names = {"-p", "--price"}, defaultValue = "true", description = "Only show total price of items in your cart") Boolean price,
         @Option(names = {"-i", "--items"}, defaultValue = "true", description = "Only show items in your cart") Boolean items)
     {
-        // TODO: use polymorphism better
-        if(user instanceof Customer) {
-            Customer customer = ((Customer) user);
-            // only show the items, we disable the price
-            if(price) {
-                customer.printCartItems();
-            }
-            if(items) {
-                customer.getCartTotal();
-            }
+        if (!checkStoreSet()) return;
+        if(price) {
+            customer.printCartItems();
+        }
+        if(items) {
+            customer.getCartTotal();
         }
     }
 
@@ -48,14 +44,12 @@ public class CartCommand implements Runnable {
         @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
-        if(user instanceof Customer) {
-            Customer customer = ((Customer) user);
-            if(!name.isEmpty()) {
-                if(customer.addItemToCart(name, count)){
-                    System.out.println(count + " " + name + "(s) added to your cart.");
-                }else{
-                    System.out.println("Item not added to cart.");
-                }
+        if (!checkStoreSet()) return;
+        if(!name.isEmpty()) {
+            if(customer.addItemToCart(name, count)){
+                System.out.println(count + " " + name + "(s) added to your cart.");
+            }else{
+                System.out.println("Item not added to cart.");
             }
         }
     }
@@ -66,22 +60,26 @@ public class CartCommand implements Runnable {
         @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
-        if(user instanceof Customer) {
-            Customer customer = ((Customer) user);
-            if(!name.isEmpty()) {
-                customer.removeItemFromCart(name, count);
-            }
-            System.out.println(count + " " + name + "(s) removed from your cart.");
+        if (!checkStoreSet()) return;
+        if(!name.isEmpty()) {
+            customer.removeItemFromCart(name, count);
         }
+        System.out.println(count + " " + name + "(s) removed from your cart.");
     }
 
     @Command(name = "checkout", description = "finalize your purchase")
     void checkout(@Option(names = {"-h","--help"}, usageHelp = true) boolean help)
     {
-        if(user instanceof Customer) {
-            Customer customer = ((Customer) user);
-            customer.checkout();
+        if (!checkStoreSet()) return;
+        customer.checkout();
+    }
+
+    private boolean checkStoreSet() {
+        if (customer.getStore() == null) {
+            System.out.println("Please use \"store set <id>\" to use this command.");
+            return false;
         }
+        return true;
     }
 
     @Override

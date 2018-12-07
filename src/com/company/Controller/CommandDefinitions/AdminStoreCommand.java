@@ -71,6 +71,7 @@ public class AdminStoreCommand implements Runnable{
         @Parameters(index = "1", paramLabel = "<product-name>") String productName,
         @Parameters(index = "2", paramLabel = "<quantity>") int quantity)
     {
+        admin.requestReorder(id, productName, quantity);
     }
 
     @Command(name = "fulfill-reorder", description = "fulfull a store's need for an item")

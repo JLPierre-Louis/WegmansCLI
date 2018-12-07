@@ -84,7 +84,6 @@ public class Admin extends User {
     @Override
     public CommandLine initCLI() {
         return new picocli.CommandLine(new CommandService(this))
-            .addSubcommand("cart", new CartCommand(this))
             .addSubcommand("store", new AdminStoreCommand(this))
             .addSubcommand("browse", new BrowseCommand(this))
             .addSubcommand("statistics", new StatisticsCommand(this));
@@ -116,6 +115,7 @@ public class Admin extends User {
             stmt.executeUpdate();
 
         } catch (SQLException e){
+            System.out.println("Error submitting reorder: Be sure to check your inputs are correct.");
             e.printStackTrace();
         }
     }
