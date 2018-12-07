@@ -55,12 +55,17 @@ public class Admin extends User {
     private final String GET_STORE_TOTAL_SALES_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
         "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
         "store.id = orders.store GROUP BY orders.store, store.address ORDER BY sum";
+    private final String GET_STORE_TOTAL_SALES_STATE_ASC = "SELECT orders.store, store.address, SUM(orders.numbersold * " +
+            "product.price) FROM orders JOIN product ON product.upc = orders.product JOIN store ON " +
+            "store.id = orders.store WHERE store.state = ? GROUP BY orders.store, store.address ORDER BY sum";
     private final String GET_PRODUCT_SALES_RANKING_BY_STORE_ASC = "SELECT product, SUM(orders.numbersold * " +
         "product.price) FROM orders JOIN product ON product.upc = orders.product WHERE store = ? " +
         "GROUP BY product ORDER BY sum DESC";
     private final String GET_PRODUCT_SALES_RANKING_ASC = "SELECT product, SUM(orders.numbersold * " +
         "product.price) FROM orders JOIN product ON product.upc = orders.product GROUP BY " +
         "product ORDER BY sum DESC";
+    private final String VERIFY_ACCOUNT = "SELECT * FROM admin WHERE username = ? AND password = ?";
+
     //
 
 
@@ -416,6 +421,47 @@ public class Admin extends User {
         } catch (SQLException e){
             System.out.println("Error getting store sales.");
             e.printStackTrace();
+        }
+    }
+
+    public void getBestAndWorstStoreSalesbyState(boolean DESC, String state){
+        try{
+            PreparedStatement stmt;
+            if(DESC){
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_STATE_ASC + " DESC");
+                stmt.setString(1, state);
+            }else{
+                stmt = this.getCon().prepareStatement(GET_STORE_TOTAL_SALES_STATE_ASC);
+                stmt.setString(1, state);
+            }
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String storeID = rs.getString(1);
+            String address = rs.getString(2);
+            if(DESC){
+                System.out.println("The top selling store is store number " + storeID + ", at " + address + ".");
+            }else{
+                System.out.println("The worst selling store is store number " + storeID + ", at " + address + ".");
+            }
+        } catch (SQLException e){
+            System.out.println("Error getting store sales.");
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public boolean verifyAccount(String username, String password){
+        try{
+            PreparedStatement stmt = this.getCon().prepareStatement(VERIFY_ACCOUNT);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e){
+            System.out.println("Error in validating admin credentials.");
+            e.printStackTrace();
+            return false;
         }
     }
 
