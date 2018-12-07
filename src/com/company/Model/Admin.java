@@ -223,7 +223,7 @@ public class Admin extends User {
         }
     }
 
-    public void addProductFromStoreByUPC(String upc) {
+    public void addProductToStoreByUPC(String upc) {
         try {
             PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
             stmt.setString(1, store.getId());
@@ -255,7 +255,7 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Store " + storeID + " removed from database.");
         } catch (SQLException e){
-            System.out.println("Error removing customer from database");
+            System.out.println("Error removing Store from database");
             e.printStackTrace();
         }
     }
@@ -453,8 +453,6 @@ public class Admin extends User {
             e.printStackTrace();
         }
     }
-
-
 
     public boolean verifyAccount(){
         try{
