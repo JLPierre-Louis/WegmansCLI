@@ -91,7 +91,7 @@ public class Admin extends User {
             .addSubcommand("statistics", new StatisticsCommand(this));
     }
 
-    public void requestReorder(Store store, Product item, int quantity) {
+    public void requestReorder(String storeid, String itemName, int quantity) {
         try {
             ArrayList<String> orderNumbers = new ArrayList<>();
             Random r = new Random();
@@ -111,8 +111,8 @@ public class Admin extends User {
             }
             stmt = this.getCon().prepareStatement(CREATE_REORDER_REQUEST);
             stmt.setString(1, ONString);
-            stmt.setString(2, item.getUpc());
-            stmt.setString(3, store.getId());
+            stmt.setString(2, itemName);
+            stmt.setString(3, storeid);
             stmt.setInt(4, quantity);
             stmt.executeUpdate();
 
