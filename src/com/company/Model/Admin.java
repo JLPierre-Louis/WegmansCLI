@@ -4,6 +4,7 @@ import com.company.Controller.CommandDefinitions.AdminStoreCommand;
 import com.company.Controller.CommandDefinitions.BrowseCommand;
 import com.company.Controller.CommandDefinitions.CartCommand;
 import com.company.Controller.CommandDefinitions.StatisticsCommand;
+import com.company.Controller.CommandDefinitions.UpdateCommand;
 import com.company.Controller.CommandService;
 
 import java.sql.*;
@@ -20,10 +21,10 @@ public class Admin extends User {
     private final String ORDER_NUMBERS = "SELECT orderNumber FROM Reorder";
     private final String REMOVE_FROM_STORE = "DELETE FROM soldBy WHERE storeId = ? AND productId = ?";
     private final String ADD_TO_STORE = "INSERT INTO soldBy (storeId, productId) VALUES (?, ?)";
-    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phone = ?";
+    private final String REMOVE_CUSTOMER = "DELETE FROM customer WHERE phonenumber = ?";
     private final String REMOVE_STORE = "DELETE FROM store WHERE storeID = ?";
     private final String CREATE_CUSTOMER = "INSERT INTO customer VALUES (?, ?, ?)";
-    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phone = ?";
+    private final String CHECK_CUSTOMER = "SELECT * FROM customer WHERE phonenumber = ?";
     private final String GET_UNFULFILLED_ORDERS = "SELECT orderNumber, product, store, stockRequested FROM Reorder" +
             " WHERE deliveryDate IS NULL";
     private final String UPDATE_STOCK = "UPDATE soldBy SET numberInStock = ((SELECT stockRequested FROM " +
@@ -86,7 +87,8 @@ public class Admin extends User {
         return new picocli.CommandLine(new CommandService(this))
             .addSubcommand("store", new AdminStoreCommand(this))
             .addSubcommand("browse", new BrowseCommand(this))
-            .addSubcommand("statistics", new StatisticsCommand(this));
+            .addSubcommand("statistics", new StatisticsCommand(this))
+            .addSubcommand("update", new UpdateCommand(this));
     }
 
     public void requestReorder(String storeid, String itemName, int quantity) {
@@ -276,7 +278,7 @@ public class Admin extends User {
                 System.out.println("Customer " + firstName + " " + lastName + " successfully added to database.");
             }
         } catch (SQLException e){
-            e.getErrorCode();
+            System.out.println("Error adding user");
         }
     }
 
