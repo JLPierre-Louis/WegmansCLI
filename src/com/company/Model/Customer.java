@@ -3,6 +3,7 @@ package com.company.Model;
 import com.company.Controller.CommandDefinitions.BrowseCommand;
 import com.company.Controller.CommandDefinitions.CartCommand;
 import com.company.Controller.CommandDefinitions.CustomerStoreCommand;
+import com.company.Controller.CommandDefinitions.CustomerSynopsis;
 import com.company.Controller.CommandService;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -129,7 +130,8 @@ public class Customer extends User {
         return new picocli.CommandLine(new CommandService(this))
             .addSubcommand("cart", new CartCommand(this))
             .addSubcommand("store", new CustomerStoreCommand(this))
-            .addSubcommand("browse", new BrowseCommand(this));
+            .addSubcommand("browse", new BrowseCommand(this))
+            .addSubcommand("synopsis", new CustomerSynopsis());
     }
 
     /*

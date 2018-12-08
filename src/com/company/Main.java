@@ -18,6 +18,7 @@ public class Main {
         System.out.println("|    3. Ask for help!                                                          |");
         System.out.println("|        a. Use \"help [subcommand]\" for general help                           |");
         System.out.println("|        b. Use \"[subcommand] -h \" for option help                             |");
+        System.out.println("|        c. Use \"synopsis\" for a list of all commands                          |");
         System.out.println("+------------------------------------------------------------------------------+");
         WegmansCLI main = new WegmansCLI();
         main.run();

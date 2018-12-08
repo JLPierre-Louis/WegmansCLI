@@ -1,6 +1,7 @@
 package com.company.Model;
 
 import com.company.Controller.CommandDefinitions.AdminStoreCommand;
+import com.company.Controller.CommandDefinitions.AdminSynopsis;
 import com.company.Controller.CommandDefinitions.BrowseCommand;
 import com.company.Controller.CommandDefinitions.CartCommand;
 import com.company.Controller.CommandDefinitions.StatisticsCommand;
@@ -88,7 +89,8 @@ public class Admin extends User {
             .addSubcommand("store", new AdminStoreCommand(this))
             .addSubcommand("browse", new BrowseCommand(this))
             .addSubcommand("statistics", new StatisticsCommand(this))
-            .addSubcommand("update", new UpdateCommand(this));
+            .addSubcommand("update", new UpdateCommand(this))
+            .addSubcommand("synopsis", new AdminSynopsis());
     }
 
     public void requestReorder(String storeid, String itemName, int quantity) {

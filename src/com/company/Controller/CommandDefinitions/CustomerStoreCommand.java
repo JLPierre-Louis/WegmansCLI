@@ -2,7 +2,6 @@ package com.company.Controller.CommandDefinitions;
 
 import com.company.Controller.CommandService;
 import com.company.Model.Customer;
-import com.company.Model.User;
 import java.util.Map;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -44,8 +43,8 @@ public class CustomerStoreCommand implements Runnable{
     @Command(name = "search", description = "search for active stores")
     void search(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-s", "--state"}, defaultValue = "" ,paramLabel = "<state_abbr>") String state,
-        @Option(names = {"-i", "--item-name"}, defaultValue = "", paramLabel = "<item_name>") String itemName,
+        @Option(names = {"-s", "--state"}, defaultValue = "" ,paramLabel = "<state_abbr>", description = "search by state abbreviation (i.e MA)") String state,
+        @Option(names = {"-i", "--item-name"}, defaultValue = "", paramLabel = "<item_name>", description = "search stores that have a particular item") String itemName,
         @Option(names = {"-t", "--times"}, split = "\\|", paramLabel = "<start>=<end>", description = "4-digit number representing 24-hr time")
         Map<Integer, Integer> times)
     {
