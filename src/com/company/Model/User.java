@@ -18,8 +18,6 @@ public abstract class User {
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
     private final String GET_PRODUCT_FROM_UPC= "SELECT * FROM Product WHERE upc = ?";
-    private final String GET_PRODUCTS_FROM_STORE = "SELECT product.* FROM product JOIN soldBy ON " +
-            "soldBy.productid = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
             "soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))";
     private final String PRODUCT_BY_NAME_QUERY = "SELECT product.* FROM Product JOIN soldBy ON " +
@@ -229,18 +227,6 @@ public abstract class User {
         }
     }
 
-    public void printProductsInStore(Store s){
-        try {
-            PreparedStatement stmt = this.getCon().prepareStatement(GET_PRODUCTS_FROM_STORE);
-            stmt.setString(1, s.getId());
-            ResultSet rs = stmt.executeQuery();
-            Product.printDatabaseResults(rs);
-        } catch (SQLException e){
-            System.out.println("Error getting products from store");
-            e.printStackTrace();
-        }
-    }
-
 
     /**
      * Will query the database and print out the product
@@ -345,5 +331,13 @@ public abstract class User {
             e.printStackTrace();
         }
         Product.printDatabaseResults(rs);
+    }
+
+    public boolean checkStoreSet() {
+        if (getStore() == null) {
+            System.out.println("Please use \"store set <id>\" to use this command.");
+            return false;
+        }
+        return true;
     }
 }

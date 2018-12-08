@@ -36,13 +36,11 @@ public class BrowseCommand implements Runnable{
      */
     @Override
     public void run() {
-        System.out.println(1);
         if (!name.isEmpty()) {
             user.queryProductByName(name);
             return;
         }
 
-        System.out.println(2);
         if (priceRanges.size() > 0) {
             for(Double start : priceRanges.keySet()) {
                 double end = priceRanges.get(start);
@@ -56,17 +54,16 @@ public class BrowseCommand implements Runnable{
             return;
         }
 
-        System.out.println(3);
         if (!type.isEmpty()){
             user.queryProductByType(type);
             return;
         }
 
-        System.out.println(4);
         if (!brand.isEmpty()) {
             user.queryProductByBrand(brand);
             return;
         }
+
         user.queryAllProducts();
     }
 }

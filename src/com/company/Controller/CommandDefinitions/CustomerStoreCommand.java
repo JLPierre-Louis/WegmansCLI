@@ -49,6 +49,7 @@ public class CustomerStoreCommand implements Runnable{
         @Option(names = {"-t", "--times"}, split = "\\|", paramLabel = "<start>=<end>", description = "4-digit number representing 24-hr time")
         Map<Integer, Integer> times)
     {
+        if(!user.checkStoreSet()) return;
         // TODO: add options being exclusive
         if(!state.isEmpty()) {
             user.queryStoreByState(state);
