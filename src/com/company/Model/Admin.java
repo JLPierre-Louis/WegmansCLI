@@ -417,7 +417,7 @@ public class Admin extends User {
             }
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            String storeID = rs.getString(1);
+            String storeID = rs.getString(1).replace(" ", "");
             String address = rs.getString(2);
             if(DESC){
                 System.out.println("The top selling store is store number " + storeID + ", at " + address + ".");
@@ -442,7 +442,7 @@ public class Admin extends User {
             }
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            String storeID = rs.getString(1);
+            String storeID = rs.getString(1).replace(" ", "");
             String address = rs.getString(2);
             if(DESC){
                 System.out.println("The top selling store is store number " + storeID + ", at " + address + ".");

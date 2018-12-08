@@ -27,7 +27,7 @@ public class Store {
 
 
     public Store(String id, String state, String address, int openTime, int closeTime) {
-        this.id = id;
+        this.id = id.replace(" ", "");
         this.state = state;
         this.address = address;
         this.inventory = new ArrayList<>();
@@ -134,7 +134,7 @@ public class Store {
         ArrayList<Store> stores = new ArrayList<>();
         try {
             while (rs.next()){
-                stores.add(new Store(rs.getString(ID).replace(" ", ""), rs.getString(STATE),
+                stores.add(new Store(rs.getString(ID), rs.getString(STATE),
                 rs.getString(ADDRESS), rs.getInt(OPEN_TIME), rs.getInt(CLOSE_TIME)
                 ));
             }
