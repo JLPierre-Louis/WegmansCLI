@@ -16,28 +16,16 @@ import org.apache.tools.ant.types.Commandline;
 
 public class WegmansCLI {
     private static Scanner scanner = new Scanner(System.in);
-    private static final String ACCOUNT_SELECTION_STRING = "Customer or Admin?: ";
+    private static final String ACCOUNT_SELECTION_STRING = "Welcome are you a customer or an admin?: ";
     private static final String ADMIN_PROMPT_USER = "Enter Admin username: ";
     private static final String ADMIN_PROMPT_PASSWORD = "Enter Admin password: ";
     private static final String CUSTOMER_PROMPT = "Enter customer phone number: ";
     private static final String WELCOME = "Welcome! ";
     private static final String PROMPT = "> ";
-    private static final String START_BANNER = "=================\nWegmans2 CLI APP\n=================";
 
     public SQLConnection dataBase;
 
-    public void initDatabase() {
-        dataBase = new SQLConnection();
-        try{
-            dataBase.connectToDB("Wegmans2");
-        }catch (SQLException e){
-            System.out.println("SQL Error:");
-            e.printStackTrace();
-        }
-    }
-
     public void run() {
-        System.out.println(START_BANNER);
         User user = chooseUser();
         String input = null;
         String[] args = null;
