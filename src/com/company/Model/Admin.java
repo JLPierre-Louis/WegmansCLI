@@ -362,14 +362,14 @@ public class Admin extends User {
             rs.next();
             String productUPC;
             if (DESC){
-                System.out.println("The 3 most popular items are:");
+                System.out.println("The 3 most popular items across all stores are:");
             } else {
-                System.out.println("The 3 least popular items are:");
+                System.out.println("The 3 least popular items across all stores are:");
             }
             for(int i = 0; i < 3; i++){
                 productUPC = rs.getString(1);
-                Product p = createProductFromName(productUPC);
-                System.out.println(p.getName());
+                Product p = createProductFromUPC(productUPC);
+                System.out.println(p.toString());
                 rs.next();
             }
         } catch (SQLException e){
@@ -397,8 +397,8 @@ public class Admin extends User {
             }
             for(int i = 0; i < 3; i++){
                 productUPC = rs.getString(1);
-                Product p = createProductFromName(productUPC);
-                System.out.println(p.getName());
+                Product p = createProductFromUPC(productUPC);
+                System.out.println(p.toString());
                 rs.next();
             }
         } catch (SQLException e){

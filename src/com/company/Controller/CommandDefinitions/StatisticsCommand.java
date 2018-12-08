@@ -13,18 +13,16 @@ public class StatisticsCommand implements Runnable{
 
     @ParentCommand
     private CommandService parent;
-    User user;
+    Admin admin;
 
-    public StatisticsCommand(User user) {
-        this.user = user;
+    public StatisticsCommand(Admin admin) {
+        this.admin = admin;
     }
 
     @Command(name = "customer-mvp", description = "gets the customer who has spent the most money")
     void getCustomerMVP(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help)
     {
-        if(!(user instanceof Admin)) return;
-        Admin admin =  (Admin)user;
         admin.getCustomerMVP();
     }
 
@@ -35,9 +33,6 @@ public class StatisticsCommand implements Runnable{
         @Option(names = {"--rank"}, required = true, paramLabel = "TOP|BOT", defaultValue = "TOP", description = "display top or bottom store in sales")
             String rank)
     {
-        if(!(user instanceof Admin)) return;
-        Admin admin =  (Admin)user;
-
         if(!state.isEmpty()) {
             if (rank.equals("BOT"))
                 admin.getBestAndWorstStoreSalesbyState(false, state);
@@ -61,8 +56,6 @@ public class StatisticsCommand implements Runnable{
         @Option(names = {"-a", "--all"}, defaultValue = "false", description = "search all store's best/worst items") boolean all,
         @Option(names = {"--rank"}, required = true, paramLabel = "TOP|BOT", defaultValue = "TOP", description = "either display the top or bottom three items") String rank)
     {
-        if(!(user instanceof Admin)) return;
-        Admin admin = (Admin)user;
         boolean desc = true;
         if(rank.equals("BOT"))
             desc = false;
@@ -70,10 +63,22 @@ public class StatisticsCommand implements Runnable{
         if(all) {
             admin.getItemsRanked(desc);
         } else {
+            if(!checkStoreSet()) {
+                System.out.print(" Or use \"--all\" to show products across all stores");
+                return;
+            }
             admin.getItemsByStoreRanked(desc);
 
         }
 
+    }
+
+    private boolean checkStoreSet() {
+        if (admin.getStore() == null) {
+            System.out.println("Please use \"store set <id>\" to use this command.");
+            return false;
+        }
+        return true;
     }
 
     @Override

@@ -17,6 +17,7 @@ public abstract class User {
     private final String STORE_BY_TIME_QUERY = "SELECT * FROM Store WHERE openTime >= ? AND closeTime <= ?";
     private final String STORE_BY_STATE_QUERY = "SELECT * FROM Store WHERE state = ?";
     private final String GET_PRODUCT_FROM_NAME = "SELECT * FROM Product WHERE name = ?";
+    private final String GET_PRODUCT_FROM_UPC= "SELECT * FROM Product WHERE upc = ?";
     private final String GET_PRODUCTS_FROM_STORE = "SELECT product.* FROM product JOIN soldBy ON " +
             "soldBy.productid = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
     private final String STORE_BY_PRODUCT_QUERY = "SELECT * FROM Store WHERE id IN (SELECT storeID FROM " +
@@ -207,6 +208,23 @@ public abstract class User {
             }
         } catch (SQLException e){
             System.out.println("Error in createProductFromName");
+            return null;
+        }
+    }
+
+    public Product createProductFromUPC(String upc){
+        try{
+            PreparedStatement stmt = getCon().prepareStatement(GET_PRODUCT_FROM_UPC);
+            stmt.setString(1, upc);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return new Product(rs.getString("name"), rs.getString("brand"), rs.getString("upc"), rs.getDouble(6));
+            }else{
+                System.out.println("That product does not exist!");
+                return null;
+            }
+        } catch (SQLException e){
+            System.out.println("Error in createProductFromUPC");
             return null;
         }
     }
