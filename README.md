@@ -200,3 +200,19 @@ Get all the unfulfilled ordered
  ```sql
     INSERT INTO Reorder (orderNumber, product, store, stockRequested) VALUES (?, ?, ?, ?)
  ```
+ 
+#### Customer Specific
+> Queries used by a customer to interact with the shopping application mostly used for verification
+> all the customer funcitonailty is retained by the "Both Users" section
+
+
+Check if a phone number is used in the database by a customer
+```sql
+    SELECT phonenumber FROM customer WHERE phonenumber = ?
+```
+
+Get the name for a phone number
+```sql
+    SELECT firstname, lastname FROM customer WHERE phonenumber = ?
+```
+

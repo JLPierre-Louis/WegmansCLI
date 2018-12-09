@@ -21,7 +21,6 @@ public class Customer extends User {
     private final int FIRST = 1;
     private final int LAST = 2;
     private final String STORE_BY_ID_QUERY = "SELECT * FROM Store WHERE id = ?";
-
     private final String PHONE_NUMBER_CHECK = "SELECT phonenumber FROM customer WHERE phonenumber = ?";
     private final String GET_NAME_BY_PHONE = "SELECT firstname, lastname FROM customer WHERE phonenumber = ?";
 
