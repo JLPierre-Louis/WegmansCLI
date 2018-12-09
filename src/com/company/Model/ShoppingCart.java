@@ -149,9 +149,12 @@ public class ShoppingCart {
     }
 
     public void printCart() {
+        System.out.println("+-----------------------------+");
+        System.out.println(String.format("| %-12s | %-12s |", "Product", "Quantity"));
         for(String product : currentItems.keySet() ) {
-            System.out.println(product + " : " + currentItems.get(product));
+            System.out.println(String.format("| %-12s | %-12s |", product, currentItems.get(product)));
         }
+        System.out.println("+-----------------------------+");
     }
 
 }
