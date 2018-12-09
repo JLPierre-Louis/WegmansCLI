@@ -51,10 +51,11 @@ browse     allows the user to browse wegmans inventory
    -t, --type=<type>                                  the type of product you want to search for
 ```
 
-### SQL Queries
+SQL Queries
+===========
 
-##### All Users
-> These queries can be used by both customers and admins to accomplish the same tasks.
+#### All Users
+> These queries can be used by both customers and admins
 
 Find a store by an id
 ```sql
@@ -107,7 +108,7 @@ SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHER
 ```
 
 Find all products in a store that are of a certain type
-``ostgresql
+```postgresql
 SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC
 ```
 
