@@ -147,15 +147,19 @@ public class Store {
 
     public static void printDatabaseResults(ResultSet rs) {
         ArrayList<Store> stores = returnListOfStores(rs);
+        System.out.println("+------------------------------------------------------------------------+");
+        System.out.println(String.format("| %-7s | %-12s | %-25s | %-7s | %-7s |", "ID", "State", "Address", "Opening", "Closing"));
         for (Store s: stores) {
             System.out.println(s);
         }
+        System.out.println("+------------------------------------------------------------------------+");
     }
 
 
 
     @Override
     public String toString() {
-        return getId() + ": " + getAddress() + ", " + getState();
+        // return getId() + ": " + getAddress() + ", " + getState();
+        return String.format("| %-7s | %-12s | %-25s | %-7s | %-7s |", getId(), getState(), getAddress(), getOpenTime(), getCloseTime());
     }
 }
