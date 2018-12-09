@@ -134,44 +134,6 @@ public class Customer extends User {
             .addSubcommand("synopsis", new CustomerSynopsis());
     }
 
-    /*
-
-    // I wrote this and then realized I think it's kind of redundant because of the ranking by total amount sold.
-    // I'll probably delete these later.
-
-    public void getTotalItemSales(boolean DESC){
-        try{
-            PreparedStatement stmt;
-            if(DESC){
-                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC + " DESC");
-            }else{
-                stmt = this.getCon().prepareStatement(GET_PRODUCT_RANKING_BY_STORE_ASC);
-            }
-            stmt.setString(1, this.getStore().getId());
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            String productUPC;
-            if(DESC){
-                System.out.println("The 3 best-selling items are:");
-            }else{
-                System.out.println("The 3 worst-selling items are:");
-            }
-            for(int i = 0; i < 3; i++){
-                productUPC = rs.getString(1);
-                Product p = createProductFromName(productUPC);
-                System.out.println(p.getName());
-                rs.next();
-            }
-        } catch (SQLException e){
-            System.out.println("Error getting popular items.");
-            e.printStackTrace();
-        }
-    }
-
-    */
-
-
-
     public void removeItemFromCart(String itemName, int number) {
         if (!checkStoreSet()) return;
         shoppingCart.removeItem(itemName, number);

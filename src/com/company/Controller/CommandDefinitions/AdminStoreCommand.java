@@ -76,10 +76,7 @@ public class AdminStoreCommand implements Runnable{
 
     @Command(name = "fulfill-reorder", description = "fulfull a store's need for an item")
     void fulfullReorder(
-        @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
-        @Parameters(index = "0", paramLabel = "<store-id>") String id,
-        @Parameters(index = "1", paramLabel = "<product-name>") String productName,
-        @Parameters(index = "2", paramLabel = "<quantity>") int quantity)
+        @Option(names = {"-h", "--help"}, usageHelp = true) boolean help)
     {
         admin.fulfillReorders();
     }

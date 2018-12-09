@@ -1,11 +1,9 @@
 package com.company.Controller;
 
-import com.company.Controller.CommandDefinitions.*;
 import com.company.Model.Admin;
 import com.company.Model.Customer;
 import com.company.Model.User;
 import com.company.Model.User.UserType;
-import java.sql.SQLException;
 import java.util.Scanner;
 import picocli.CommandLine.MissingParameterException;
 import picocli.CommandLine.Model.ArgSpec;

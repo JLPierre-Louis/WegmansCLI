@@ -10,10 +10,11 @@ public class Vendor {
         this.homeState = homeState;
     }
 
-    public void fulfillReorder(Store store, Product product, int num) {
-
+    public String getHomeState() {
+        return homeState;
     }
 
-
-
+    public String getName() {
+        return name;
+    }
 }

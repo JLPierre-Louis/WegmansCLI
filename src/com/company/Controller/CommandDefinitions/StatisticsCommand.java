@@ -63,7 +63,7 @@ public class StatisticsCommand implements Runnable{
         if(all) {
             admin.getItemsRanked(desc);
         } else {
-            if(!checkStoreSet()) {
+            if(!admin.checkStoreSet()) {
                 System.out.print(" Or use \"--all\" to show products across all stores");
                 return;
             }
@@ -71,14 +71,6 @@ public class StatisticsCommand implements Runnable{
 
         }
 
-    }
-
-    private boolean checkStoreSet() {
-        if (admin.getStore() == null) {
-            System.out.println("Please use \"store set <id>\" to use this command.");
-            return false;
-        }
-        return true;
     }
 
     @Override
