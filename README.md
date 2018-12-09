@@ -1,6 +1,7 @@
 # WegmansCLI
 
 ### Admin Command Synopsis
+==========================
 ```
 help    Displays help information about the specified command
 quit    quit the application
@@ -27,6 +28,7 @@ statistics, stats  get statistics about how wegmans2 is doing
 ```
 
 ### Customer Command Synopsis
+=============================
 
 ```
 help    Displays help information about the specified command
@@ -48,4 +50,71 @@ browse     allows the user to browse wegmans inventory
    -n, --name=<name>                                  search a product by name
    -r, --price-range=<start>=<end>[|<start>=<end>...] A int between 0000-2400 representing 24-hr time
    -t, --type=<type>                                  the type of product you want to search for
+```
+
+### SQL Queries
+
+##### All Users
+> These queries can be used by both customers and admins to accomplish the same tasks.
+
+Find a store by an id
+```postgresql
+SELECT * FROM Store WHERE id = ?
+```
+
+Find all stores that are open between a start time and an end time
+```postgresql
+SELECT * FROM Store WHERE openTime >= ? AND closeTime <= ?
+```
+
+Find all stores in a given state
+```postgresql
+SELECT * FROM Store WHERE state = ?
+```
+
+Get all stores that carry a specific product
+```postgresql
+SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))
+```
+
+Get all products with a given name
+```postgresql
+SELECT * FROM Product WHERE name = ?
+```
+
+Get a product with a specific UPC
+```postgresql
+SELECT * FROM Product WHERE upc = ?
+```
+
+Find all products in a given store with a certain name
+```postgresql
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.name = ? ORDER BY product.name ASC
+```
+
+Find all products in a given store within a certain price range
+```postgresql
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY product.name ASC
+```
+
+Find all products within a certain range and are of a certain type (i.e Snack)
+```postgresql
+    private final String PRODUCT_BY_PRICE_AND_TYPE = "SELECT product.* FROM Product JOIN soldBy ON" +
+            " soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND " +
+            "type = ? ORDER BY product.name ASC";
+```
+
+Find all products in a store that are of a certain brand
+```postgresql
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?
+```
+
+Find all products in a store that are of a certain type
+```postgresql
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC
+```
+
+Find all products in a store
+```postgresql
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC
 ```
