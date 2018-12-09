@@ -91,7 +91,6 @@ public class AdminStoreCommand implements Runnable{
         @Option(names = {"-u", "--upc"}, defaultValue = "", description = "set a price by upc") String upc,
         @Parameters double price)
     {
-        if(!checkStoreSet()) return;
         if(!checkExclusive(name, upc)) return;
 
         if (!name.isEmpty()) {
@@ -107,7 +106,6 @@ public class AdminStoreCommand implements Runnable{
         @Option(names = {"-n", "--name"}, defaultValue = "", description = "set a price by name") String name,
         @Option(names = {"-u", "--upc"}, defaultValue = "", description = "set a price by upc") String upc)
     {
-        if(!checkStoreSet()) return;
         if(!checkExclusive(name, upc)) return;
 
         if (!name.isEmpty()) {
@@ -123,7 +121,6 @@ public class AdminStoreCommand implements Runnable{
         @Option(names = {"-n", "--name"}, defaultValue = "", description = "set a price by name") String name,
         @Option(names = {"-u", "--upc"}, defaultValue = "", description = "set a price by upc") String upc)
     {
-        if(!checkStoreSet()) return;
         if(!checkExclusive(name, upc)) return;
 
         if (!name.isEmpty()) {
@@ -135,26 +132,22 @@ public class AdminStoreCommand implements Runnable{
 
     @Command(name = "remove-location", description = "remove a store from the wegmans2 chain")
     void removeStore(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help, @Parameters String storeid) {
-        if(!checkStoreSet()) return;
         admin.dropStore(storeid);
     }
 
 
     @Command(name = "view-inventory", description = "view your current store's inventory")
     void viewInventory(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help) {
-        if(!checkStoreSet()) return;
         admin.getStoreInventory();
     }
 
     @Command(name = "view-vendors", description = "view vendors for your current store")
     void viewVendors(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help) {
-        if(!checkStoreSet()) return;
         admin.viewAllVendorNames();
     }
 
     @Command(name = "view-brands", description = "view brands for your current store")
     void viewBrands(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help) {
-        if(!checkStoreSet()) return;
         admin.viewAllBrandNames();
     }
 
@@ -168,14 +161,6 @@ public class AdminStoreCommand implements Runnable{
         } else {
             return true;
         }
-    }
-
-    private boolean checkStoreSet() {
-        if (admin.getStore() == null) {
-            System.out.println("Please use \"store set <id>\" to use this command.");
-            return false;
-        }
-        return true;
     }
 
     @Override

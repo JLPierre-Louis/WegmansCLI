@@ -187,6 +187,7 @@ public class Admin extends User {
     }
 
     public void removeProductFromStorebyName(String name){
+        if (!checkStoreSet()) return;
         Product p = createProductFromName(name);
         try {
             PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
@@ -201,6 +202,7 @@ public class Admin extends User {
     }
 
     public void removeProductFromStoreByUPC(String upc){
+        if (!checkStoreSet()) return;
         try {
             PreparedStatement stmt = this.getCon().prepareStatement(REMOVE_FROM_STORE);
             stmt.setString(1, store.getId());
@@ -214,6 +216,7 @@ public class Admin extends User {
     }
 
     public void addProductToStoreByName(String name){
+        if (!checkStoreSet()) return;
         Product p = createProductFromName(name);
         try {
             PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
@@ -228,6 +231,7 @@ public class Admin extends User {
     }
 
     public void addProductToStoreByUPC(String upc) {
+        if (!checkStoreSet()) return;
         try {
             PreparedStatement stmt = this.getCon().prepareStatement(ADD_TO_STORE);
             stmt.setString(1, store.getId());
@@ -285,6 +289,7 @@ public class Admin extends User {
     }
 
     public void getStoreInventory(){
+        if (!checkStoreSet()) return;
         try{
             PreparedStatement stmt = this.getCon().prepareStatement(GET_STORE_INVENTORY);
             stmt.setString(1, getStore().getId());
@@ -302,6 +307,7 @@ public class Admin extends User {
     }
 
     public void viewAllVendorNames() {
+        if (!checkStoreSet()) return;
         try{
             PreparedStatement stmt = this.getCon().prepareStatement(GET_VENDOR_FROM_STORE);
             stmt.setString(1, this.getStore().getId());
@@ -317,6 +323,7 @@ public class Admin extends User {
     }
 
     public void viewAllBrandNames() {
+        if (!checkStoreSet()) return;
         try{
             PreparedStatement stmt = this.getCon().prepareStatement(GET_BRANDS_FROM_STORE);
             stmt.setString(1, this.getStore().getId());

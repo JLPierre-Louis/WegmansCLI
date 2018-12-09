@@ -29,7 +29,7 @@ public class CartCommand implements Runnable {
         @Option(names = {"-p", "--price"}, defaultValue = "true", description = "Only show total price of items in your cart") Boolean price,
         @Option(names = {"-i", "--items"}, defaultValue = "true", description = "Only show items in your cart") Boolean items)
     {
-        if (!checkStoreSet()) return;
+        if (!customer.checkStoreSet()) return;
         if(price) {
             customer.printCartItems();
         }
@@ -44,7 +44,7 @@ public class CartCommand implements Runnable {
         @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
-        if (!checkStoreSet()) return;
+        if (!customer.checkStoreSet()) return;
         if(!name.isEmpty()) {
             if(customer.addItemToCart(name, count)){
                 System.out.println(count + " " + name + "(s) added to your cart.");
@@ -60,7 +60,7 @@ public class CartCommand implements Runnable {
         @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
-        if (!checkStoreSet()) return;
+        if (!customer.checkStoreSet()) return;
         if(!name.isEmpty()) {
             customer.removeItemFromCart(name, count);
         }
@@ -70,16 +70,8 @@ public class CartCommand implements Runnable {
     @Command(name = "checkout", description = "finalize your purchase")
     void checkout(@Option(names = {"-h","--help"}, usageHelp = true) boolean help)
     {
-        if (!checkStoreSet()) return;
+        if (!customer.checkStoreSet()) return;
         customer.checkout();
-    }
-
-    private boolean checkStoreSet() {
-        if (customer.getStore() == null) {
-            System.out.println("Please use \"store set <id>\" to use this command.");
-            return false;
-        }
-        return true;
     }
 
     @Override

@@ -173,25 +173,25 @@ public class Customer extends User {
 
 
     public void removeItemFromCart(String itemName, int number) {
+        if (!checkStoreSet()) return;
         shoppingCart.removeItem(itemName, number);
     }
 
     public void getCartTotal(){
+        if (!checkStoreSet()) return;
         double total = shoppingCart.getTotal();
         String tot = String.format("$%.02f", total);
         System.out.println(tot);
     }
 
     public void printCartItems() {
+        if (!checkStoreSet()) return;
         this.getShoppingCart().printCart();
     }
 
     public void checkout() {
-        if (this.getStore() == null) {
-            System.out.println("No store selected, please select a store before continuing.");
-        } else {
-            this.shoppingCart.checkout();
-            System.out.println("Thank you for your purchase!");
-        }
+        if (!checkStoreSet()) return;
+        this.shoppingCart.checkout();
+        System.out.println("Thank you for your purchase!");
     }
 }
