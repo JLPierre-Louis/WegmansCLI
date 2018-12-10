@@ -3,3 +3,5 @@ WegmansCLI.iml
 .idea
 .class
 out/
+
+!out/artifacts/WegmansCLI_jar/*
