@@ -351,8 +351,9 @@ public class Admin extends User {
             String first = rs.getString(2);
             String last = rs.getString(3);
             Double sold = rs.getDouble(4);
+            String formattedSold = String.format("%.2f", sold);
             System.out.println("Customer " + phone + ", " + first + " " + last + " is the most valuable " +
-                    "customer, with a total purchase amount of $" + sold + ". Good job!" );
+                    "customer, \nwith a total purchase amount of $" + formattedSold + ". Good job!" );
         } catch (SQLException e){
             System.out.println("Error retrieving customer MVP");
             e.printStackTrace();

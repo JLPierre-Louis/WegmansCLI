@@ -26,18 +26,21 @@ public class AdminSynopsis implements Runnable{
                 "   set     <id>                                set your current store",
                 "   show                                        show your current store",
                 "browse     allows the user to browse wegmans inventory",
-                "   -b, --brand=<brand>   query by brand name",
-                "   -n, --name=<name>     search a product by name",
-                "   -r, --price-range=<start>=<end>[|<start>=<end>...] A double representing 24-hr time",
-                "   -t, --type=<type>     the type of product you want to search for",
+                "   -b, --brand=<brand>                                 query by brand name",
+                "   -n, --name=<name>                                   search a product by name",
+                "   -r, --price-range=<start>=<end>[|<start>=<end>...]  A double representing 24-hr time",
+                "   -t, --type=<type>                                   the type of product you want to search for",
                 "statistics, stats  get statistics about how wegmans2 is doing",
                 "   customer-mvp  gets the customer who has spent the most money",
                 "   item-sales    get first 3 best or worst items sold",
-                "           --rank=TOP|BOT   either display the top or bottom three items",
-                "       -a, --all            search all store's best/worst items",
+                "           --rank=TOP|BOT                              either display the top or bottom three items",
+                "       -a, --all                                       search all store's best/worst items",
                 "   store-sales   gets the customer who has spent the most money",
-                "         --rank=TOP|BOT         display top or bottom store in sales",
-                "       -s, --state=<state_abbr>   narrow sales search to a specific state"
+                "         --rank=TOP|BOT                                display top or bottom store in sales",
+                "       -s, --state=<state_abbr>                        narrow sales search to a specific state",
+                "update     update certain aspects of the database",
+                "   add-customer <firstname> <lastname> <phonenumber>   add a customer to the database",
+                "   remove-customer <phonenumber>   remove a customer from the database"
             };
 
             for(String s : synopsis) {

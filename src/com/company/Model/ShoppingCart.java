@@ -143,6 +143,7 @@ public class ShoppingCart {
                 stmt.executeUpdate();
 
             }
+            currentItems.clear();
         } catch (SQLException e){
             e.printStackTrace();
         }

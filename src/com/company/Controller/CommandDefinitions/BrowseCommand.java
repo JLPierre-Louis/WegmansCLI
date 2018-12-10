@@ -22,7 +22,7 @@ public class BrowseCommand implements Runnable{
     @Option(names = {"-n", "--name"}, defaultValue = "", description = "search a product by name")
     String name;
 
-    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "A double representing 24-hr time")
+    @Option(names = {"-r", "--price-range"}, split = "\\|", paramLabel = "<start>=<end>", description = "A list of key=value pairs in form <XX.XX>=<XX.XX>")
     Map<Double, Double> priceRanges = new HashMap<>();
 
     @Option(names = {"-t", "--type"}, defaultValue = "", description = "the type of product you want to search for")
