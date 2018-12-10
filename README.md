@@ -6,6 +6,13 @@
 - Jarod Godlewski
 - Spencer Lowitt
 
+### Instructions to Run
+1. Download Source Code
+2. Download and install Java JDK (we used this [one](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
+3. Navigate to ```out/artifacts/WegmansCLI_jar```
+4. Run ```java -jar WegmansCLI.jar```
+
+
 Admin Command Synopsis
 ======================
 ```
