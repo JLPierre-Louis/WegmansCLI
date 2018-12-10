@@ -90,6 +90,7 @@ public abstract class User {
             rs = stmt.executeQuery();
         } catch (SQLException e){
             System.out.println("SQL ERROR: Couldn't set main store.");
+            System.out.println(e.getMessage());
         }
 
         // get the store the user wants to set as their main store
@@ -127,7 +128,8 @@ public abstract class User {
             stmt.setString(1, state);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query by state");
+            System.out.println(e.getMessage());
         }
         Store.printDatabaseResults(rs);
     }
@@ -145,7 +147,8 @@ public abstract class User {
             stmt.setString(1, id);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query by id");
+            System.out.println(e.getMessage());
         }
         Store.printDatabaseResults(rs);
     }
@@ -163,7 +166,8 @@ public abstract class User {
             stmt.setString(1, productName);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query by product");
+            System.out.println(e.getMessage());
         }
         Store.printDatabaseResults(rs);
     }
@@ -177,7 +181,8 @@ public abstract class User {
             stmt.setInt(2, end);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query by time");
+            System.out.println(e.getMessage());
         }
         Store.printDatabaseResults(rs);
     }
@@ -200,6 +205,8 @@ public abstract class User {
             }
         } catch (SQLException e){
             System.out.println("Error in createProductFromName");
+            System.out.println("SQL Error in trying to query by time");
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -217,6 +224,7 @@ public abstract class User {
             }
         } catch (SQLException e){
             System.out.println("Error in createProductFromUPC");
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -236,7 +244,8 @@ public abstract class User {
             stmt.setString(2, name);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query product by name");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }
@@ -257,7 +266,8 @@ public abstract class User {
             stmt.setDouble(3, end);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query product by price range");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }
@@ -280,7 +290,8 @@ public abstract class User {
             stmt.setString(4, type);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query product by price range and type");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }
@@ -298,7 +309,8 @@ public abstract class User {
             stmt.setString(2, brand);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query product by brand");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }
@@ -312,7 +324,8 @@ public abstract class User {
             stmt.setString(2, type);
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query product by type");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }
@@ -325,7 +338,8 @@ public abstract class User {
             stmt.setString(1, store.getId());
             rs = stmt.executeQuery();
         } catch (SQLException e){
-            e.printStackTrace();
+            System.out.println("SQL Error in trying to query all products");
+            System.out.println(e.getMessage());
         }
         Product.printDatabaseResults(rs);
     }

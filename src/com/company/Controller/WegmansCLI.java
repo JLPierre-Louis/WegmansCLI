@@ -53,7 +53,6 @@ public class WegmansCLI {
                 }
             } catch (ParameterException e) {
                 System.out.println("Incorrect Parameters. \n" + e.getCommandLine().getUsageMessage());
-                e.printStackTrace();
             }
         }
     }

@@ -44,6 +44,7 @@ public class Customer extends User {
             rs = stmt.executeQuery();
         } catch (SQLException e){
             System.out.println("SQL ERROR: Couldn't set main store.");
+            System.out.println(e.getMessage());
         }
 
         // get the store the user wants to set as their main store
@@ -87,7 +88,7 @@ public class Customer extends User {
             lastname = rs.getString(LAST);
         } catch (SQLException e){
             System.out.println("SQL Error in setNames");
-            System.exit(1);
+            System.out.println(e.getMessage());
         }
 
     }

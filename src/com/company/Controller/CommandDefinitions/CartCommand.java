@@ -41,7 +41,7 @@ public class CartCommand implements Runnable {
     @Command(name = "add", description = "Add an item to your cart")
     void add(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
+        @Parameters(paramLabel = "<item_name>", description = "Add product by name. Multiple word items must be surrounded by \"\"") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
         if (!customer.checkStoreSet()) return;
@@ -57,7 +57,7 @@ public class CartCommand implements Runnable {
     @Command(name = "remove", description = "remove an item from your cart")
     void remove(
         @Option(names = {"-h","--help"}, usageHelp = true) boolean help,
-        @Parameters(paramLabel = "<item_name>", description = "Add product by name") String name,
+        @Parameters(paramLabel = "<item_name>", description = "Add product by name. Multiple word items must be surrounded by \"\"") String name,
         @Parameters(paramLabel = "<count>", defaultValue = "1", description = "Number of items to add") int count)
     {
         if (!customer.checkStoreSet()) return;

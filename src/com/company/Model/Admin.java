@@ -120,7 +120,7 @@ public class Admin extends User {
 
         } catch (SQLException e){
             System.out.println("Error submitting reorder: Be sure to check your inputs are correct.");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -153,8 +153,8 @@ public class Admin extends User {
                     stmt.executeUpdate();
                 }while (rs.next()); }
         } catch (SQLException e){
-            System.out.println("Error while fulfilling reorder");
-            e.printStackTrace();
+            System.out.println("SQL Error while fulfilling reorder");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -167,7 +167,8 @@ public class Admin extends User {
             int rs = stmt.executeUpdate();
             System.out.println(String.format("%s now costs $%f.", upc, price));
         } catch (SQLException e){
-            System.out.println("Error: updatingPrice for upc: " + upc);
+            System.out.println("SQL Error: updatingPrice for upc: " + upc);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -181,8 +182,8 @@ public class Admin extends User {
             int rs = stmt.executeUpdate();
             System.out.println(String.format("%s now costs $%f.", name, price));
         } catch (SQLException e){
-            System.out.println("Error: updatingPrice for " + name);
-            e.printStackTrace();
+            System.out.println("SQL Error: updatingPrice for " + name);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -196,8 +197,8 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Store " + store.getId() + " no longer carries " + name);
         } catch (SQLException e){
-            System.out.println("Error while removing product from store.");
-            e.printStackTrace();
+            System.out.println("SQL Error while removing product from store.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -212,6 +213,7 @@ public class Admin extends User {
         } catch (SQLException e){
             System.out.println("Error while removing product from store.");
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -225,8 +227,8 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Store " + store.getId() + " now carries " + name);
         } catch (SQLException e){
-            System.out.println("Error while adding product to store.");
-            e.printStackTrace();
+            System.out.println("SQL Error while adding product to store.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -239,8 +241,8 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Store " + store.getId() + " now carries " + upc);
         } catch (SQLException e) {
-            System.out.println("Error while removing product from store.");
-            e.printStackTrace();
+            System.out.println("SQL Error while removing product from store.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -251,8 +253,8 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Customer " + phone + " removed from database.");
         } catch (SQLException e){
-            System.out.println("Error removing customer from database");
-            e.printStackTrace();
+            System.out.println("SQL Error removing customer from database");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -263,8 +265,8 @@ public class Admin extends User {
             stmt.executeUpdate();
             System.out.println("Store " + storeID + " removed from database.");
         } catch (SQLException e){
-            System.out.println("Error removing Store from database");
-            e.printStackTrace();
+            System.out.println("SQL Error removing Store from database");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -284,7 +286,8 @@ public class Admin extends User {
                 System.out.println("Customer " + firstName + " " + lastName + " successfully added to database.");
             }
         } catch (SQLException e){
-            System.out.println("Error adding user");
+            System.out.println("SQL Error adding user");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -302,7 +305,8 @@ public class Admin extends User {
             }
             System.out.println("-------------------------------------------------");
         } catch (SQLException e){
-            System.out.println("Error getting store inventory.");
+            System.out.println("SQL Error getting store inventory.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -317,8 +321,8 @@ public class Admin extends User {
                 System.out.println(rs.getString(1));
             }
         } catch (SQLException e){
-            System.out.println("Error retrieving vendor names");
-            e.printStackTrace();
+            System.out.println("SQL Error retrieving vendor names");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -333,8 +337,8 @@ public class Admin extends User {
                 System.out.println(rs.getString(1));
             }
         } catch (SQLException e){
-            System.out.println("Error retrieving brand names");
-            e.printStackTrace();
+            System.out.println("SQL Error retrieving brand names");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -355,8 +359,8 @@ public class Admin extends User {
             System.out.println("Customer " + phone + ", " + first + " " + last + " is the most valuable " +
                     "customer, \nwith a total purchase amount of $" + formattedSold + ". Good job!" );
         } catch (SQLException e){
-            System.out.println("Error retrieving customer MVP");
-            e.printStackTrace();
+            System.out.println("SQL Error retrieving customer MVP");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -383,8 +387,8 @@ public class Admin extends User {
                 rs.next();
             }
         } catch (SQLException e){
-            System.out.println("Error getting popular items.");
-            e.printStackTrace();
+            System.out.println("SQL Error getting popular items.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -412,8 +416,8 @@ public class Admin extends User {
                 rs.next();
             }
         } catch (SQLException e){
-            System.out.println("Error getting popular items.");
-            e.printStackTrace();
+            System.out.println("SQL Error getting popular items.");
+            System.out.println(e.getMessage());
         }
     }
 
@@ -435,8 +439,8 @@ public class Admin extends User {
                 System.out.println("The worst selling store is store number " + storeID + ", at " + address + ".");
             }
         } catch (SQLException e){
-            System.out.println("Error getting store sales.");
-            e.printStackTrace();
+            System.out.println("SQL Error getting store sales.");
+            System.out.println(e.getMessage());
         }
     }
 
