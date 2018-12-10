@@ -72,7 +72,7 @@ browse     allows the user to browse wegmans inventory
 SQL Queries
 ===========
 
-#### All Users
+### All Users
 > These queries can be used by both customers and admins
 
 Find a store by an id
@@ -150,7 +150,7 @@ WHERE soldBy.storeId = ? ORDER BY product.name ASC
 ```
 
  
-#### Admin Specific
+### Admin Specific
 > These queries can be used by an administrator to modifiy the database or gather statistics from the database
 
 Update the price of a specific item
@@ -287,7 +287,7 @@ Get all the unfulfilled ordered
     ORDER BY sum
  ```
  
-#### Customer Specific
+### Customer Specific
 > Queries used by a customer to interact with the shopping application mostly used for verification
 > all the customer funcitonailty is retained by the "Both Users" section
 
