@@ -232,6 +232,43 @@ Get all the unfulfilled ordered
     INSERT INTO Reorder (orderNumber, product, store, stockRequested) VALUES (?, ?, ?, ?)
  ```
  
+ Get the ranking of the most sold items across all stores
+ ```sql
+    SELECT product, SUM(numbersold) FROM orders GROUP BY product ORDER BY sum
+ ```
+ 
+ Get the ranking of most sold items for an individual store
+ ```sql
+    SELECT product, SUM(numbersold) FROM orders WHERE store = ? GROUP BY product ORDER BY sum
+ ```
+ 
+ Get the customer that has spent the most money (the MVP)
+ ```sql
+    SELECT orders.customer, customer.firstname, customer.lastname, SUM(orders.numbersold * product.price)
+    FROM orders JOIN product ON product.upc = orders.product
+        JOIN customer ON orders.customer = customer.phonenumber 
+    GROUP BY orders.customer, customer.firstname, customer.lastname 
+    ORDER BY sum DESC
+ ```
+ 
+ Get all the stores ordered by who has earned the most money
+ ```sql
+    SELECT orders.store, store.address, SUM(orders.numbersold * product.price) 
+    FROM orders JOIN product ON product.upc = orders.product
+        JOIN store ON store.id = orders.store 
+    GROUP BY orders.store, store.address ORDER BY sum
+ ```
+ 
+ Get all the stores ordered by who has earned the most money for a given state
+ ```sql
+    SELECT orders.store, store.address, SUM(orders.numbersold * product.price) 
+    FROM orders JOIN product ON product.upc = orders.product 
+        JOIN store ON store.id = orders.store 
+    WHERE store.state = ?
+    GROUP BY orders.store, store.address 
+    ORDER BY sum
+ ```
+ 
 #### Customer Specific
 > Queries used by a customer to interact with the shopping application mostly used for verification
 > all the customer funcitonailty is retained by the "Both Users" section
