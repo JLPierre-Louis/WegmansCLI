@@ -74,7 +74,8 @@ SELECT * FROM Store WHERE state = ?
 
 Get all stores that carry a specific product
 ```sql
-SELECT * FROM Store WHERE id IN (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))
+SELECT * FROM Store WHERE id IN 
+  (SELECT storeID FROM soldBy WHERE productid IN (SELECT upc FROM Product WHERE name = ?))
 ```
 
 Get all products with a given name
@@ -89,32 +90,45 @@ SELECT * FROM Product WHERE upc = ?
 
 Find all products in a given store with a certain name
 ```sql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.name = ? ORDER BY product.name ASC
+SELECT product.* 
+FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? AND product.name = ? ORDER BY product.name ASC
 ```
 
 Find all products in a given store within a certain price range
 ```sql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? ORDER BY product.name ASC
+SELECT product.* 
+FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? AND product.price > ? AND price < ? 
+ORDER BY product.name ASC
 ```
 
 Find all products within a certain range and are of a certain type (i.e Snack)
 ```sql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND type = ? ORDER BY product.name ASC
+SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? AND product.price > ? AND price < ? AND type = ? 
+ORDER BY product.name ASC
 ```
 
 Find all products in a store that are of a certain brand
 ```sql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND brand = ?
+SELECT product.* 
+FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? AND brand = ?
 ```
 
 Find all products in a store that are of a certain type
-```postgresql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC
+```sql
+SELECT product.* 
+FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? AND type = ? ORDER BY product.name ASC
 ```
 
 Find all products in a store
 ```sql
-SELECT product.* FROM Product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC
+SELECT product.* 
+FROM Product JOIN soldBy ON soldBy.productId = product.upc 
+WHERE soldBy.storeId = ? ORDER BY product.name ASC
 ```
 
  
@@ -173,27 +187,44 @@ Get all the unfulfilled ordered
  
  Update the stock of an item in a certain store based on a reorder
  ```sql
-    UPDATE soldBy SET numberInStock = ((SELECT stockRequested FROM reorder WHERE store = ? AND product = ?) + (SELECT numberInStock FROM soldBy WHERE storeId = ? AND productId = ?)) WHERE storeId = ? AND productId = ?
+    UPDATE soldBy 
+    SET numberInStock = 
+      ((SELECT stockRequested FROM reorder WHERE store = ? AND product = ?) 
+      + (SELECT numberInStock FROM soldBy WHERE storeId = ? AND productId = ?)) 
+    WHERE storeId = ? AND productId = ?
  ```
  
  Update the reorder table
  ```sql
-    UPDATE reorder SET deliveryDate = ?, fulfilledBy = (SELECT distributedBy.vendor FROM distributedBy JOIN Product ON distributedBy.brand = product.brand WHERE product.upc = ?) WHERE orderNumber = ?
+    UPDATE reorder 
+    SET deliveryDate = ?, fulfilledBy = 
+      (SELECT distributedBy.vendor 
+       FROM distributedBy JOIN Product ON distributedBy.brand = product.brand 
+       WHERE product.upc = ?) 
+    WHERE orderNumber = ?
  ```
  
  Get all the brands from a specific store
  ```sql
-    SELECT DISTINCT Product.brand FROM product JOIN soldBy ON soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY Product.brand ASC
+    SELECT DISTINCT Product.brand 
+    FROM product JOIN soldBy ON soldBy.productId = product.upc 
+    WHERE soldBy.storeId = ? ORDER BY Product.brand ASC
  ```
  
  Get all the vendors from a specific store
  ```sql
-    SELECT DISTINCT distributedBy.vendor FROM product JOIN soldBy ON soldBy.productId = product.upc JOIN distributedBy ON product.brand = distributedBy.brand WHERE soldBy.storeId = ? ORDER BY distributedBy.vendor
+    SELECT DISTINCT distributedBy.vendor 
+    FROM product JOIN soldBy ON soldBy.productId = product.upc 
+      JOIN distributedBy ON product.brand = distributedBy.brand 
+    WHERE soldBy.storeId = ? ORDER BY distributedBy.vendor
  ```
  
  Get the inventory from a specific store
  ```sql
-    SELECT product.name, product.upc, soldBy.numberInStock FROM product JOIN soldby ON product.upc = soldBy.productId WHERE soldBy.storeId = ? ORDER BY product.name ASC
+    SELECT product.name, product.upc, soldBy.numberInStock 
+    FROM product JOIN soldby ON product.upc = soldBy.productId 
+    WHERE soldBy.storeId = ? 
+    ORDER BY product.name ASC
  ```
  
  Create a reorder request
