@@ -35,6 +35,12 @@ public class UpdateCommand implements Runnable{
         admin.removeCustomer(phonenumber);
     }
 
+    @Command(name = "remove-location", description = "remove a store from the wegmans2 chain")
+    void removeStore(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
+        @Parameters(paramLabel = "<store-id>") String storeid) {
+        admin.dropStore(storeid);
+    }
+
     @Override
     public void run() {
 

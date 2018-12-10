@@ -25,6 +25,14 @@ public class AdminSynopsis implements Runnable{
                 "       -t, --times=<start>=<end>[|<start>=<end>...] 4-digit number representing 24-hr time",
                 "   set     <id>                                set your current store",
                 "   show                                        show your current store",
+                "   view-brands      view brands for your current store",
+                "   view-inventory   view your current store's inventory",
+                "   view-vendors     view vendors for your current store",
+                "   update-price  <price>   update a price for the entire wegmans2 chain",
+                "       -u, --upc=<upc>    set a price by upc",
+                "       -n, --name=<name>   set a price by name",
+                "   request-reorder <store-id> <product-name> <quantity> request a reorder for an item in a store",
+                "   fulfill-reorder  fulfill a store's need for an item",
                 "browse     allows the user to browse wegmans inventory",
                 "   -b, --brand=<brand>                                 query by brand name",
                 "   -n, --name=<name>                                   search a product by name",
@@ -40,7 +48,8 @@ public class AdminSynopsis implements Runnable{
                 "       -s, --state=<state_abbr>                        narrow sales search to a specific state",
                 "update     update certain aspects of the database",
                 "   add-customer <firstname> <lastname> <phonenumber>   add a customer to the database",
-                "   remove-customer <phonenumber>   remove a customer from the database"
+                "   remove-customer <phonenumber>   remove a customer from the database",
+                "   remove-location <store-id>      remove a store from the database"
             };
 
             for(String s : synopsis) {

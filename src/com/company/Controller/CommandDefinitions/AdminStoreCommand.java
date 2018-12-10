@@ -84,9 +84,9 @@ public class AdminStoreCommand implements Runnable{
     @Command(name = "update-price", description = "update a price for the entire wegmans2 chain")
     void updatePrice(
         @Option(names = {"-h", "--help"}, usageHelp = true) boolean help,
-        @Option(names = {"-n", "--name"}, defaultValue = "", description = "set a price by name") String name,
-        @Option(names = {"-u", "--upc"}, defaultValue = "", description = "set a price by upc") String upc,
-        @Parameters double price)
+        @Option(names = {"-n", "--name"}, defaultValue = "", paramLabel = "<name>", description = "set a price by name") String name,
+        @Option(names = {"-u", "--upc"}, defaultValue = "", paramLabel = "<upc>", description = "set a price by upc") String upc,
+        @Parameters(paramLabel = "price") double price)
     {
         if(!checkExclusive(name, upc)) return;
 
@@ -125,11 +125,6 @@ public class AdminStoreCommand implements Runnable{
         } else if (!upc.isEmpty()) {
             admin.removeProductFromStoreByUPC(upc);
         }
-    }
-
-    @Command(name = "remove-location", description = "remove a store from the wegmans2 chain")
-    void removeStore(@Option(names = {"-h", "--help"}, usageHelp = true) boolean help, @Parameters String storeid) {
-        admin.dropStore(storeid);
     }
 
 
