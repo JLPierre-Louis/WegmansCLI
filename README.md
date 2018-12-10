@@ -1,7 +1,7 @@
 # WegmansCLI
 
 ### Team Members
-- Ryan Cervantes (rxc3202@rit.edu
+- Ryan Cervantes (rxc3202@rit.edu)
 - Jorge Flores (jaf9897@rit.edu)
 - Jarod Godlewski
 - Spencer Lowitt
