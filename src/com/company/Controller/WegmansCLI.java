@@ -31,6 +31,7 @@ public class WegmansCLI {
             dataBaseConnection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.out.println("SQL Error. Cannot connect to database");
+            System.out.println(e.getMessage());
             System.exit(1);
         }
     }
