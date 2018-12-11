@@ -1,0 +1,251 @@
+id,address,homeState,openTime,closeTime
+1,812 4th Parkway,MA,317,1824
+2,41374 Milwaukee Center,VA,359,1620
+3,7 Sunnyside Center,MN,533,1649
+4,1 CO Pass,CA,208,2132
+5,1 Buhler Road,FL,532,1807
+6,217 Carey Circle,NV,242,1842
+7,574 Gateway Circle,NY,342,2027
+8,06627 Lake View Drive,NC,556,1934
+9,133 Orin Alley,CA,242,1903
+10,912 Mockingbird Court,CA,217,1942
+11,646 Riverside Lane,DC,1207,2058
+12,03 Homewood Crossing,NC,457,1722
+13,8 Melody Circle,MD,256,2035
+14,34 Magdeline Trail,NY,1222,1609
+15,89085 Basil Center,WA,308,2033
+16,3 Farragut Terrace,CA,525,1857
+17,4454 2nd Road,KY,324,1715
+18,58052 Gerald Plaza,AZ,133,2154
+19,22 Sunnyside Hill,CA,1206,1611
+20,2 Warbler Road,MO,234,2006
+21,00182 Eagle Crest Avenue,HI,552,2052
+22,39320 Londonderry Park,CA,241,1957
+23,15 AZ Terrace,NE,145,1904
+24,324 Meadow Valley Park,MI,246,2343
+25,3411 Elgar Hill,MN,202,2236
+26,7 Truax Hill,AZ,213,2146
+27,0481 Eggendart Circle,AL,438,1638
+28,283 Mifflin Junction,CA,139,2051
+29,844 Annark Trail,WV,502,2003
+30,074 Jackson Terrace,FL,206,1843
+31,65321 Rusk Alley,TX,459,1602
+32,8 Eastlawn Trail,NY,420,1626
+33,067 Anhalt Road,CA,1236,1954
+34,8580 Pleasure Road,CA,248,2150
+35,61457 Lakeland Hill,OK,523,2112
+36,4 Memorial Avenue,GA,518,2325
+37,78836 Bultman Circle,MD,255,1820
+38,926 Sunbrook Lane,FL,454,2013
+39,3258 Welch Lane,MA,237,1856
+40,23579 Kinsman Court,KY,400,1726
+41,5 Hollow Ridge Trail,NY,210,1808
+42,9509 Kinsman Pass,MA,243,2155
+43,6872 Leroy Crossing,FL,106,2049
+44,136 Lakeland Trail,MI,1220,2008
+45,1298 Kim Park,TX,329,1948
+46,56648 Golf Course Hill,FL,452,2007
+47,221 Coleman Road,KY,1204,2009
+48,79 Graceland Alley,CA,312,1913
+49,00 Dottie Alley,IA,442,2315
+50,9745 Harper Street,CA,136,1919
+51,0948 Harper Junction,NY,436,2327
+52,5581 Schurz Terrace,KY,451,1838
+53,273 Granby Avenue,DC,502,1829
+54,1 Sachtjen Terrace,MN,1252,1931
+55,428 Walton Way,TX,440,2055
+56,9 Sunfield Place,CO,1233,2122
+57,0 Hazelcrest Park,VA,1208,1831
+58,983 Orin Trail,TX,248,1808
+59,43 Rigney Alley,TN,515,2219
+60,79792 Oriole Point,TX,1226,1629
+61,5 Messerschmidt Terrace,CA,431,1901
+62,755 Lyons Point,NY,448,1952
+63,8652 Pine View Circle,NE,307,1820
+64,04 Hazelcrest Point,IN,403,2303
+65,580 Lakeland Junction,CA,1240,2321
+66,15235 Forest Run Alley,NE,246,2131
+67,62 Florence Pass,NC,249,2020
+68,33 Jay Court,VA,328,2111
+69,368 Melvin Court,DC,1250,2058
+70,04 Stuart Hill,NJ,302,2226
+71,3 Village Green Way,TX,128,1731
+72,6 Bultman Circle,TN,153,1600
+73,05683 Fuller Park,MO,116,2240
+74,38 Hansons Circle,OH,210,2137
+75,29 Portage Alley,MI,108,2118
+76,9168 Tomscot Lane,CA,330,1717
+77,0 Transport Circle,FL,300,2150
+78,4 Kings Drive,CA,249,2208
+79,9906 Meadow Valley Drive,GA,1207,1944
+80,03220 Mandrake Avenue,PA,540,2149
+81,9756 Kropf Trail,NY,523,1624
+82,893 NV Pass,AZ,335,1920
+83,390 Harper Pass,TX,157,2157
+84,569 Sloan Place,VA,243,2344
+85,545 Summer Ridge Parkway,SC,427,2041
+86,46 Cottonwood Junction,OH,419,2138
+87,043 Elmside Hill,TX,127,1624
+88,1987 Darwin Way,SC,434,1843
+89,08119 Lyons Park,DC,511,2248
+90,46137 Declaration Alley,GA,338,2257
+91,0 Cody Place,GA,521,2148
+92,46 PA Pass,LA,115,1753
+93,17 Hanover Park,UT,1203,1715
+94,707 Sunbrook Avenue,VA,245,1624
+95,50 Debra Court,TX,139,1728
+96,579 Del Sol Alley,GA,131,2257
+97,337 Anzinger Court,TX,232,1747
+98,9764 Bonner Place,TN,344,2120
+99,1 Grim Way,GA,205,1752
+100,16 Division Center,IL,1244,1843
+101,9470 Dakota Trail,ID,448,2158
+102,978 Schlimgen Terrace,MT,331,2323
+103,4984 Cardinal Park,MO,538,2038
+104,7 Lillian Alley,VA,1215,1807
+105,91427 Algoma Avenue,CA,118,1950
+106,4 Westport Plaza,IN,1217,1719
+107,633 oth Circle,FL,323,1601
+108,0534 Almo Parkway,KS,1239,2005
+109,2820 Nobel Lane,NY,107,1713
+110,8209 Holy Cross Alley,MO,1256,1927
+111,863 Rieder Center,CA,535,2141
+112,855 Transport Pass,TX,212,2107
+113,25213 Victoria Hill,NY,342,2213
+114,251 Anthes Crossing,TN,457,2247
+115,365 Saint Paul Way,PA,533,1833
+116,02751 Northwestern Lane,TX,1202,2338
+117,9 Debs Center,CA,528,1646
+118,810 Village Court,VA,211,2031
+119,25 Trailsway Place,NC,234,1601
+120,603 AZ Street,CO,454,1747
+121,93 Mariners Cove Terrace,CA,1208,2308
+122,5504 Lake View Court,TX,102,1759
+123,3 Daystar Center,MO,1259,1919
+124,0856 Onsgard Pass,FL,140,1743
+125,9 Jay Lane,CO,549,2348
+126,0172 Starling Crossing,CO,1233,1935
+127,2 Burrows Junction,NY,519,1736
+128,62113 Debs Terrace,AZ,1223,1851
+129,09235 Charing Cross Court,TX,401,2055
+130,5 Graceland Crossing,OH,157,2031
+131,884 Hudson Court,DC,119,2027
+132,95 Banding Court,AL,116,1602
+133,56940 Merry Junction,LA,211,1942
+134,8 Buhler Trail,VA,105,1602
+135,6 Northfield Center,CO,454,2213
+136,30061 Lillian Hill,TX,445,2227
+137,54865 Bluejay Drive,CO,1242,2056
+138,8468 Reinke Park,WA,156,2004
+139,9140 Union Trail,CT,120,2318
+140,41 Pawling Junction,TN,309,2123
+141,1 Basil Plaza,NY,1242,1820
+142,42 Sachtjen Plaza,MO,331,1902
+143,91 Fisk Trail,CA,222,2220
+144,3207 Main Street,AL,121,1710
+145,6507 Luster Alley,FL,254,1933
+146,7070 Erie Terrace,LA,448,1947
+147,539 Straubel Drive,IN,203,2235
+148,313 Paget Street,CA,219,1600
+149,92 Ludington Plaza,AZ,1244,1743
+150,17 Glacier Hill Center,NM,120,2156
+151,447 Oriole Center,WA,1237,2142
+152,2850 Mifflin Place,NV,544,2027
+153,0056 Northland Terrace,NC,350,1959
+154,972 Carpenter Center,MD,551,2115
+155,53 Monument Way,CO,1215,1623
+156,17 Katie Drive,MS,147,1843
+157,2091 Carpenter Park,KS,511,2155
+158,32632 Basil Plaza,NY,244,1607
+159,66441 Bunker Hill Hill,WA,131,1828
+160,5 Kensington Terrace,CA,331,2123
+161,58295 Hallows Parkway,WA,437,2150
+162,78 Evergreen Park,FL,303,1733
+163,84 Mockingbird Circle,WA,236,1734
+164,8181 Claremont Avenue,TN,310,2148
+165,82 Prentice Place,CA,1234,2138
+166,19099 Quincy Point,LA,256,2118
+167,7869 Marcy Crossing,WA,308,1637
+168,2 Onsgard Road,IN,1232,2030
+169,5256 Longview Place,CA,140,2341
+170,25343 Ridge Oak Terrace,IN,212,2125
+171,393 Saint Paul Alley,IN,240,1759
+172,4 Pankratz Street,AL,134,1732
+173,10874 East Plaza,TX,400,1950
+174,884 Onsgard Court,DC,544,1942
+175,002 Kim Avenue,LA,348,2211
+176,7522 Susan Avenue,NY,1247,1746
+177,38895 Orin Alley,WA,308,1807
+178,219 Blue Bill Park Drive,VA,441,2057
+179,153 Service Drive,DC,123,1821
+180,0376 Spohn Trail,IN,352,2253
+181,19 Kipling Court,OH,1230,2041
+182,8669 Kedzie Road,UT,424,2158
+183,4253 Pond Plaza,FL,316,2209
+184,40 Farwell Street,NV,216,2332
+185,12677 Portage Alley,NY,339,2302
+186,451 Sherman Crossing,IL,300,1640
+187,1 Independence Trail,GA,230,1702
+188,0404 Kropf Circle,MO,100,1913
+189,65 Vidon Terrace,HI,312,2122
+190,03115 Algoma Road,PA,515,2118
+191,833 Hanson Center,CT,1231,2333
+192,5836 Hooker Plaza,LA,1231,2311
+193,6859 International Alley,MN,506,2142
+194,30968 Mandrake Center,KY,546,2251
+195,213 Service Lane,LA,218,2353
+196,7 Leroy Street,CO,227,2357
+197,3020 Stoughton Street,VA,425,1900
+198,4 Golf Course Court,CO,254,1720
+199,18 OH Trail,CA,536,1810
+200,07118 Truax Court,FL,1259,1904
+201,20 Kings Junction,VA,1237,2026
+202,20379 Prairieview Way,MI,517,1656
+203,59 Westerfield Street,CA,254,1741
+204,66321 Ridgeway Street,KY,357,2307
+205,98 Fremont Pass,HI,435,1816
+206,3 Pond Center,NV,148,1727
+207,067 Hudson Park,NY,318,1958
+208,3 Gale Lane,IL,520,2333
+209,361 Kedzie Court,WA,320,2119
+210,72286 Pierstorff Alley,DC,411,2227
+211,6 Bunting Drive,KY,150,2231
+212,81 Monica Court,GA,534,1900
+213,378 Ruskin Alley,CA,102,1643
+214,422 Prentice Parkway,NM,335,2147
+215,975 Larry Crossing,NC,115,1632
+216,06597 Claremont Court,AL,237,1953
+217,939 Artisan Avenue,MN,405,1624
+218,0 Prairie Rose Point,MN,110,1828
+219,79 Moulton Crossing,OH,328,1938
+220,80404 Blaine Crossing,WV,1253,1921
+221,3037 Luster Avenue,AZ,304,2142
+222,84 Mitchell Avenue,FL,450,2159
+223,28148 Hovde Lane,FL,1218,2228
+224,36 Warbler Junction,LA,544,2346
+225,51 Loeprich Parkway,CA,535,1856
+226,84010 Pawling Alley,OH,538,1604
+227,116 Clemons Way,MA,1208,1652
+228,93465 Weeping Birch Road,WV,243,1627
+229,3 Logan Crossing,CT,510,2037
+230,12 Moose Pass,PA,503,2115
+231,8492 NV Park,IN,328,1922
+232,0436 Barnett Parkway,MD,300,1908
+233,95488 Buhler Lane,NC,352,1913
+234,8138 Schurz Plaza,FL,1244,2200
+235,79 Fallview Center,CA,1250,2258
+236,7 Chinook Pass,DC,124,2017
+237,7 Waywood Hill,CA,459,1641
+238,863 Burning Wood Circle,NY,510,1703
+239,94336 Dakota Lane,PA,157,1728
+240,3 Schiller Way,WV,341,1615
+241,597 Rigney Avenue,MD,404,2303
+242,877 Stone Corner Hill,NV,354,1936
+243,05 Gerald Park,MI,248,2109
+244,3640 Loeprich Crossing,TX,244,1953
+245,88 Moose Court,IL,520,1957
+246,345 Waywood Circle,WA,103,2132
+247,863 Jenna Crossing,MD,418,1617
+248,9 Tennyson Parkway,IN,153,1836
+249,578 Claremont Avenue,DC,448,2106
+250,90 Mockingbird Drive,AK,101,1609
