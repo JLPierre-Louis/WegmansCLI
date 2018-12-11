@@ -35,17 +35,11 @@ public abstract class User {
     private final String ALL_PRODUCTS_IN_STORE = "SELECT product.* FROM Product JOIN soldBy ON" +
             " soldBy.productId = product.upc WHERE soldBy.storeId = ? ORDER BY product.name ASC";
 
-    private SQLConnection sqlConnection = new SQLConnection();
     private Connection con;
     Store store;
 
-    public User(){
-        try {
-            this.con = sqlConnection.connectToDB("wegmans2");
-        } catch (SQLException e){
-            System.out.println("User could not connect to Wegmans 2: The SQL");
-        }
-        // this.store = new Store("1", "MA", "812 4th Parkway", 10, 12);
+    public User(Connection con){
+        this.con = con;
         this.store = null;
     }
 

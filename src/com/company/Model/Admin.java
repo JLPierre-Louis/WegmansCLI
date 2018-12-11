@@ -73,8 +73,8 @@ public class Admin extends User {
     private String username;
     private String password;
 
-    public Admin(String username, String password){
-        super();
+    public Admin(Connection con, String username, String password){
+        super(con);
         this.username = username;
         this.password = password;
     }

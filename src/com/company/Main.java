@@ -32,7 +32,6 @@ public class Main implements Callable<Void> {
     public Void call() {
         String url = String.format(URL_TEMPLATE, host, port, schema);
         WegmansCLI main = new WegmansCLI(url, username, password);
-        System.out.println(url);
         main.run();
         return null;
     }

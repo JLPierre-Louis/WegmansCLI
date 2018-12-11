@@ -106,7 +106,7 @@ public class WegmansCLI {
             username = scanner.nextLine();
             System.out.print(ADMIN_PROMPT_PASSWORD);
             password = scanner.nextLine();
-            tempAdmin = new Admin(username, password);
+            tempAdmin = new Admin(dataBaseConnection, username, password);
             if(tempAdmin.verifyAccount())
                 break;
             System.out.println("Incorrect credentials. Try again. (passwords are case sensitive)");
@@ -118,7 +118,7 @@ public class WegmansCLI {
     private Customer handleCustomer() {
         System.out.print(CUSTOMER_PROMPT);
         String customerPhone = scanner.nextLine();
-        Customer c = new Customer(customerPhone);
+        Customer c = new Customer(dataBaseConnection, customerPhone);
         while (!c.verifyPhoneNumber()){
             System.out.println("No users under that phone number! Please enter a valid phone number.");
             customerPhone = scanner.nextLine();

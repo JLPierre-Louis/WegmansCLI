@@ -5,6 +5,7 @@ import com.company.Controller.CommandDefinitions.CartCommand;
 import com.company.Controller.CommandDefinitions.CustomerStoreCommand;
 import com.company.Controller.CommandDefinitions.CustomerSynopsis;
 import com.company.Controller.CommandService;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,8 +27,8 @@ public class Customer extends User {
 
 
 
-    public Customer(String phone) {
-        super();
+    public Customer(Connection con, String phone) {
+        super(con);
         this.lastname = lastname;
         this.firstname = firstname;
         this.phone = phone;
