@@ -1,6 +1,5 @@
 package com.company.Model;
 
-import com.company.Controller.SQLConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -155,7 +154,6 @@ public abstract class User {
     public void queryStoreByProduct(String productName) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
             PreparedStatement stmt = con.prepareStatement(STORE_BY_PRODUCT_QUERY);
             stmt.setString(1, productName);
             rs = stmt.executeQuery();
@@ -169,7 +167,6 @@ public abstract class User {
     public void queryStoreByTime(int start, int end) {
         ResultSet rs = null;
         try {
-            SQLConnection s = new SQLConnection();
             PreparedStatement stmt = con.prepareStatement(STORE_BY_TIME_QUERY);
             stmt.setInt(1, start);
             stmt.setInt(2, end);

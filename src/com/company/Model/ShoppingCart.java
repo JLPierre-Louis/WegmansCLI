@@ -1,6 +1,5 @@
 package com.company.Model;
 
-import com.company.Controller.SQLConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
