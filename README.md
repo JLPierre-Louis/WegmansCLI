@@ -1,10 +1,8 @@
 # WegmansCLI
 
-### Team Members
+### Developers 
 - Ryan Cervantes (rxc3202@rit.edu)
 - Jorge Flores (jaf9897@rit.edu)
-- Jarod Godlewski
-- Spencer Lowitt
 
 ### Instructions to Run
 1. Download Source Code
@@ -17,6 +15,49 @@
 **_NOTE_**: make sure your ```<dbname>``` matches your database's name from step 3, which should be ```wegmans2```.
 Databases are not verified and this will lead to an unusable program stuck at login.
 
+Description
+===========
+This report will outline our project for the prestigious Wegmans2 company. 
+Wegmans2 is a growing company and needs to upgrade their business to a more modern system. 
+As such, they have hired us to create a database that will track multiple aspects of their day-to-day 
+administrative and retail factors. Additionally, they have asked us to create a programmer-friend 
+command-line interface for this backend. 
+
+As specified by Wegmans2, the database must keep track of retail and administrative factors of 
+their business. For the retail aspects, we were tasked to keep track of customers and 
+any items they have purchased through our application. For the administrative aspects,
+ we were tasked to keep track of information about physical stores 
+ (i.e. address, open time, close time), the items they sell (name, price, brand, vendors, 
+ number in stock), and restocking (items requested, when they were delivered,
+  what store requested them). 
+
+The application itself must have a dual purpose. First, it must serve as a customer portal 
+through which customers are able to purchase items. This includes all the intermediary 
+steps of a larger company’s online presence such as logging in, choosing a store, browsing 
+inventory, adding items to a cart, and checking out. Secondly, it must serve as an 
+administrative hub where by administrators may modify the operations of wegmans. 
+This includes things such as updating item prices, adding/removing items to a store’s 
+inventory, requesting reorders, and approving reorders. Finally, Wegmans2 has also asked 
+us to make the application have the ability to gather business statistics about their 
+business. This will include things such as finding the MVP customer, finding the best/worst stores, 
+and finding the worst/best items. 
+
+ER-Diagram and Relational Model
+==========
+![](docs/ER-Diagram.png)
+
+The above E-R diagram models the different entities within the domain of the application. 
+We designed this application with 6 entities that would interact with each other to yield the 
+desired functionality: Store, Product, Brand, Vendor, and Customer. From there, we could use 
+different relationships to describe how the entities interacted with one another. The general idea 
+of the domain is as follows:
+
+“A __Store__ *sells* multiple __Products__, which can be bought by a __Customer__. 
+Each product is *carried by* a __Brand__ and brands are *distributed by* a __Vendor__. When a 
+store runs out of a specific product, an administrator may have a store *order* a 
+__Reorder__ which will then be fulfilled.
+
+![](docs/Table%20Reduction.jpg)
 
 Admin Command Synopsis
 ======================
