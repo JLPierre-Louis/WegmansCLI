@@ -8,13 +8,14 @@
 
 ### Instructions to Run
 1. Download Source Code
-2. Find ```wegmans2.sql``` in ```/etc```
-3. Build datatabase using ```psql <dbname> < wegmans2.sql```
-4. Download and install Java JDK (we used [1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
+2. Download and install Java JDK (we used [1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
+3. Find ```wegmans2.sql``` in ```/etc```
+4. Build database using ```pg_restore --no-owner --clean wegmans2.sql```
 5. Navigate to ```out/artifacts/WegmansCLI_jar```
 6. Run ```java -jar WegmansCLI.jar <host> <port> <user> <password> <dbname>```
 
-**_NOTE_**: make sure your ```<dbname>``` matches your database's name from step 3. Database verifcation does not exist. 
+**_NOTE_**: make sure your ```<dbname>``` matches your database's name from step 3, which should be ```wegmans2```.
+Databases are not verified and this will lead to an unusable program stuck at login.
 
 
 Admin Command Synopsis
