@@ -9,8 +9,6 @@ public class SQLConnection {
 
 
     public Connection connectToDB(String schemaName) throws SQLException {
-
-
         // This code creates the URL on boot using the password file, will be good for different roles.
         /*
         // Read the password file in the running directory, connects to jaf9897 database.
@@ -37,28 +35,6 @@ public class SQLConnection {
         */
         //This runs it directly
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-    }
-
-    /**
-     * Connect to the database and run the query
-     * @param sql the SQL query
-     * @return a ResultSet that should be parsed by the corresponding Model Tier object
-     * @throws SQLException
-     */
-    public static ResultSet wegmansQuery(String sql) throws SQLException {
-        Connection database = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = database.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            stmt.closeOnCompletion();
-        } catch (SQLException e) {
-            System.err.println("SQL Error:");
-            e.printStackTrace();
-        }
-        database.close();
-        return rs;
     }
 
 }

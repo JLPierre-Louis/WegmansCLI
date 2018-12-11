@@ -4,6 +4,9 @@ import com.company.Model.Admin;
 import com.company.Model.Customer;
 import com.company.Model.User;
 import com.company.Model.User.UserType;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Scanner;
 import picocli.CommandLine.MissingParameterException;
 import picocli.CommandLine.Model.ArgSpec;
@@ -21,9 +24,20 @@ public class WegmansCLI {
     private static final String WELCOME = "Welcome! ";
     private static final String PROMPT = "> ";
 
-    public SQLConnection dataBase;
+    private Connection dataBaseConnection;
+
+    public WegmansCLI(String url, String user, String password) {
+        try {
+            dataBaseConnection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            System.out.println("SQL Error. Cannot connect to database");
+            System.exit(1);
+        }
+    }
+
 
     public void run() {
+        splashScreen();
         User user = chooseUser();
         String input = null;
         String[] args = null;
@@ -113,5 +127,23 @@ public class WegmansCLI {
         c.setNames();
         System.out.println("Welcome, " + c.getFirstname() + " " + c.getLastname() + ".");
         return c;
+    }
+
+
+    private static void splashScreen() {
+        System.out.println("+------------------------------------------------------------------------------+");
+        System.out.println("|            Welcome to the Wegmans2 Command Line Shopping Interface           |");
+        System.out.println("+------------------------------------------------------------------------------+");
+        System.out.println("| In order for you to use this application effectively please follow the steps |");
+        System.out.println("| below:                                                                       |");
+        System.out.println("|    1. Please identify what user you are (Type: \"customer\" or \"admin\")        |");
+        System.out.println("|    2. Enter your credentials                                                 |");
+        System.out.println("|        a. Customers - please enter your registered phone number              |");
+        System.out.println("|        b. Admins - please enter your username and password                   |");
+        System.out.println("|    3. Ask for help!                                                          |");
+        System.out.println("|        a. Use \"help [subcommand]\" for general help                           |");
+        System.out.println("|        b. Use \"[subcommand] -h \" for option help                             |");
+        System.out.println("|        c. Use \"synopsis\" for a list of all commands                          |");
+        System.out.println("+------------------------------------------------------------------------------+");
     }
 }

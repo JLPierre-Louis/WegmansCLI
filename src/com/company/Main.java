@@ -1,26 +1,39 @@
 package com.company;
 
 import com.company.Controller.WegmansCLI;
-import com.company.Model.Admin;
+import java.util.concurrent.Callable;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Help;
+import picocli.CommandLine.Help.Visibility;
+import picocli.CommandLine.Parameters;
 
-public class Main {
+@Command(name = "run", hidden = true)
+public class Main implements Callable<Void> {
+
+    private static final String URL_TEMPLATE = "jdbc:postgresql://%s:%s/?currentSchema=%s";
+
+    @Parameters(paramLabel = "<host>", index = "0", description = "the host that has postgres running")
+    String host;
+    @Parameters(paramLabel = "<port>", index = "1", showDefaultValue = Visibility.ALWAYS, defaultValue = "5432", description = "the port for postgress")
+    String port;
+    @Parameters(paramLabel = "<username>", index = "2", description = "the username with the permissions to access database")
+    String username;
+    @Parameters(paramLabel = "<password>", index = "3", description = "the password for that user")
+    String password;
+    @Parameters(paramLabel = "<schemaname>", index = "4", showDefaultValue = Visibility.ALWAYS, defaultValue = "wegmans2", description = "the schema name")
+    String schema;
 
     public static void main(String[] args) {
-        System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|            Welcome to the Wegmans2 Command Line Shopping Interface           |");
-        System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("| In order for you to use this application effectively please follow the steps |");
-        System.out.println("| below:                                                                       |");
-        System.out.println("|    1. Please identify what user you are (Type: \"customer\" or \"admin\")        |");
-        System.out.println("|    2. Enter your credentials                                                 |");
-        System.out.println("|        a. Customers - please enter your registered phone number              |");
-        System.out.println("|        b. Admins - please enter your username and password                   |");
-        System.out.println("|    3. Ask for help!                                                          |");
-        System.out.println("|        a. Use \"help [subcommand]\" for general help                           |");
-        System.out.println("|        b. Use \"[subcommand] -h \" for option help                             |");
-        System.out.println("|        c. Use \"synopsis\" for a list of all commands                          |");
-        System.out.println("+------------------------------------------------------------------------------+");
-        WegmansCLI main = new WegmansCLI();
+        CommandLine.call(new Main(), args);
+    }
+
+    @Override
+    public Void call() {
+        String url = String.format(URL_TEMPLATE, host, port, schema);
+        WegmansCLI main = new WegmansCLI(url, username, password);
+        System.out.println(url);
         main.run();
+        return null;
     }
 }
